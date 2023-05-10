@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Oculta la barra de scroll en donde se aplique */
+.noscrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Expande la altura de las 3 secciones del layout */
+@media (min-width: 640px) {
+  html,body, #__next, #__next > div{
+    height: 100%;
+  }
+}
+
+/* Para utilizar estilos propios con los media queries de tailwind */
+@layer utilities {
+}
