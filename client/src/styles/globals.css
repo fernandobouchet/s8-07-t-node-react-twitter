@@ -2,26 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+/* Oculta la barra de scroll en donde se aplique */
+.noscrollbar::-webkit-scrollbar {
+  display: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+/* Expande la altura de las 3 secciones del layout */
+@media (min-width: 640px) {
+  html,body, #__next, #__next > div{
+    height: 100%;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+/* Para utilizar estilos propios con los media queries de tailwind */
+@layer utilities {
 }
