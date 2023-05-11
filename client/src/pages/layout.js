@@ -44,49 +44,49 @@ function Header () {
           href="/" 
           className={'flex items-center gap-4 p-3 text-xl rounded-3xl w-fit transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 '+(pathname === "/"? "font-bold" : "")}
         >
-          <HomeIcon size={28} /> <p className='max-xl:hidden dark:text-white'>Inicio</p>
+          <HomeIcon size={28} active={pathname === "/"? true : false} /> <p className='max-xl:hidden dark:text-white'>Inicio</p>
         </Link>
         
         <Link 
           href="/explore" 
           className={'flex items-center gap-4 p-3 text-xl rounded-3xl w-fit transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 '+(pathname === "/explore"? "font-bold" : "")}
         >
-          <ExploreIcon size={28} /> <p className='max-xl:hidden dark:text-white'>Explorar</p>
+          <ExploreIcon size={28} active={pathname === "/explore"? true : false} /> <p className='max-xl:hidden dark:text-white'>Explorar</p>
         </Link>
         
         <Link 
           href="/notifications" 
           className={'flex items-center gap-4 p-3 text-xl rounded-3xl w-fit transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 '+(pathname === "/notifications"? "font-bold" : "")}
         >
-          <NotificationIcon size={28} /> <p className='max-xl:hidden dark:text-white'>Notificaciones</p>
+          <NotificationIcon size={28} active={pathname === "/notifications"? true : false} /> <p className='max-xl:hidden dark:text-white'>Notificaciones</p>
         </Link>
         
         <Link 
           href="/messages" 
           className={'flex items-center gap-4 p-3 text-xl rounded-3xl w-fit transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 '+(pathname === "/messages"? "font-bold" : "")}
         >
-          <MessagesIcon size={28} /> <p className='max-xl:hidden dark:text-white'>Mensajes</p>
+          <MessagesIcon size={28} active={pathname === "/messages"? true : false} /> <p className='max-xl:hidden dark:text-white'>Mensajes</p>
         </Link>
         
         <Link 
           href="/lists" 
           className={'flex items-center gap-4 p-3 text-xl rounded-3xl w-fit transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 '+(pathname === "/lists"? "font-bold" : "")}
         >
-          <ListIcon size={28} /> <p className='max-xl:hidden dark:text-white'>Listas</p>
+          <ListIcon size={28} active={pathname === "/lists"? true : false} /> <p className='max-xl:hidden dark:text-white'>Listas</p>
         </Link>
         
         <Link 
           href="/bookmarks" 
           className={'flex items-center gap-4 p-3 text-xl rounded-3xl w-fit transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 '+(pathname === "/bookmarks"? "font-bold" : "")}
         >
-          <BookmarkIcon size={28} /> <p className='max-xl:hidden dark:text-white'>Guardados</p>
+          <BookmarkIcon size={28} active={pathname === "/bookmarks"? true : false} /> <p className='max-xl:hidden dark:text-white'>Guardados</p>
         </Link>
         
         <Link 
           href="/profile" 
           className={'flex items-center gap-4 p-3 text-xl rounded-3xl w-fit transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 '+(pathname === "/profile"? "font-bold" : "")}
         >
-          <ProfileIcon size={28} /> <p className='max-xl:hidden dark:text-white'>Perfil</p>
+          <ProfileIcon size={28} active={pathname === "/profile"? true : false} /> <p className='max-xl:hidden dark:text-white'>Perfil</p>
         </Link>
         
         <Link 
@@ -96,7 +96,7 @@ function Header () {
           <MoreIcon size={28} /><p className='max-xl:hidden dark:text-white'>Más opciones</p>
         </Link>
 
-        <button className='bg-[#7855FF] p-3.5 w-fit xl:w-full rounded-full mt-5'>
+        <button className='transition duration-300 bg-[#7855FF] hover:bg-[#6c4de6] p-3.5 w-fit xl:w-full rounded-full mt-5'>
           <div className='xl:hidden'>
             <CreateTweetIcon size={24} />
           </div>
@@ -141,28 +141,28 @@ function Footer () {
         href="/" 
         className={'flex items-center gap-4 p-2 text-xl rounded-full w-fit transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 '+(pathname === "/"? "font-bold" : "")}
       >
-        <HomeIcon size={28} />
+        <HomeIcon size={28} active={pathname === "/"? true : false} />
       </Link>
 
       <Link 
-        href="/" 
+        href="/explore" 
         className={'flex items-center gap-4 p-2 text-xl rounded-full w-fit transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 '+(pathname === "/"? "font-bold" : "")}
       >
-        <SearchIcon size={28} />
+        <SearchIcon size={28} active={pathname === "/explore"? true : false} />
       </Link>
 
       <Link 
-        href="/" 
+        href="/notifications" 
         className={'flex items-center gap-4 p-2 text-xl rounded-full w-fit transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 '+(pathname === "/"? "font-bold" : "")}
       >
-        <NotificationIcon size={28} />
+        <NotificationIcon size={28} active={pathname === "/notifications"? true : false} />
       </Link>
 
       <Link 
-        href="/" 
+        href="/messages" 
         className={'flex items-center gap-4 p-2 text-xl rounded-full w-fit transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 '+(pathname === "/"? "font-bold" : "")}
       >
-        <MessagesIcon size={28} />
+        <MessagesIcon size={28} active={pathname === "/messages"? true : false} />
       </Link>
     </nav>
 
