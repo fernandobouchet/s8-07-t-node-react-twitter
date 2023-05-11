@@ -9,7 +9,8 @@ export default function Home() {
       <title>Inicio / Twitter</title>
     </Head>
     <div>
-    </div> 
+      
+    </div>
     </>
   )
 }

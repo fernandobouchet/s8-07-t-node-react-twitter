@@ -30,14 +30,14 @@ export function CreateTweetIcon ({ size }) {
   );
 }
 
-export function SearchIcon ({ size, active }) {
+export function SearchIcon ({ size, active, opacity }) {
   return (
     <svg
       width={size}
       height={size}
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className="dark:fill-white/20 group-focus-within:fill-indigo-500"
+      className={"group-focus-within:fill-indigo-500 "+(opacity? "dark:fill-white/20" : "dark:fill-white")}
     >
       <g>
         {
@@ -229,3 +229,41 @@ export function MoreIcon ({ size }) {
     </svg>
   )
 }
+
+export const Moon = ({ size }) => (
+  <svg
+    fill="none"
+    height={size}
+    stroke="currentColor"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="1.5"
+    viewBox="0 0 24 24"
+    width={size}
+  >
+    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+  </svg>
+)
+
+export const Sun = ({ size }) => (
+  <svg
+    fill="none"
+    height={size}
+    stroke="currentColor"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="1.5"
+    viewBox="0 0 24 24"
+    width={size}
+  >
+    <circle cx="12" cy="12" r="5"></circle>
+    <path d="M12 1v2"></path>
+    <path d="M12 21v2"></path>
+    <path d="M4.22 4.22l1.42 1.42"></path>
+    <path d="M18.36 18.36l1.42 1.42"></path>
+    <path d="M1 12h2"></path>
+    <path d="M21 12h2"></path>
+    <path d="M4.22 19.78l1.42-1.42"></path>
+    <path d="M18.36 5.64l1.42-1.42"></path>
+  </svg>
+)
