@@ -7,7 +7,7 @@ export default function profile() {
   return (
     <div>
       {status === "unauthenticated" ? (
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center gap-5">
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded-xl"
             onClick={() => signIn("google")}
@@ -19,6 +19,12 @@ export default function profile() {
             onClick={() => signIn("github")}
           >
             Login con github
+          </button>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-xl"
+            onClick={() => signIn("facebook")}
+          >
+            Login con facebook
           </button>
         </div>
       ) : (

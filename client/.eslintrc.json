@@ -14,8 +14,8 @@
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
     "semi": "off",
-    "quotes": "off"
-
+    "quotes": "off",
+    "comma-style": "off"
     /*  "avoidEscape": true, */
     /*    "allowTemplateLiterals": true */
   }
