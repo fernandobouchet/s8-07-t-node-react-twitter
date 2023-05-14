@@ -17,3 +17,40 @@
 /* Para utilizar estilos propios con los media queries de tailwind */
 @layer utilities {
 }
+
+/* Animaciones */
+
+.profileOptions{
+  display: none;
+}
+
+.entering{
+  display: flex;
+  animation: reveal .4s cubic-bezier(0.52, 0.01, 0.16, 1);
+  will-change: opacity;
+}
+
+.leaving{
+  animation: unreveal .4s cubic-bezier(0.52, 0.01, 0.16, 1);
+  will-change: opacity;
+}
+
+@keyframes unreveal {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

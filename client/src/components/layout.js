@@ -7,20 +7,18 @@ import {
   ListIcon,
   MenuIcon,
   MessagesIcon,
-  Moon,
   MoreIcon,
   NotificationIcon,
   ProfileIcon,
   SearchIcon,
-  Sun,
-  TwitterIcon,
+  TwitterIcon
 } from "@/components/icons";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { BlockTransition } from "../../utils/functions";
 
-function Header() {
+function Header () {
   const { pathname } = useRouter();
 
   return (
@@ -62,7 +60,7 @@ function Header() {
               (pathname === "/" ? "font-bold" : "")
             }
           >
-            <HomeIcon size={28} active={pathname === "/" ? true : false} />{" "}
+            <HomeIcon size={28} active={pathname === "/"} />{" "}
             <p className="max-xl:hidden dark:text-white">Inicio</p>
           </Link>
 
@@ -75,7 +73,7 @@ function Header() {
           >
             <ExploreIcon
               size={28}
-              active={pathname === "/explore" ? true : false}
+              active={pathname === "/explore"}
             />{" "}
             <p className="max-xl:hidden dark:text-white">Explorar</p>
           </Link>
@@ -89,7 +87,7 @@ function Header() {
           >
             <NotificationIcon
               size={28}
-              active={pathname === "/notifications" ? true : false}
+              active={pathname === "/notifications"}
             />{" "}
             <p className="max-xl:hidden dark:text-white">Notificaciones</p>
           </Link>
@@ -103,7 +101,7 @@ function Header() {
           >
             <MessagesIcon
               size={28}
-              active={pathname === "/messages" ? true : false}
+              active={pathname === "/messages"}
             />{" "}
             <p className="max-xl:hidden dark:text-white">Mensajes</p>
           </Link>
@@ -115,7 +113,7 @@ function Header() {
               (pathname === "/lists" ? "font-bold" : "")
             }
           >
-            <ListIcon size={28} active={pathname === "/lists" ? true : false} />{" "}
+            <ListIcon size={28} active={pathname === "/lists"} />{" "}
             <p className="max-xl:hidden dark:text-white">Listas</p>
           </Link>
 
@@ -128,7 +126,7 @@ function Header() {
           >
             <BookmarkIcon
               size={28}
-              active={pathname === "/bookmarks" ? true : false}
+              active={pathname === "/bookmarks"}
             />{" "}
             <p className="max-xl:hidden dark:text-white">Guardados</p>
           </Link>
@@ -142,7 +140,7 @@ function Header() {
           >
             <ProfileIcon
               size={28}
-              active={pathname === "/profile" ? true : false}
+              active={pathname === "/profile"}
             />{" "}
             <p className="max-xl:hidden dark:text-white">Perfil</p>
           </Link>
@@ -164,36 +162,45 @@ function Header() {
           </button>
         </div>
 
-        <div className="max-md:hidden mt-auto max-xl:w-fit cursor-pointer lg:px-3 py-2 mb-4 flex gap-4 justify-between w-full rounded-full transition duration-300 hover:bg-black/10 hover:dark:bg-white/10">
-          <div className="flex gap-3">
-            <Image
-              className="rounded-full w-10 h-10 object-cover m-auto"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQXu4-Scl4Wm6xzN9sYMslJ5ru9EY5gpfvHw&usqp=CAU"
-              width={50}
-              height={50}
-              alt="Foto Perfil"
-              unoptimized
-              priority
-            />
-            <div className="text-base max-xl:hidden">
-              <p className="font-semibold dark:text-white truncate max-w-[14ch]">
-                Usuario
-              </p>
-              <p className="text-slate-500 -mt-0.5 text-sm truncate max-w-[14ch]">
-                @Usuario
-              </p>
-            </div>
+        <div className="w-full mt-auto">
+
+          <div className="profileOptions flex border dark:border-white/20 pt-3 h-fit w-fit pb-1 flex-col rounded-xl items-start bg-white dark:bg-black dark:text-white font-medium fixed bottom-24">
+            <button className="py-2 px-4 transition duration-300 hover:bg-black/5 hover:dark:bg-white/10">Agregar una cuenta existente</button>
+            <button className="py-2 px-4 transition duration-300 hover:bg-black/5 hover:dark:bg-white/10">Cerrar la sesion de @Usuario</button>
+            <div className="h-4 w-4 max-xl:ml-5 xl:mx-auto -my-1 origin-bottom-left rotate-45 transform border-b border-r bg-white dark:bg-black dark:border-white/20"></div>
           </div>
-          <button className="max-xl:hidden">
-            <MenuIcon size={16} />
-          </button>
+
+          <div onClick={() => BlockTransition(".profileOptions", "entering", "leaving")} className="btn max-lg:mx-auto max-md:hidden max-xl:w-fit cursor-pointer lg:px-3 py-2 mb-4 flex gap-4 justify-between w-full rounded-full transition duration-300 hover:bg-black/10 hover:dark:bg-white/10">
+            <div className="flex gap-3">
+              <Image
+                className="rounded-full w-10 h-10 object-cover m-auto"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQXu4-Scl4Wm6xzN9sYMslJ5ru9EY5gpfvHw&usqp=CAU"
+                width={50}
+                height={50}
+                alt="Foto Perfil"
+                unoptimized
+                priority
+              />
+              <div className="text-base max-xl:hidden">
+                <p className="font-semibold dark:text-white truncate max-w-[14ch]">
+                  Usuario
+                </p>
+                <p className="text-slate-500 -mt-0.5 text-sm truncate max-w-[14ch]">
+                  @Usuario
+                </p>
+              </div>
+            </div>
+            <button className="max-xl:hidden">
+              <MenuIcon size={16} />
+            </button>
+          </div>
         </div>
       </div>
     </header>
   );
 }
 
-function Footer() {
+function Footer () {
   const { pathname } = useRouter();
 
   return (
@@ -206,7 +213,7 @@ function Footer() {
             (pathname === "/" ? "font-bold" : "")
           }
         >
-          <HomeIcon size={28} active={pathname === "/" ? true : false} />
+          <HomeIcon size={28} active={pathname === "/"} />
         </Link>
 
         <Link
@@ -218,7 +225,7 @@ function Footer() {
         >
           <SearchIcon
             size={28}
-            active={pathname === "/explore" ? true : false}
+            active={pathname === "/explore"}
           />
         </Link>
 
@@ -231,7 +238,7 @@ function Footer() {
         >
           <NotificationIcon
             size={28}
-            active={pathname === "/notifications" ? true : false}
+            active={pathname === "/notifications"}
           />
         </Link>
 
@@ -244,7 +251,7 @@ function Footer() {
         >
           <MessagesIcon
             size={28}
-            active={pathname === "/messages" ? true : false}
+            active={pathname === "/messages"}
           />
         </Link>
       </nav>
@@ -281,7 +288,7 @@ function Footer() {
   );
 }
 
-export default function Layout({ children }) {
+export default function Layout ({ children }) {
   return (
     <>
       <div className="flex max-md:flex-col justify-center w-full gap-2">
