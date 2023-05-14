@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import generateJWT from '../helpers/generateJWT.js';
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -29,8 +30,8 @@ const userSchema = new mongoose.Schema({
   },
   token: {
     type: String,
-    default: ''
-  },
+    default: generateJWT()
+},
   followers: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
