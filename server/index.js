@@ -29,7 +29,9 @@ dbConnection().catch((error) => {
     console.error("Error connecting to MongoDB:", error);
 });
 
+
 app.use("/api", router);
+
 
 // Endpoints
 app.get("/", (req, res) => {
@@ -39,4 +41,6 @@ app.listen(process.env.PORT, () => {
     console.log(`Port has started in port ${process.env.PORT}`);
 });
 
+
 export default app
+
