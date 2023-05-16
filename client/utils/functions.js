@@ -19,7 +19,7 @@ export function BlockTransition (selector, entering, leaving) {
       block.classList.add(leaving);
       setTimeout(() => {
         block.classList.add('hidden');
-      }, 100)
+      }, 300)
     }
   }
 
