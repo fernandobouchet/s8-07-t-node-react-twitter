@@ -15,5 +15,16 @@
 }
 
 /* Para utilizar estilos propios con los media queries de tailwind */
-@layer utilities {
+@layer components { 
+  .icons { 
+    @apply h-10 w-10 md:h-11 md:w-11 group-hover:rounded-full px-3; 
+  }  
+} 
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+::-webkit-scrollbar:vertical {
+  display:none;
 }
