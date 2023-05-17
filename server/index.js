@@ -4,6 +4,7 @@ import cors from "cors";
 import "dotenv/config.js";
 import { dbConnection } from "./config/mongo.js";
 import router from "./routes/userRoutes.js";
+import tweetRouter from "./routes/tweetRoutes.js";
 
 
 
@@ -31,6 +32,7 @@ dbConnection().catch((error) => {
 
 
 app.use("/api", router);
+app.use("/api", tweetRouter);
 
 
 // Endpoints
