@@ -7,8 +7,10 @@ const tweetSchema = new mongoose.Schema({
     media: {
         type: String
     },
-    user: {
+    author: {
+        type: String,
         type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
     retweets: [{
@@ -18,7 +20,16 @@ const tweetSchema = new mongoose.Schema({
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
-    }]
+    }],
+    hashtags: [{
+        type: String
+    }],
+    likes: [{
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User'
+        }
+      }],
 });
 const Tweet = mongoose.model('Tweet', tweetSchema);
 
