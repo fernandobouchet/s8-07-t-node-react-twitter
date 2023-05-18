@@ -5,6 +5,7 @@ import "dotenv/config.js";
 import { dbConnection } from "./config/mongo.js";
 import router from "./routes/userRoutes.js";
 import tweetRouter from "./routes/tweetRoutes.js";
+import commentRouter from "./routes/commentRoutes.js";
 
 
 
@@ -33,6 +34,7 @@ dbConnection().catch((error) => {
 
 app.use("/api", router);
 app.use("/api", tweetRouter);
+app.use("/api", commentRouter);
 
 
 // Endpoints
