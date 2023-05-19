@@ -1,11 +1,12 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import Image from "next/image";
-export default function profile() {
+export default function profile () {
   const { data: session, status } = useSession();
   console.log(session);
   return (
     <div>
-      {status === "unauthenticated" ? (
+      {status === "unauthenticated"
+        ? (
         <div className="flex flex-col items-center justify-center gap-5">
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded-xl"
@@ -26,14 +27,15 @@ export default function profile() {
             Login con facebook
           </button>
         </div>
-      ) : (
+          )
+        : (
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded-xl"
           onClick={() => signOut()}
         >
           Logout
         </button>
-      )}
+          )}
       {session && (
         <div className="flex flex-col items-center justify-center">
           <h2 className="text-black text-3xl dark:text-white font-bold">
