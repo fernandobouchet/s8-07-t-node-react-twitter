@@ -362,9 +362,9 @@ function Footer () {
 export default function Layout ({ children }) {
   return (
     <>
-      <div className="flex max-md:flex-col justify-center w-full gap-2">
+      <div className="flex max-md:flex-col justify-center w-full">
         <Header />
-        <main className="max-md:my-16 md:h-full md:max-w-[600px] max-md:overflow-y-scroll noscrollbar w-full">
+        <main className="max-md:my-16 md:h-full md:max-w-[600px] overflow-y-scroll noscrollbar w-full">
           {children}
         </main>
         <Footer />
