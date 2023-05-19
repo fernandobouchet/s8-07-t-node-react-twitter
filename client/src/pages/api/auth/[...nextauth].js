@@ -25,7 +25,10 @@ export const authOptions = {
   ],
   secret: process.env.JWT_SECRET,
   pages: {
-    signIn: "/login",
+    signIn: "/profile",
+  },
+  session: {
+    strategy: "jwt",
   },
 };
 

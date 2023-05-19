@@ -15,7 +15,8 @@
     "react/prop-types": "off",
     "semi": "off",
     "quotes": "off",
-    "comma-dangle": "off"
+    "comma-dangle": "off",
+    "multiline-ternary": "off"
     /*  "avoidEscape": true, */
     /*    "allowTemplateLiterals": true */
   }
