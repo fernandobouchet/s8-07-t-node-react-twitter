@@ -1,21 +1,31 @@
-import express from "express";
-import morgan from "morgan";
-import cors from "cors";
-import "dotenv/config.js";
-import { dbConnection } from "./config/mongo.js";
-import router from "./routes/userRoutes.js";
-import tweetRouter from "./routes/tweetRoutes.js";
-import commentRouter from "./routes/commentRoutes.js";
-
-
+import 'dotenv/config.js';
+import express from 'express';
+import morgan from 'morgan';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import { dbConnection } from './config/mongo.js';
+import router from './routes/userRoutes.js';
+import tweetRouter from './routes/tweetRoutes.js';
+import commentRouter from './routes/commentRoutes.js';
 
 // Routers
 
 // Init express app
 const app = express();
 
+// Enable cookies
+app.use(cookieParser());
+
 // Enable CORS
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin:
+      process.env.NODE_ENV === 'production'
+        ? `${process.env.CLIENT_URL}`
+        : `${process.env.DEV_CLIENT_URL}`,
+  })
+);
 
 // Enable incoming JSON data
 app.use(express.json());
@@ -23,28 +33,24 @@ app.use(express.json());
 // Enable incoming Form-Data
 app.use(express.urlencoded({ extended: true }));
 
-if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
-else app.use(morgan("combined"));
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
+else app.use(morgan('combined'));
 
 //Connection to DB
 dbConnection().catch((error) => {
-    console.error("Error connecting to MongoDB:", error);
+  console.error('Error connecting to MongoDB:', error);
 });
 
-
-app.use("/api", router);
-app.use("/api", tweetRouter);
-app.use("/api", commentRouter);
-
+app.use('/api', router);
+app.use('/api', tweetRouter);
+app.use('/api', commentRouter);
 
 // Endpoints
-app.get("/", (req, res) => {
-    res.status(200).json({ message: "Welcome to the whatsapp API" });
+app.get('/', (req, res) => {
+  res.status(200).json({ message: 'Welcome to the whatsapp API' });
 });
 app.listen(process.env.PORT, () => {
-    console.log(`Port has started in port ${process.env.PORT}`);
+  console.log(`Port has started in port ${process.env.PORT}`);
 });
 
-
-export default app
-
+export default app;
