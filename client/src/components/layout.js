@@ -84,13 +84,13 @@ function Header () {
           </Link>
 
           <Link
-            href="/"
+            href="/home"
             className={
               "flex items-center gap-4 p-3 lg:pr-4 text-xl rounded-3xl w-fit transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 " +
               (pathname === "/" ? "font-bold" : "")
             }
           >
-            <HomeIcon size={28} active={pathname === "/"} />{" "}
+            <HomeIcon size={28} active={pathname === "/home"} />{" "}
             <p className="max-xl:hidden dark:text-white">Inicio</p>
           </Link>
 
