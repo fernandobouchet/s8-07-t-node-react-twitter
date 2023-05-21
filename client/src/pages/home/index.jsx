@@ -1,223 +1,46 @@
 import Post from '@/components/Post'
 import Tweet from '@/components/Tweet'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-function Home () {
-  const [isSelected, setIsSelected] = useState('para-ti')
-  const arrayTweets = [
-    {
-      id: 'ac82',
-      content: 'DALE CAMPEON DALE CAMPEON!!!!!!! 🌎🏆',
-      timestamp: Date.now(),
-      imageSrc: null,
-      likes: [],
-      retweets: [],
-      user: {
-        id: '1a',
-        verified: true,
-        private: true,
-        name: 'Maxi',
-        username: 'MaxiiMartins',
-        profileImage: 'https://avatars.githubusercontent.com/u/95777615?v=4',
-        followers: [],
-        following: []
-      },
-      comments: []
-    },
-    {
-      id: 'ab13',
-      content: 'CAMPEONES DEL MUNDO!!!!!!! 🌎🏆',
-      timestamp: Date.now(),
-      imageSrc: 'https://pbs.twimg.com/media/FkWOB7-WQAAPLaU?format=jpg&name=small',
-      likes: [
-        {
-          id: '12113f',
-          userId: '1a',
-          tweetId: 'ab13'
-        }
-      ],
-      retweets: [],
-      user: {
-        id: '10',
-        verified: true,
-        private: false,
-        name: 'Leo Messi',
-        username: 'leomessisite',
-        profileImage: 'https://pbs.twimg.com/profile_images/1612291632342122499/h2jKhVoh_400x400.jpg',
-        followers: [],
-        following: []
-      },
-      comments: [{
-        id: '123sc',
-        content: 'VAMOS MESSI!! DALE CAMPEON!!!!!!! 🌎🏆',
-        timestamp: Date.now(),
-        imageSrc: null,
-        likes: [],
-        retweets: [],
-        user: {
-          id: '1a',
-          verified: true,
-          private: true,
-          name: 'Maxi',
-          username: 'MaxiiMartins',
-          profileImage: 'https://avatars.githubusercontent.com/u/95777615?v=4',
-          followers: [],
-          following: []
-        },
-        comments: []
-      }]
-    },
-    {
-      id: '43dd',
-      content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo asperiores molestias eaque magnam, dolore aperiam, dolor modi totam rerum officiis quis in ad',
-      timestamp: Date.now(),
-      imageSrc: "https://pbs.twimg.com/media/FvO6aUXXwAEMWHo?format=jpg&name=large",
-      likes: [],
-      retweets: [],
-      user: {
-        id: '312',
-        verified: true,
-        private: false,
-        name: 'Cristiano Ronaldo',
-        username: 'Cristiano',
-        profileImage: 'https://pbs.twimg.com/profile_images/1594446880498401282/o4L2z8Ay_400x400.jpg',
-        followers: [],
-        following: []
-      },
-      comments: []
-    },
-    {
-      id: '23gaa',
-      content: '👟🔥 @adidasfootball',
-      timestamp: Date.now(),
-      imageSrc: 'https://pbs.twimg.com/media/FufRHP3WYAcESCp?format=jpg&name=small',
-      likes: [
-        {
-          id: '12113f',
-          userId: '1a',
-          tweetId: 'ab13'
-        }
-      ],
-      retweets: [],
-      user: {
-        id: '10',
-        verified: true,
-        private: false,
-        name: 'Leo Messi',
-        username: 'leomessisite',
-        profileImage: 'https://pbs.twimg.com/profile_images/1612291632342122499/h2jKhVoh_400x400.jpg',
-        followers: [],
-        following: []
-      },
-      comments: []
-    },
-    {
-      id: 'ab12',
-      content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo asperiores molestias eaque magnam, dolore aperiam, dolor modi totam rerum officiis quis in ad',
-      timestamp: Date.now(),
-      imageSrc: null,
-      likes: [],
-      retweets: [],
-      user: {
-        id: '1a',
-        verified: true,
-        private: false,
-        name: 'Cristiano Ronaldo',
-        username: 'Cristiano',
-        profileImage: 'https://pbs.twimg.com/profile_images/1594446880498401282/o4L2z8Ay_400x400.jpg',
-        followers: [],
-        following: []
-      },
-      comments: []
-    },
-    {
-      id: 'ab16',
-      content: '👟🔥 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo asperiores molestias eaque magnam',
-      timestamp: Date.now(),
-      imageSrc: "https://picsum.photos/500/600",
-      likes: [
-        {
-          id: '12113f',
-          userId: '1a',
-          tweetId: 'ab13'
-        }
-      ],
-      retweets: [],
-      user: {
-        id: '10',
-        verified: true,
-        private: false,
-        name: 'Leo Messi',
-        username: 'leomessisite',
-        profileImage: 'https://pbs.twimg.com/profile_images/1612291632342122499/h2jKhVoh_400x400.jpg',
-        followers: [],
-        following: []
-      },
-      comments: []
-    },
-    {
-      id: 'ab1d',
-      content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo asperiores molestias eaque magnam, dolore aperiam, dolor modi totam rerum officiis quis in ad',
-      timestamp: Date.now(),
-      imageSrc: null,
-      likes: [],
-      retweets: [],
-      user: {
-        id: '1a',
-        verified: true,
-        private: false,
-        name: 'Cristiano Ronaldo',
-        username: 'Cristiano',
-        profileImage: 'https://pbs.twimg.com/profile_images/1594446880498401282/o4L2z8Ay_400x400.jpg',
-        followers: [],
-        following: []
-      },
-      comments: []
-    },
-    {
-      id: 'ac23',
-      content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo asperiores molestias eaque magnam 🔥',
-      timestamp: Date.now(),
-      imageSrc: "https://picsum.photos/400/500",
-      likes: [
-        {
-          id: '12113f',
-          userId: '1a',
-          tweetId: 'ab13'
-        }
-      ],
-      retweets: [],
-      user: {
-        id: '10',
-        verified: true,
-        private: false,
-        name: 'Leo Messi',
-        username: 'leomessisite',
-        profileImage: 'https://pbs.twimg.com/profile_images/1612291632342122499/h2jKhVoh_400x400.jpg',
-        followers: [],
-        following: []
-      },
-      comments: []
-    }
-  ]
+import { initialState } from './../../../data/tweets';
+import Head from 'next/head';
+function Home() {
+    const [isSelected, setIsSelected] = useState('para-ti')
+    const [allTweets, setAllTweets] = useState(initialState)
+    const [auxAllTweets, setAuxAllTweets] = useState(initialState)
 
-  return (
+    const filterTweets = (payload) => {
+        setAllTweets(auxAllTweets.filter(tweet => payload === "siguiendo" ? tweet.user.username !== 'Cristiano' : tweet.user.username !== ''))
+    }
+    const addTweets = (payload) => {
+        setAuxAllTweets([payload, ...auxAllTweets])
+        setAllTweets([payload, ...auxAllTweets])
+    }
+
+    useEffect(() => {
+        filterTweets(isSelected)
+    }, [isSelected])
+
+    return (
         <>
+            <Head>
+                <title>Inicio / Twitter</title>
+            </Head>
             <Header isSelected={isSelected} setIsSelected={setIsSelected} />
-            <Post />
+            <Post addTweets={addTweets} />
             {
-                arrayTweets.length && arrayTweets.filter(tweet => isSelected === "siguiendo" ? tweet.user.username !== 'Cristiano' : tweet.user.username !== '').map((tweet) => (
+                allTweets.length && allTweets.map((tweet) => (
                     <Tweet key={tweet.id} {...tweet} />
                 ))
             }
         </>
-  )
+    )
 }
 
 export default Home
 
 const Header = ({ isSelected, setIsSelected }) => {
-  return (
+    return (
         <div className="sticky bg-white/75 dark:text-[#e7e9ea] dark:bg-black border-b border-black/5 dark:border-white/20 z-10 backdrop-blur-md top-0">
             <div className="flex items-center justify-between px-4 py-3">
                 <Link href="/home" >
@@ -239,5 +62,5 @@ const Header = ({ isSelected, setIsSelected }) => {
                 </div>
             </div>
         </div>
-  )
+    )
 }
