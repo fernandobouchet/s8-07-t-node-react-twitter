@@ -7,7 +7,8 @@ import { dbConnection } from './config/mongo.js';
 import router from './routes/userRoutes.js';
 import tweetRouter from './routes/tweetRoutes.js';
 import commentRouter from './routes/commentRoutes.js';
-
+import chatRoutes from './routes/messageRoutes.js';
+import messageRoutes from './routes/chatRoutes.js';
 // Routers
 
 // Init express app
@@ -44,6 +45,8 @@ dbConnection().catch((error) => {
 app.use('/api', router);
 app.use('/api', tweetRouter);
 app.use('/api', commentRouter);
+app.use("/api/chat", chatRoutes);
+app.use("/api/message", messageRoutes);
 
 // Endpoints
 app.get('/', (req, res) => {
