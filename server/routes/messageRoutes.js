@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { allMessages, sendMessage } from "../controllers/messageController";
+import { allMessages, sendMessage } from "../controllers/messageController.js";
 //!const { protect } = require("../middleware/authMiddleware");
 
 import { sessionMiddleware } from "../middleware/sessionMiddleware.js";

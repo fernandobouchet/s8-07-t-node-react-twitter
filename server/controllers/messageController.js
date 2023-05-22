@@ -1,12 +1,12 @@
 import asyncHandler from "express-async-handler";
-import Message from "../models/Message";
-import User from "../models/User";
-import Chat from "../models/Chat";
+import Message from "../models/Message.js";
+import User from "../models/User.js";
+import Chat from "../models/Chat.js";
 
 //@description     Get all Messages
 //@route           GET /api/Message/:chatId
 //@access          Protected
-export const allMessages = asyncHandler(async (req, res) => {
+const allMessages = asyncHandler(async (req, res) => {
     try {
         const messages = await Message.find({ chat: req.params.chatId })
             .populate("sender", "name pic email")
@@ -21,7 +21,7 @@ export const allMessages = asyncHandler(async (req, res) => {
 //@description     Create New Message
 //@route           POST /api/Message/
 //@access          Protected
-export const sendMessage = asyncHandler(async (req, res) => {
+const sendMessage = asyncHandler(async (req, res) => {
     const { content, chatId } = req.body;
 
     if (!content || !chatId) {
@@ -57,3 +57,4 @@ export const sendMessage = asyncHandler(async (req, res) => {
 });
 
 
+export { sendMessage, allMessages };

@@ -6,7 +6,7 @@ import {
     removeFromGroup,
     addToGroup,
     renameGroup,
-} from "../controllers/chatController";
+} from "../controllers/chatController.js";
 //!const { protect } = require("../middleware/authMiddleware");
 import { sessionMiddleware } from "../middleware/sessionMiddleware.js";
 const messageRoutes = Router()
