@@ -1,58 +1,66 @@
 import mongoose from 'mongoose';
-import generateJWT from '../helpers/generateJWT.js';
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: true,
-        unique: true
+      type: String,
+      required: true,
+      unique: true,
     },
     email: {
-        type: String,
-        required: true,
-        unique: true
+      type: String,
+      required: true,
+      unique: true,
     },
-    password: {
-        type: String,
-        required: true
+    image: {
+      type: String,
+      default: '',
     },
-    profilePicture: {
-        type: String,
-        default: ''
+    username: {
+      type: String,
+      required: true,
     },
     bio: {
-        type: String,
-        default: ''
+      type: String,
+      default: '',
     },
     confirmed: {
-        type: Boolean,
-        default: false
+      type: Boolean,
+      default: false,
     },
-    token: {
-        type: String,
-        default: generateJWT()
-    },
-    likes: [{
+    likes: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Like'
-    }],
-    tweets: [{
+        ref: 'Like',
+      },
+    ],
+    tweets: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Tweet'
-    }],
-    comments: [{
+        ref: 'Tweet',
+      },
+    ],
+    comments: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comment'
-    }],
-    followers: [{
+        ref: 'Comment',
+      },
+    ],
+    followers: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }],
-    following: [{
+        ref: 'User',
+      },
+    ],
+    following: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }]
-}, { timestamps: true });
+        ref: 'User',
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
 const User = mongoose.model('User', userSchema);
 

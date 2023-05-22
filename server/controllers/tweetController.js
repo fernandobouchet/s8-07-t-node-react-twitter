@@ -15,10 +15,24 @@ const createTweet = async (req, res) => {
     await tweet.save();
 
     //await User.findByIdAndUpdate(userId, { $push: { tweets: tweet._id } });
+    tweet = await tweet.populate('author', 'name image username email confirmed');
 
     res.send(tweet);
   } catch (error) {
     console.log(error.message);
+  }
+};
+
+const getAllTweets = async (_req, res) => {
+  try {
+    const allTweets = await Tweet.find().populate(
+      'author',
+      'name image username email confirmed'
+    );
+    res.status(200).send(allTweets);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: 'Error getting all tweets' });
   }
 };
 
@@ -94,7 +108,7 @@ const likeTweet = async (req, res) => {
 //unlike a tweet
 const unlikeTweet = async (req, res) => {
   const tweetId = req.params.id;
-  const userId = req.params.userId; // Obtener el ID del usuario desde los parámetros de la URL
+  const {id} = req.user; // Obtener el ID del usuario desde los parámetros de la URL
 
   try {
     const tweet = await Tweet.findById(tweetId);
@@ -103,7 +117,7 @@ const unlikeTweet = async (req, res) => {
       return res.status(404).json({ message: 'Tweet no encontrado' });
     }
 
-    const likeIndex = tweet.likes.findIndex((like) => like.user === userId);
+    const likeIndex = tweet.likes.findIndex((like) => like.user === id);
 
     if (likeIndex === -1) {
       return res
@@ -121,4 +135,11 @@ const unlikeTweet = async (req, res) => {
   }
 };
 
-export { createTweet, getTweetsByUserId, updateTweet, likeTweet, unlikeTweet };
+export {
+  createTweet,
+  getTweetsByUserId,
+  updateTweet,
+  likeTweet,
+  unlikeTweet,
+  getAllTweets,
+};
