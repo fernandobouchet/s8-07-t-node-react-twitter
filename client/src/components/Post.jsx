@@ -1,25 +1,24 @@
 /* eslint-disable indent */
-import React, { useState } from 'react';
-import { IoImageOutline, IoCloseOutline } from 'react-icons/io5';
-import { HiOutlineGif } from 'react-icons/hi2';
-import {
-  AiOutlineHeart,
-  AiFillHeart,
-  AiOutlineUnorderedList,
-} from 'react-icons/ai';
-import { BsEmojiSmile } from 'react-icons/bs';
-import { useSession } from 'next-auth/react';
+import React, { useState } from "react";
+import { IoImageOutline, IoCloseOutline } from "react-icons/io5";
+import { HiOutlineGif } from "react-icons/hi2";
+import { AiOutlineUnorderedList } from "react-icons/ai";
+import { BsEmojiSmile } from "react-icons/bs";
+import { useSession } from "next-auth/react";
 
-import { BiCalendar, BiMap } from 'react-icons/bi';
-import { useDropzone } from 'react-dropzone';
-import Image from 'next/image';
-import { createTweet } from '../../lib/tweets';
+import { BiCalendar, BiMap } from "react-icons/bi";
+import { useDropzone } from "react-dropzone";
+import Image from "next/image";
+import { createTweet } from "../../lib/tweets";
 
 const Post = ({ addTweets }) => {
-  const [tweetText, setTweetText] = useState('');
-  const [ubicacion, setUbicacion] = useState('');
+  const { data: session } = useSession({
+    required: true,
+  });
+  console.log(session);
+  const [tweetText, setTweetText] = useState("");
+  const [ubicacion, setUbicacion] = useState("");
   const [files, setFiles] = useState([]);
-  const { data: session } = useSession();
 
   const handleTweetChange = (event) => {
     setTweetText(event.target.value);
@@ -27,7 +26,7 @@ const Post = ({ addTweets }) => {
 
   const handleTweetSubmit = async (event) => {
     event.preventDefault();
-    console.log('Texto del tweet:', tweetText.length);
+    console.log("Texto del tweet:", tweetText.length);
     let img = null;
     if (files.length !== 0) {
       img = URL.createObjectURL(files[0].file);
@@ -35,9 +34,8 @@ const Post = ({ addTweets }) => {
 
     if (tweetText.length !== 0 || files.length !== 0) {
       const tweet = {
-        id: 'ac82',
         content: tweetText,
-        hashtags: ['Tweet'],
+        hashtags: ["Tweet"],
         timestamp: Date.now(),
         imageSrc: img,
         likes: [],
@@ -47,7 +45,7 @@ const Post = ({ addTweets }) => {
           verified: true,
           private: true,
           name: session?.user?.name,
-          username: session?.user?.name.replace(/\s/g, '').toLocaleLowerCase(),
+          username: session?.user?.name.replace(/\s/g, "").toLocaleLowerCase(),
           profileImage: session?.user?.image,
           followers: [],
           following: [],
@@ -55,10 +53,11 @@ const Post = ({ addTweets }) => {
         comments: [],
       };
       await createTweet(tweet);
+
       addTweets(tweet);
-      setTweetText('');
+      setTweetText("");
       setFiles([]);
-      setUbicacion('');
+      setUbicacion("");
     }
   };
   return (
@@ -90,7 +89,7 @@ const Post = ({ addTweets }) => {
                     className="absolute z-5 m-1 p-2 top-0 left-0 cursor-pointer hover:bg-black/60 text-white bg-black/70 backdrop-blur-lg rounded-full h-9 w-9"
                     title="Eliminar"
                   />
-                  {file.file.type.startsWith('image/') ? (
+                  {file.file.type.startsWith("image/") ? (
                     <Image
                       width={250}
                       height={320}
@@ -115,15 +114,15 @@ const Post = ({ addTweets }) => {
             <div className="w-full justify-end border-b border-black/5 dark:border-white/20 my-2 py-2">
               {ubicacion.length ? (
                 <span
-                  onClick={() => setUbicacion('')}
+                  onClick={() => setUbicacion("")}
                   className="inline-flex items-center cursor-pointer bg-[#1C9BEF]/20 hover:bg-[#ff1100]/30 rounded-full hover:text-[#ff1100]/80 text-[#1C9BEF] py-1 px-2 font-semibold"
                 >
-                  {' '}
-                  <BiMap className="mr-1" title="Etiquetar ubicacion" />{' '}
+                  {" "}
+                  <BiMap className="mr-1" title="Etiquetar ubicacion" />{" "}
                   {ubicacion}
                 </span>
               ) : (
-                ''
+                ""
               )}
             </div>
             <div className="w-full flex flex-row justify-between ">
@@ -228,7 +227,7 @@ const FileUploader = ({ files, setFiles }) => {
   const onDrop = (acceptedFiles) => {
     // Limit the number of files to 2
     if (files.length === 2)
-      return alert('Solo se puede un max 2 fotos y videos');
+      return alert("Solo se puede un max 2 fotos y videos");
 
     console.log(acceptedFiles);
 
@@ -262,7 +261,7 @@ const Ubicacion = ({ setUbicacion }) => {
   const geolocationAPI = navigator.geolocation;
   const getUserCoordinates = async () => {
     if (!geolocationAPI) {
-      console.log('Geolocation API is not available in your browser!');
+      console.log("Geolocation API is not available in your browser!");
     } else {
       geolocationAPI.getCurrentPosition(
         (position) => {

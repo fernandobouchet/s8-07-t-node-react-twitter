@@ -2,7 +2,8 @@ import "@/styles/globals.css";
 import Layout from "../components/layout";
 import { useEffect, useState } from "react";
 import { SessionProvider } from "next-auth/react";
-export default function App ({ Component, pageProps }) {
+
+export default function App({ Component, pageProps }) {
   const [loadingDarkMode, setLoadingDarkMode] = useState(true);
   useEffect(() => {
     if (!localStorage.theme) {
