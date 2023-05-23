@@ -23,13 +23,6 @@ export const authOptions = {
     }),
     // ...add more providers here
   ],
-  secret: process.env.JWT_SECRET,
-  pages: {
-    signIn: "/profile",
-  },
-  session: {
-    strategy: "jwt",
-  },
 };
 
 export default NextAuth(authOptions);
