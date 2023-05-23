@@ -16,7 +16,8 @@
     "semi": "off",
     "quotes": "off",
     "comma-dangle": "off",
-    "multiline-ternary": "off"
+    "multiline-ternary": "off",
+    "space-before-function-paren": "off"
     /*  "avoidEscape": true, */
     /*    "allowTemplateLiterals": true */
   }

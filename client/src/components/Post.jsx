@@ -4,28 +4,18 @@ import { IoImageOutline, IoCloseOutline } from "react-icons/io5";
 import { HiOutlineGif } from "react-icons/hi2";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { BsEmojiSmile } from "react-icons/bs";
+import { useSession } from "next-auth/react";
+
 import { BiCalendar, BiMap } from "react-icons/bi";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
+import { createTweet } from "../../lib/tweets";
 
 const Post = ({ addTweets }) => {
-  //Codigo agrgado por Cristian
   const { data: session } = useSession({
     required: true,
   });
-  async function postNewTweet(tweet) {
-    const response = await fetch("http://localhost:8000/api/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(tweet),
-    });
-    const data = await response.json();
-    console.log(data);
-  }
-
+  console.log(session);
   const [tweetText, setTweetText] = useState("");
   const [ubicacion, setUbicacion] = useState("");
   const [files, setFiles] = useState([]);
@@ -34,7 +24,7 @@ const Post = ({ addTweets }) => {
     setTweetText(event.target.value);
   };
 
-  const handleTweetSubmit = (event) => {
+  const handleTweetSubmit = async (event) => {
     event.preventDefault();
     console.log("Texto del tweet:", tweetText.length);
     let img = null;
@@ -43,39 +33,32 @@ const Post = ({ addTweets }) => {
     }
 
     if (tweetText.length !== 0 || files.length !== 0) {
-      const hashtags = extractHashtags(tweetText);
       const tweet = {
-        /*  id: "ac82", */
         content: tweetText,
-        /*         timestamp: Date.now(), */
+        hashtags: ["Tweet"],
+        timestamp: Date.now(),
         imageSrc: img,
         likes: [],
         retweets: [],
         user: {
-          /*  id: "1a", */
+          id: session?.user?.id,
           verified: true,
           private: true,
-          /* name: "Maxi", */
-          username: session.user.name,
-          email: session.user.email,
-          userImg: session.user.image,
+          name: session?.user?.name,
+          username: session?.user?.name.replace(/\s/g, "").toLocaleLowerCase(),
+          profileImage: session?.user?.image,
           followers: [],
           following: [],
-          hashtags,
         },
         comments: [],
       };
-      postNewTweet(tweet);
+      await createTweet(tweet);
+
       addTweets(tweet);
       setTweetText("");
       setFiles([]);
       setUbicacion("");
     }
-  };
-  const extractHashtags = (text) => {
-    const regex = /#\w+/g;
-    const matches = text.match(regex);
-    return matches || [];
   };
   return (
     <div className="w-full h-auto border-b border-black/5 dark:border-white/20 dark:bg-black dark:text-[#e7e9ea]">
@@ -84,7 +67,7 @@ const Post = ({ addTweets }) => {
           <div className="flex-shrink-0">
             <img
               className="w-12 h-12 rounded-full"
-              src={session?.user.image}
+              src={session?.user?.image}
               alt="Profile"
             />
           </div>

@@ -1,4 +1,4 @@
-import { Timestamp } from "mongodb";
+/* import { Timestamp } from "mongodb";
 import { connectToDatabase } from "../../../../utils/mongodb";
 
 export default async function handler(req, res) {
@@ -8,8 +8,6 @@ export default async function handler(req, res) {
   if (method === "GET") {
     try {
       const { db } = await connectToDatabase();
-      /*  const collectionNames = await db.listCollections().toArray();
-      const names = collectionNames.map((collection) => collection.name); */
       const response = await db
         .collection("tweets")
         .find({})
@@ -32,3 +30,4 @@ export default async function handler(req, res) {
     }
   }
 }
+ */
