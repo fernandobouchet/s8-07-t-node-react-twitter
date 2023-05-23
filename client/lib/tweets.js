@@ -1,5 +1,4 @@
 const createTweet = async (tweet) => {
-  console.log(tweet + "twweeeet");
   const response = await fetch(`http://localhost:8000/api/create`, {
     method: "POST",
     credentials: "include",

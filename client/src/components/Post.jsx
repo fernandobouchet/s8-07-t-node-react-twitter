@@ -10,12 +10,14 @@ import { BiCalendar, BiMap } from "react-icons/bi";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
 import { createTweet } from "../../lib/tweets";
+import { useRouter } from "next/router";
 
 const Post = ({ addTweets }) => {
-  const { data: session } = useSession({
-    required: true,
-  });
-  console.log(session);
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  if (status === "unauthenticated") {
+    router.push("/login");
+  }
   const [tweetText, setTweetText] = useState("");
   const [ubicacion, setUbicacion] = useState("");
   const [files, setFiles] = useState([]);
@@ -61,32 +63,32 @@ const Post = ({ addTweets }) => {
     }
   };
   return (
-    <div className="w-full h-auto border-b border-black/5 dark:border-white/20 dark:bg-black dark:text-[#e7e9ea]">
+    <div className="h-auto w-full border-b border-black/5 dark:border-white/20 dark:bg-black dark:text-[#e7e9ea]">
       <div className="p-4">
         <div className="flex w-full items-start">
           <div className="flex-shrink-0">
             <img
-              className="w-12 h-12 rounded-full"
+              className="h-12 w-12 rounded-full"
               src={session?.user?.image}
               alt="Profile"
             />
           </div>
-          <div className="w-full ml-3 flex-row ">
+          <div className="ml-3 w-full flex-row ">
             <textarea
-              className="w-full resize-none focus:outline-none bg-transparent dark:text-white my-2 text-xl"
+              className="my-2 w-full resize-none bg-transparent text-xl focus:outline-none dark:text-white"
               placeholder="¿Qué está pasando?"
               value={tweetText}
               onChange={handleTweetChange}
             />
 
-            <div className="grid grid-cols-2 gap-2 max-h-fit w-auto py-2">
+            <div className="grid max-h-fit w-auto grid-cols-2 gap-2 py-2">
               {files.map((file) => (
                 <div className="relative" key={file.id}>
                   <IoCloseOutline
                     onClick={() =>
                       setFiles(files.filter((el) => el.id !== file.id))
                     }
-                    className="absolute z-5 m-1 p-2 top-0 left-0 cursor-pointer hover:bg-black/60 text-white bg-black/70 backdrop-blur-lg rounded-full h-9 w-9"
+                    className="z-5 absolute left-0 top-0 m-1 h-9 w-9 cursor-pointer rounded-full bg-black/70 p-2 text-white backdrop-blur-lg hover:bg-black/60"
                     title="Eliminar"
                   />
                   {file.file.type.startsWith("image/") ? (
@@ -96,14 +98,14 @@ const Post = ({ addTweets }) => {
                       key={file.id}
                       src={URL.createObjectURL(file.file)}
                       alt={file.file.name}
-                      className="max-h-80 w-full object-cover rounded-2xl "
+                      className="max-h-80 w-full rounded-2xl object-cover "
                     />
                   ) : (
                     <video
                       key={file.name}
                       src={URL.createObjectURL(file.file)}
                       alt={file.name}
-                      className="max-h-80 w-full object-cover rounded-2xl "
+                      className="max-h-80 w-full rounded-2xl object-cover "
                       controls
                     />
                   )}
@@ -111,11 +113,11 @@ const Post = ({ addTweets }) => {
               ))}
             </div>
 
-            <div className="w-full justify-end border-b border-black/5 dark:border-white/20 my-2 py-2">
+            <div className="my-2 w-full justify-end border-b border-black/5 py-2 dark:border-white/20">
               {ubicacion.length ? (
                 <span
                   onClick={() => setUbicacion("")}
-                  className="inline-flex items-center cursor-pointer bg-[#1C9BEF]/20 hover:bg-[#ff1100]/30 rounded-full hover:text-[#ff1100]/80 text-[#1C9BEF] py-1 px-2 font-semibold"
+                  className="inline-flex cursor-pointer items-center rounded-full bg-[#1C9BEF]/20 px-2 py-1 font-semibold text-[#1C9BEF] hover:bg-[#ff1100]/30 hover:text-[#ff1100]/80"
                 >
                   {" "}
                   <BiMap className="mr-1" title="Etiquetar ubicacion" />{" "}
@@ -125,31 +127,31 @@ const Post = ({ addTweets }) => {
                 ""
               )}
             </div>
-            <div className="w-full flex flex-row justify-between ">
-              <div className="w-full flex items-center gap-1">
+            <div className="flex w-full flex-row justify-between ">
+              <div className="flex w-full items-center gap-1">
                 <FileUploader files={files} setFiles={setFiles} />
                 {/* <div className='flex items-center align-middle space-x-1 cursor-pointer text-[#1C9BEF] group' >
                                     <IoImageOutline className='icons group-hover:bg-[#1C9BEF]/10' title='Fotos y Videos' />
                                 </div> */}
-                <div className="flex items-center align-middle space-x-1 cursor-pointer text-[#1C9BEF] group">
+                <div className="group flex cursor-pointer items-center space-x-1 align-middle text-[#1C9BEF]">
                   <HiOutlineGif
                     className="icons group-hover:bg-[#1C9BEF]/10 "
                     title="Gif"
                   />
                 </div>
-                <div className="flex items-center align-middle space-x-1 cursor-pointer text-[#1C9BEF] group">
+                <div className="group flex cursor-pointer items-center space-x-1 align-middle text-[#1C9BEF]">
                   <AiOutlineUnorderedList
                     className="icons group-hover:bg-[#1C9BEF]/10 "
                     title="Encuesta"
                   />
                 </div>
-                <div className="flex items-center align-middle space-x-1 cursor-pointer text-[#1C9BEF] group">
+                <div className="group flex cursor-pointer items-center space-x-1 align-middle text-[#1C9BEF]">
                   <BsEmojiSmile
                     className="icons group-hover:bg-[#1C9BEF]/10 "
                     title="Emoji"
                   />
                 </div>
-                <div className="flex items-center align-middle space-x-1 cursor-pointer text-[#1C9BEF] group">
+                <div className="group flex cursor-pointer items-center space-x-1 align-middle text-[#1C9BEF]">
                   <BiCalendar
                     className="icons group-hover:bg-[#1C9BEF]/10 "
                     title="Programacion"
@@ -158,7 +160,7 @@ const Post = ({ addTweets }) => {
                 <Ubicacion setUbicacion={setUbicacion} />
               </div>
               <button
-                className="bg-[#1d9bf0] text-white font-semibold px-4 rounded-full hover:bg-[#1a8cd8] disabled:bg-[#1a8cd8] disabled:cursor-not-allowed disabled:opacity-70 transition-opacity duration-400"
+                className="duration-400 rounded-full bg-[#1d9bf0] px-4 font-semibold text-white transition-opacity hover:bg-[#1a8cd8] disabled:cursor-not-allowed disabled:bg-[#1a8cd8] disabled:opacity-70"
                 type="submit"
                 disabled={!tweetText.length && !files.length}
                 onClick={handleTweetSubmit}
@@ -226,8 +228,9 @@ const Post = ({ addTweets }) => {
 const FileUploader = ({ files, setFiles }) => {
   const onDrop = (acceptedFiles) => {
     // Limit the number of files to 2
-    if (files.length === 2)
+    if (files.length === 2) {
       return alert("Solo se puede un max 2 fotos y videos");
+    }
 
     console.log(acceptedFiles);
 
@@ -245,7 +248,7 @@ const FileUploader = ({ files, setFiles }) => {
 
   return (
     <div
-      className="flex items-center align-middle space-x-1 cursor-pointer text-[#1C9BEF] group"
+      className="group flex cursor-pointer items-center space-x-1 align-middle text-[#1C9BEF]"
       {...getRootProps()}
     >
       <input {...getInputProps()} accept="image/*,video/*" multiple={true} />
@@ -284,7 +287,7 @@ const Ubicacion = ({ setUbicacion }) => {
   return (
     <div
       onClick={getUserCoordinates}
-      className="flex items-center align-middle space-x-1 cursor-pointer text-[#1C9BEF] group"
+      className="group flex cursor-pointer items-center space-x-1 align-middle text-[#1C9BEF]"
     >
       <BiMap
         className="icons group-hover:bg-[#1C9BEF]/10 "
