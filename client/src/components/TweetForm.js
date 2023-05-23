@@ -9,9 +9,9 @@ export default function TweetForm({
   setText,
 }) {
   const [tweet, setTweet] = useState("");
-  console.log(tweet);
+ 
   const { data: session } = useSession();
-  console.log(session);
+
   async function uploadTweet(e) {
     e.preventDefault();
     const response = await fetch("/api/tweets", {
