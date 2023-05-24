@@ -62,7 +62,7 @@ function Header() {
     <header className="flex w-full justify-end md:w-24 lg:max-w-[300px] xl:w-full">
       <div className="noscrollbar flex h-full min-w-max flex-col items-center gap-5 overflow-y-auto border-r-black/5 px-2 dark:border-r-white/20 max-md:w-full md:fixed md:border-r xl:w-[300px] xl:px-4">
         <div className="fixed top-0 flex w-full items-center justify-between border-b border-b-black/10 bg-white px-4 py-3 dark:border-b-white/20 dark:bg-black md:hidden">
-          <Link href="/">
+          <Link href="/home">
             <TwitterIcon size={24} />
           </Link>
 
@@ -85,7 +85,7 @@ function Header() {
         <div className="hidden w-full flex-col gap-1.5 py-1 max-xl:items-center md:flex">
           <Link
             className="w-fit rounded-full p-3 transition duration-300 hover:bg-black/10 hover:dark:bg-white/10"
-            href="/"
+            href="/home"
           >
             <TwitterIcon size={28} />
           </Link>
@@ -170,7 +170,7 @@ function Header() {
             <p className="dark:text-white max-xl:hidden">Perfil</p>
           </Link>
 
-          {status !== "authenticated" ? (
+          {session ? (
             <Popover className="relative mt-auto w-full max-md:hidden">
               <Transition
                 className="fixed"
@@ -249,7 +249,7 @@ function Header() {
           </button>
         </div>
 
-        {status !== "authenticated" ? (
+        {session ? (
           <Popover className="mt-auto w-full max-md:hidden">
             <Transition
               className="fixed w-[300px]"
@@ -273,7 +273,7 @@ function Header() {
                   onClick={() => signOut()}
                   className="w-full px-4 py-2 text-left transition duration-300 hover:bg-black/5 hover:dark:bg-white/10"
                 >
-                  Cerrar la sesion de {session?.username}
+                  Cerrar la sesion de {session?.user?.name}
                 </button>
                 <div className="-my-1 h-3 w-3 origin-bottom-left rotate-45 transform border-b border-r bg-white dark:border-white/20 dark:bg-black max-xl:ml-5 xl:mx-auto"></div>
               </Popover.Panel>
@@ -287,7 +287,7 @@ function Header() {
                 <Image
                   className="m-auto h-10 w-10 rounded-full object-cover"
                   src={
-                    session?.image ? session.image : "/img/defaultprofile.jpg"
+                    session?.user?.image ? session.user?.image : "/img/defaultprofile.jpg"
                   }
                   width={50}
                   height={50}
@@ -297,10 +297,10 @@ function Header() {
                 />
                 <div className="text-base max-xl:hidden">
                   <p className="max-w-[14ch] truncate font-semibold dark:text-white">
-                    {session?.name}
+                    {session?.user?.name}
                   </p>
                   <p className="-mt-0.5 max-w-[14ch] truncate text-sm text-slate-500">
-                    {session?.username}
+                    {session?.user?.email.split("@")[0]}
                   </p>
                 </div>
               </div>
