@@ -6,7 +6,7 @@ import { dbConnection } from "./config/mongo.js";
 import router from "./routes/userRoutes.js";
 import tweetRouter from "./routes/tweetRoutes.js";
 import commentRouter from "./routes/commentRoutes.js";
-
+import path from "path";
 
 
 // Routers
@@ -31,6 +31,8 @@ dbConnection().catch((error) => {
     console.error("Error connecting to MongoDB:", error);
 });
 
+const publicPath = path.resolve();
+app.use(express.static(path.join(publicPath, "public")));
 
 app.use("/api", router);
 app.use("/api", tweetRouter);

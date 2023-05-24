@@ -1,27 +1,62 @@
 import Tweet from '../models/Tweet.js'
+import path from "path";
+import { fileURLToPath } from 'url';
 
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 //crear tweet
 const createTweet = async (req, res) => {
-    //const id = req.user.id;
-    const { content, author, hashtags } = req.body;
-  
-    try {
-      let tweet = new Tweet({
-        //author: id, // por el momento comentado para hacer las pruebas.
-        content,
-        author,
-        hashtags
-      });
-  
-      await tweet.save();
-  
-      //await User.findByIdAndUpdate(userId, { $push: { tweets: tweet._id } });
-  
-      res.send(tweet);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+//    //const id = req.user.id;
+//    const { content, hashtags } = req.body;
+//    const images = req.files;
+ 
+//    try {
+//      const imagePaths = images.map((image) => {
+//        const imagePath = path.join('public/images', `${image.filename}.jpg`);
+//        return imagePath;
+//      });
+ 
+//      const tweet = new Tweet({
+//        //author: id,
+//        content,
+//        hashtags,
+//        images: imagePaths,
+//      });
+ 
+//      await tweet.save();
+ 
+//      res.status(201).json(tweet);
+//    } catch (error) {
+//      console.error(error);
+//      res.status(500).json({ error: 'Failed to create tweet' });
+//    }
+//  };
+   //const id = req.user.id;
+   const { content, hashtags } = req.body;
+   const images = req.files;
+ 
+   try {
+     const imagePaths = images.map((image) => {
+       const imagePath = `images/${image.filename}.jpg`;
+       return imagePath;
+     });
+ 
+     const tweet = new Tweet({
+       //author: id,
+       content,
+       hashtags,
+       images: imagePaths,
+     });
+ 
+     await tweet.save();
+ 
+     res.status(201).json(tweet);
+   } catch (error) {
+     console.error(error);
+     res.status(500).json({ error: 'Failed to create tweet' });
+   }
+ };
+
 
 //traer tweets por usuario
   const getTweetsByUserId = async (req, res) => {
