@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import Layout from "../components/layout";
 import { useEffect, useState } from "react";
 import { SessionProvider } from "next-auth/react";
+import Providers from "@/redux/provider";
 
 export default function App({ Component, pageProps }) {
   const [loadingDarkMode, setLoadingDarkMode] = useState(true);
@@ -20,9 +21,11 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <SessionProvider>
+      <Providers>
         <Layout>
           <Component {...pageProps} />
         </Layout>
+      </Providers>
       </SessionProvider>
     </>
   );
