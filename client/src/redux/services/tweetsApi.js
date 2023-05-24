@@ -40,8 +40,20 @@ export const tweetsApi = createApi(
         }),
         invalidatesTags: ["Tweets"],
       }),
+      likeTweet: builder.mutation({
+        query: (tweetId) => ({
+          url: `like/${tweetId}`,
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'content-type': 'application/json'
+          },
+        }),
+        invalidatesTags: ["Tweets"],
+      }),
     }),
+
   }
 )
 
-export const { useGetAllTweetsQuery, useGetTweetsByUserIdQuery, useCreateTweetMutation } = tweetsApi
+export const { useGetAllTweetsQuery, useGetTweetsByUserIdQuery, useCreateTweetMutation, useLikeTweetMutation } = tweetsApi
