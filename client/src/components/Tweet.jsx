@@ -14,11 +14,17 @@ import { getTimeAgo } from '../../utils/formateadorTiemposRelativos'
 
 const Tweet = (props) => {
   const { id, content, timestamp = 0, media, likes, retweets, author, comments, like = false, createdAt } = props
-
   const formatNum = (num) => (num === 0 ? "" : num);
   return (
         <div key={id} className='h-auto w-full flex flex-row p-3 items-start cursor-pointer border-b dark:border-white/20 border-black/5 bg-white dark:bg-black dark:hover:bg-white/5 hover:bg-black/5 text-[#536471] dark:text-[#e7e9ea]' >
-            <Image src={author.image} alt={author.name} width={64} height={64} className='h-12 w-12 rounded-full mr-4 hover:opacity-90' />
+            {
+               author.image ? (
+            <Image src={author.image} alt={author.name} width={64} height={64} className='h-12 w-12 rounded-full mr-4 hover:opacity-90' />)
+                 : (
+                <svg className="text-gray-200 w-14 h-14 dark:text-gray-700" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clipRule="evenodd"></path></svg>
+                   )
+            }
+
             <div className="w-full flex flex-col gap-1 text-[#536471] dark:bg-transparent" >
                 <div className='flex flex-row items-start group gap-1 text-lg w-full' >
                     <h4 className="ml-2 inline-flex items-center align-middle font-bold text-black dark:text-[#e7e9ea] group-hover:underline" >{author.name}
@@ -26,7 +32,7 @@ const Tweet = (props) => {
                             author.private && <IoIosLock className='text-black dark:text-white ml-1' title='Cuenta verificada' />
                         }
                         {
-                            author.verified && <HiBadgeCheck className='text-[#1d9bf0] ml-1' title='Cuenta verificada' />
+                            author.confirmed && <HiBadgeCheck className='text-[#1d9bf0] ml-1' title='Cuenta verificada' />
                         }
                     </h4>
                     <span>{'@' + (author.username || author.email.split("@")[0])}</span>
@@ -71,7 +77,7 @@ const Tweet = (props) => {
                     </div>
                     <div className='flex items-center align-middle space-x-1 cursor-pointer hover:text-[#1C9BEF] group' >
                         <IoStatsChart className='icons group-hover:bg-[#1C9BEF]/10' title='Ver' />
-                        <p className='text-sm' >4</p>
+                        <p className='text-sm' ></p>
                     </div>
                     <div className='flex items-center align-middle space-x-1 cursor-pointer hover:text-[#1d9bf0] group' >
                         <FiShare className='icons group-hover:bg-[#1d9bf0]/10' title='Compartir' />
@@ -86,14 +92,9 @@ const Tweet = (props) => {
 }
 
 const TimeAgo = ({ timestamp, styleds = "" }) => {
-  const [time, setTime] = useState(timestamp)
-
-  useEffect(() => {
-    setTime(timestamp)
-  }, [time])
-
+  const [time, setTime] = useState(getTimeAgo(timestamp))
   return (
-        <span className={styleds} >{getTimeAgo(timestamp)}</span>
+        <span className={styleds} >{time.includes("0s") ? "Justo ahora":time}</span>
   )
 }
 
