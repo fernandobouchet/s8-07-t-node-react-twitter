@@ -239,7 +239,8 @@ function Header() {
             </Popover>
           ) : null}
 
-          <button className="mt-5 w-fit rounded-full bg-[#7855FF] p-3.5 transition duration-300 hover:bg-[#6c4de6] xl:w-[85%] xl:p-3">
+          {session && (
+            <button className="mt-5 w-fit rounded-full bg-[#7855FF] p-3.5 transition duration-300 hover:bg-[#6c4de6] xl:w-[85%] xl:p-3">
             <div className="xl:hidden">
               <CreateTweetIcon size={24} />
             </div>
@@ -247,6 +248,7 @@ function Header() {
               Twittear
             </p>
           </button>
+          )}
         </div>
 
         {session ? (
@@ -284,17 +286,19 @@ function Header() {
               className="mb-4 flex w-full cursor-pointer justify-between gap-4 rounded-full outline-none transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 max-xl:w-fit max-lg:mx-auto max-md:hidden lg:px-3 lg:py-2"
             >
               <div className="flex items-center gap-3">
-                <Image
+                {!session?.user?.image || status === "loading" ? (
+                  <svg className="text-gray-200 w-14 h-14 dark:text-gray-700" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clipRule="evenodd"></path></svg>
+                ) : (<Image
                   className="m-auto h-10 w-10 rounded-full object-cover"
                   src={
-                    session?.user?.image ? session.user?.image : "/img/defaultprofile.jpg"
+                    session.user ? session.user.image : "/img/defaultprofile.jpg"
                   }
                   width={50}
                   height={50}
                   alt="Foto de perfil"
                   unoptimized
                   priority
-                />
+                />)}
                 <div className="text-base max-xl:hidden">
                   <p className="max-w-[14ch] truncate font-semibold dark:text-white">
                     {session?.user?.name}
