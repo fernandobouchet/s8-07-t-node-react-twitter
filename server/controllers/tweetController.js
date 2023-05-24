@@ -28,7 +28,7 @@ const getAllTweets = async (_req, res) => {
     const allTweets = await Tweet.find().populate(
       'author',
       'name image username email confirmed'
-    );
+    ).sort({createdAt: -1});
     res.status(200).send(allTweets);
   } catch (error) {
     console.log(error);
