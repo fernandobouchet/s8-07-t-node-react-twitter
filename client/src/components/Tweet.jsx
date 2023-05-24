@@ -14,7 +14,6 @@ import { getTimeAgo } from '../../utils/formateadorTiemposRelativos'
 
 const Tweet = (props) => {
   const { id, content, timestamp = 0, media, likes, retweets, author, comments, like = false, createdAt } = props
-
   const formatNum = (num) => (num === 0 ? "" : num);
   return (
         <div key={id} className='h-auto w-full flex flex-row p-3 items-start cursor-pointer border-b dark:border-white/20 border-black/5 bg-white dark:bg-black dark:hover:bg-white/5 hover:bg-black/5 text-[#536471] dark:text-[#e7e9ea]' >
@@ -26,7 +25,7 @@ const Tweet = (props) => {
                             author.private && <IoIosLock className='text-black dark:text-white ml-1' title='Cuenta verificada' />
                         }
                         {
-                            author.verified && <HiBadgeCheck className='text-[#1d9bf0] ml-1' title='Cuenta verificada' />
+                            author.confirmed && <HiBadgeCheck className='text-[#1d9bf0] ml-1' title='Cuenta verificada' />
                         }
                     </h4>
                     <span>{'@' + (author.username || author.email.split("@")[0])}</span>
@@ -71,7 +70,7 @@ const Tweet = (props) => {
                     </div>
                     <div className='flex items-center align-middle space-x-1 cursor-pointer hover:text-[#1C9BEF] group' >
                         <IoStatsChart className='icons group-hover:bg-[#1C9BEF]/10' title='Ver' />
-                        <p className='text-sm' >4</p>
+                        <p className='text-sm' ></p>
                     </div>
                     <div className='flex items-center align-middle space-x-1 cursor-pointer hover:text-[#1d9bf0] group' >
                         <FiShare className='icons group-hover:bg-[#1d9bf0]/10' title='Compartir' />
