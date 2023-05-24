@@ -3,7 +3,10 @@ import Layout from "../components/layout";
 import { useEffect, useState } from "react";
 import { SessionProvider } from "next-auth/react";
 
-export default function App({ Component, pageProps }) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
   const [loadingDarkMode, setLoadingDarkMode] = useState(true);
   useEffect(() => {
     if (!localStorage.theme) {
@@ -17,9 +20,10 @@ export default function App({ Component, pageProps }) {
   if (loadingDarkMode) {
     return undefined;
   }
+
   return (
     <>
-      <SessionProvider>
+      <SessionProvider session={session}>
         <Layout>
           <Component {...pageProps} />
         </Layout>

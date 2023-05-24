@@ -317,7 +317,7 @@ function Header() {
 
 function Footer() {
   const { pathname } = useRouter();
-
+  const { status } = useSession();
   return (
     <>
       <nav className="fixed inset-x-0 bottom-0 flex items-center justify-around border-t border-t-black/10 bg-white p-2 dark:border-t-white/20 dark:bg-black md:hidden">
@@ -377,7 +377,10 @@ function Footer() {
             </div>
           </div>
           <div>
-            <Login />
+            {
+              status === 'unauthenticated' ? <Login /> : <div className="flex flex-col col-1 gap-2"><QueEstaPasando /> <QuienSeguir /></div>
+            }
+
           </div>
           <div className="flex flex-wrap gap-x-2 gap-y-1 text-[.75rem] font-medium dark:text-gray-500">
             <button className="hover:underline">Condiciones de Servicio</button>
@@ -398,7 +401,7 @@ function Footer() {
 }
 
 export default function Layout({ children }) {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   return (
     <>
       <div className="flex w-full justify-center max-md:flex-col">
@@ -413,4 +416,69 @@ export default function Layout({ children }) {
       </div>
     </>
   );
+}
+
+function QueEstaPasando() {
+  return (<div className="w-[330px] h-[510px] dark:bg-[#16181C] rounded-md">
+    <div className="flex flex-col gap-3 p-3">
+      <h2 className="text-2xl font-semibold dark:text-white">Que esta pasando</h2>
+      <div className="dark:text-white hover:bg-blue-100 transition-all duration-300 rounded-md cursor-pointer p-1">
+        <p className="text-gray-500 text-sm">Tendencia en Argentina</p>
+        <p>#lluvia </p>
+        <p className="text-gray-500 text-sm">3,4 mil Tweets</p>
+      </div>
+      <div className="dark:text-white hover:bg-blue-100 rounded-md cursor-pointer p-1 transition-all duration-30">
+        <p className="text-gray-500 text-sm">Tecnologia - Tendencia</p>
+        <p>Node - Next Js</p>
+        <p className="text-gray-500 text-sm">20,6 mil Tweets</p>
+      </div>
+      <div className="dark:text-white hover:bg-blue-100 rounded-md cursor-pointer p-1 transition-all duration-30">
+        <p className="text-gray-500 text-sm">Tendencia en Argentina</p>
+        <p>#dolarblue</p>
+      </div>
+      <div className="dark:text-white hover:bg-blue-100 rounded-md cursor-pointer p-1 transition-all duration-30">
+        <p className="text-gray-500 text-sm">Tendencia en Argentina</p>
+        <p>Granizo</p>
+        <p className="text-gray-500 text-sm">4,3 mil Tweets</p>
+      </div>
+      <div className="dark:text-white hover:bg-blue-100 rounded-md cursor-pointer p-1 transition-all duration-30">
+        <p className="text-gray-500 text-sm">Tecnologia - Tendencia</p>
+        <p>Phyton</p>
+        <p className="text-gray-500 text-sm">20,2 mil Tweets</p>
+      </div>
+      <Link href="/explore" className="text-blue-500 text-md">Mostrar más</Link>
+    </div>
+  </div>)
+}
+function QuienSeguir() {
+  return (<div className="w-[330px] h-[318px] rounded-md dark:bg-[#16181C]">
+    <h2 className="dark:text-white text-[23px] ml-3 mt-2 font-semibold"> A quién seguir</h2>
+    <div className="flex flex-row gap-5 p-4 items-center">
+      <Image src={"https://pbs.twimg.com/profile_images/1412629073956950022/8KqC1cmp_400x400.jpg"} width={50} height={100} alt="Avatar" className="rounded-full" unoptimized></Image>
+      <div className="grow">
+        <h3 className="dark:text-white font-bold">Rodrigo de Paul</h3>
+        <p className="dark:text-gray-400">@rodrigodepaul</p>
+      </div>
+      <button className="dark:text-black bg-white rounded-full w-[72px] h-9 text-sm font-bold ml-2">Seguir</button>
+    </div>
+    <div className="flex flex-row gap-5 p-4 items-center">
+      <Image src={"https://pbs.twimg.com/profile_images/515223776553103361/KF1NzwTW_400x400.jpeg"} width={50} height={100} alt="Avatar" className="rounded-full" unoptimized></Image>
+      <div className="grow">
+        <h3 className="dark:text-white font-bold">Lionel Scaloni</h3>
+        <p className="dark:text-gray-400">@rodrigodepaul</p>
+      </div>
+      <button className="dark:text-black bg-white rounded-full w-[72px] h-9 text-sm font-bold ml-auto">Seguir</button>
+    </div>
+    <div className="flex flex-row gap-5 p-4 items-center">
+      <Image src={"https://pbs.twimg.com/profile_images/1604559776297385991/UoGVbhBu_400x400.jpg"} width={50} height={100} alt="Avatar" className="rounded-full" unoptimized></Image>
+      <div className="grow">
+        <h3 className="dark:text-white font-bold">AFA</h3>
+        <p className="dark:text-gray-400">@afa</p>
+      </div>
+      <button className="dark:text-black bg-white rounded-full w-[72px] h-9 text-sm font-bold ml-auto">Seguir</button>
+
+    </div>
+    <Link href="/explore" className="text-blue-500 ml-3 text-md">Mostrar más</Link>
+
+  </div >)
 }
