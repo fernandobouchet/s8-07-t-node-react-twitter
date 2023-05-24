@@ -2,20 +2,24 @@ import Post from "@/components/Post";
 import Tweet from "@/components/Tweet";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { initialState } from "./../../../data/tweets";
+import { initialState } from "@/data/tweets";
 import Head from "next/head";
 import { getAllTweets } from "../../../lib/tweets";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useAppSelector } from "@/redux/hooks";
+import { useGetAllTweetsQuery } from "@/redux/services/tweetsApi";
+import SkeletonTweet from "@/components/SkeletonTweet";
 
 function Home() {
+  const { isLoading, isFetching, data, error } = useGetAllTweetsQuery()
   const [isSelected, setIsSelected] = useState("para-ti");
   const [allTweets, setAllTweets] = useState(initialState);
   const [auxAllTweets, setAuxAllTweets] = useState(initialState);
 
+  console.log(isLoading, isFetching, data, error)
   const { data: session, status } = useSession();
   const router = useRouter();
-
 
   const filterTweets = (payload) => {
     setAllTweets(auxAllTweets.filter(tweet => payload === "siguiendo" ? tweet.author.username !== 'Cristiano' : tweet.author.username !== ''))
@@ -57,10 +61,12 @@ function Home() {
       <Header isSelected={isSelected} setIsSelected={setIsSelected} />
       <Post addTweets={setAllTweets} />
       {
-    allTweets.length && allTweets.map((tweet) => (
-      <Tweet key={tweet._id} {...tweet} />
-    ))
-  }
+        allTweets.length && !isLoading ? data.map((tweet) => (
+          <Tweet key={tweet._id} {...tweet} />
+        )) : [1, 2, 3, 4, 5, 6, 7].map((tweet) => (
+          <SkeletonTweet key={tweet} />
+        ))
+      }
     </>
   )
 }

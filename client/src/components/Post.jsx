@@ -9,7 +9,8 @@ import { useSession } from "next-auth/react";
 import { BiCalendar, BiMap } from "react-icons/bi";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
-import { createTweet } from "../../lib/tweets";
+// import { createTweet } from "../../lib/tweets";
+import { useCreateTweetMutation } from "@/redux/services/tweetsApi";
 // import { useRouter } from "next/router";
 
 const Post = ({ addTweets }) => {
@@ -21,6 +22,7 @@ const Post = ({ addTweets }) => {
   const [tweetText, setTweetText] = useState("");
   const [ubicacion, setUbicacion] = useState("");
   const [files, setFiles] = useState([]);
+  const [createTweet] = useCreateTweetMutation()
 
   const handleTweetChange = (event) => {
     setTweetText(event.target.value);
@@ -40,10 +42,7 @@ const Post = ({ addTweets }) => {
         hashtags: ['Tweet'],
         media: img
       };
-      const result = await createTweet(tweet);
-      addTweets(prevState => (
-        [result, ...prevState]
-      ));
+       createTweet(tweet);
       setTweetText('');
       setFiles([]);
       setUbicacion("");
