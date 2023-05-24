@@ -13,7 +13,7 @@ import { IoIosLock } from 'react-icons/io'
 import { getTimeAgo } from '../../utils/formateadorTiemposRelativos'
 
 const Tweet = (props) => {
-  const { id, content, timestamp = 0, media, likes, retweets, author, comments, like = false } = props
+  const { id, content, timestamp = 0, media, likes, retweets, author, comments, like = false, createdAt } = props
 
   const formatNum = (num) => (num === 0 ? "" : num);
   return (
@@ -29,8 +29,8 @@ const Tweet = (props) => {
                             author.verified && <HiBadgeCheck className='text-[#1d9bf0] ml-1' title='Cuenta verificada' />
                         }
                     </h4>
-                    <span>{'@' + author.username}</span>
-                    <TimeAgo timestamp={timestamp} />
+                    <span>{'@' + (author.username || author.email.split("@")[0])}</span>
+                    <TimeAgo timestamp={timestamp || createdAt} />
                 </div>
                 <p className='ml-2 dark:text-white w-[90%]' >{content}</p>
                 {
