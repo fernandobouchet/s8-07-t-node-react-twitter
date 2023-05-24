@@ -28,7 +28,9 @@ import { Popover, Transition } from "@headlessui/react";
 import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
 import { usePopper } from "react-popper";
-import Login from "./Login";
+import QuienSeguir from "./layoutComponents/QuienSeguir";
+import QueEstaPasando from "./layoutComponents/QueEstaPasando";
+import Login from "./layoutComponents/Login";
 import FooterUnauthenticated from "./FooterUnauthenticated";
 
 function Header() {
@@ -241,13 +243,13 @@ function Header() {
 
           {session && (
             <button className="mt-5 w-fit rounded-full bg-[#7855FF] p-3.5 transition duration-300 hover:bg-[#6c4de6] xl:w-[85%] xl:p-3">
-            <div className="xl:hidden">
-              <CreateTweetIcon size={24} />
-            </div>
-            <p className="text-lg font-semibold text-white max-xl:hidden">
-              Twittear
-            </p>
-          </button>
+              <div className="xl:hidden">
+                <CreateTweetIcon size={24} />
+              </div>
+              <p className="text-lg font-semibold text-white max-xl:hidden">
+                Twittear
+              </p>
+            </button>
           )}
         </div>
 
@@ -321,7 +323,7 @@ function Header() {
 
 function Footer() {
   const { pathname } = useRouter();
-
+  const { status } = useSession();
   return (
     <>
       <nav className="fixed inset-x-0 bottom-0 flex items-center justify-around border-t border-t-black/10 bg-white p-2 dark:border-t-white/20 dark:bg-black md:hidden">
@@ -381,7 +383,10 @@ function Footer() {
             </div>
           </div>
           <div>
-            <Login />
+            {
+              status === 'unauthenticated' ? <Login /> : <div className="flex flex-col col-1 gap-2"><QueEstaPasando /> <QuienSeguir /></div>
+            }
+
           </div>
           <div className="flex flex-wrap gap-x-2 gap-y-1 text-[.75rem] font-medium dark:text-gray-500">
             <button className="hover:underline">Condiciones de Servicio</button>
@@ -402,7 +407,7 @@ function Footer() {
 }
 
 export default function Layout({ children }) {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   return (
     <>
       <div className="flex w-full justify-center max-md:flex-col">

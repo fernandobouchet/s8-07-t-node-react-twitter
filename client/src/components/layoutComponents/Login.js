@@ -12,14 +12,14 @@ export default function Login() {
         Regístrate ahora para obtener tu propia cronología personalizada.
       </p>
       <button
-        onClick={() => signIn("google")}
+        onClick={() => signIn("google", { callbackUrl: '/home' })}
         className="dark:bg-gray-50 dark:text-black dark:hover:bg-gray-300  py-2 px-4 rounded-full w-[300px] mx-3 my-2 flex items-center justify-center border-2 hover:bg-gray-300"
       >
         <FcGoogle className="w-6 h-6 mr-5" />
         <p className="mr-4">Registrase con Google</p>
       </button>
       <button
-        onClick={() => signIn("facebook")}
+        onClick={() => signIn("facebook", { callbackUrl: '/home' })}
         className="text-black dark:bg-gray-50 dark:text-black py-2 px-4 rounded-full w-[300px] mx-3 font-semibold flex items-center justify-center border-2 hover:bg-gray-300 dark:hover:bg-gray-300"
       >
         <AiFillFacebook className="w-6 h-6" />

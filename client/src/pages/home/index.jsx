@@ -12,30 +12,34 @@ import { useGetAllTweetsQuery } from "@/redux/services/tweetsApi";
 import SkeletonTweet from "@/components/SkeletonTweet";
 
 function Home() {
-  const { isLoading, isFetching, data, error } = useGetAllTweetsQuery()
+  const { isLoading, isFetching, data, error } = useGetAllTweetsQuery();
   const [isSelected, setIsSelected] = useState("para-ti");
   const [allTweets, setAllTweets] = useState(initialState);
   const [auxAllTweets, setAuxAllTweets] = useState(initialState);
 
-  console.log(isLoading, isFetching, data, error)
-  const { data: session, status } = useSession();
+  console.log(isLoading, isFetching, data, error);
+  const { status } = useSession();
   const router = useRouter();
 
   const filterTweets = (payload) => {
-    setAllTweets(auxAllTweets.filter(tweet => payload === "siguiendo" ? tweet.author.username !== 'Cristiano' : tweet.author.username !== ''))
-  }
+    setAllTweets(
+      auxAllTweets.filter((tweet) =>
+        payload === "siguiendo"
+          ? tweet.author.username !== "Cristiano"
+          : tweet.author.username !== ""
+      )
+    );
+  };
   const addTweets = (payload) => {
-    setAuxAllTweets([payload, ...auxAllTweets])
-    setAllTweets([payload, ...auxAllTweets])
-  }
+    setAuxAllTweets([payload, ...auxAllTweets]);
+    setAllTweets([payload, ...auxAllTweets]);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getAllTweets();
-        setAllTweets(prevState => (
-          [...data, ...prevState]
-        ));
+        setAllTweets((prevState) => [...data, ...prevState]);
       } catch (error) {
         console.log(error);
       }
@@ -44,12 +48,12 @@ function Home() {
     fetchData();
   }, []);
   useEffect(() => {
-    filterTweets(isSelected)
-  }, [isSelected])
+    filterTweets(isSelected);
+  }, [isSelected]);
 
   if (status === "unauthenticated") {
     router.push("/login");
-    return <></>
+    return <></>;
   }
 
   return (
@@ -60,22 +64,18 @@ function Home() {
 
       <Header isSelected={isSelected} setIsSelected={setIsSelected} />
       <Post addTweets={setAllTweets} />
-      {
-        allTweets.length && !isLoading ? data.map((tweet) => (
-          <Tweet key={tweet._id} {...tweet} />
-        )) : [1, 2, 3, 4, 5, 6, 7].map((tweet) => (
-          <SkeletonTweet key={tweet} />
-        ))
-      }
+      {allTweets.length && !isLoading
+        ? data.map((tweet) => <Tweet key={tweet._id} {...tweet} />)
+        : [1, 2, 3, 4, 5, 6, 7].map((tweet) => <SkeletonTweet key={tweet} />)}
     </>
-  )
+  );
 }
 
 export default Home;
 
 const Header = ({ isSelected, setIsSelected }) => {
   return (
-    <div className="sticky bg-white/75 dark:text-[#e7e9ea] dark:bg-black border-b border-black/5 dark:border-white/20 z-10 backdrop-blur-md top-0">
+    <div className="sticky top-0 z-10 border-b border-black/5 bg-white/75 backdrop-blur-md dark:border-white/20 dark:bg-black dark:text-[#e7e9ea]">
       <div className="flex items-center justify-between px-4 py-3">
         <Link href="/home">
           <div>
@@ -86,32 +86,36 @@ const Header = ({ isSelected, setIsSelected }) => {
       <div className="flex text-[#536471]">
         <div
           onClick={() => setIsSelected("para-ti")}
-          className={`flex items-center justify-center w-full h-[60px] text-md p-4 ${isSelected === "para-ti"
-            ? "font-bold text-black dark:text-[#e7e9ea]"
-            : "text-gray-500 dark:text-[#536471] font-semibold"
-            }  hover:bg-gray-500 hover:bg-opacity-10 cursor-pointer transition duration-200 ease-in-out`}
+          className={`text-md flex h-[60px] w-full items-center justify-center p-4 ${
+            isSelected === "para-ti"
+              ? "font-bold text-black dark:text-[#e7e9ea]"
+              : "font-semibold text-gray-500 dark:text-[#536471]"
+          }  cursor-pointer transition duration-200 ease-in-out hover:bg-gray-500 hover:bg-opacity-10`}
         >
           <div
-            className={`inline-block text-center border-b-4 ${isSelected === "para-ti"
-              ? "border-b-[#1C9CEF]"
-              : "border-b-transparent"
-              } h-[60px] `}
+            className={`inline-block border-b-4 text-center ${
+              isSelected === "para-ti"
+                ? "border-b-[#1C9CEF]"
+                : "border-b-transparent"
+            } h-[60px] `}
           >
             <div className="my-auto mt-4">Para ti </div>
           </div>
         </div>
         <div
           onClick={() => setIsSelected("siguiendo")}
-          className={`flex items-center justify-center w-full h-[60px] text-md  p-4 ${isSelected === "siguiendo"
-            ? "font-bold text-black dark:text-[#e7e9ea]"
-            : "text-gray-500 dark:text-[#536471] font-semibold"
-            }  hover:bg-gray-500 hover:bg-opacity-10 cursor-pointer transition duration-200 ease-in-out`}
+          className={`text-md flex h-[60px] w-full items-center justify-center  p-4 ${
+            isSelected === "siguiendo"
+              ? "font-bold text-black dark:text-[#e7e9ea]"
+              : "font-semibold text-gray-500 dark:text-[#536471]"
+          }  cursor-pointer transition duration-200 ease-in-out hover:bg-gray-500 hover:bg-opacity-10`}
         >
           <div
-            className={`inline-block text-center border-b-4 ${isSelected === "siguiendo"
-              ? "border-b-[#1C9CEF]"
-              : "border-b-transparent"
-              } h-[60px] `}
+            className={`inline-block border-b-4 text-center ${
+              isSelected === "siguiendo"
+                ? "border-b-[#1C9CEF]"
+                : "border-b-transparent"
+            } h-[60px] `}
           >
             <div className="my-auto mt-4">Siguiendo </div>
           </div>

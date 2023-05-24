@@ -9,7 +9,7 @@ export const store = configureStore({
     [tweetsApi.reducerPath]: tweetsApi.reducer
   },
   devTools: process.env.NODE_ENV !== "production",
-    middleware: (getDefaultMiddleware) =>
+  middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([tweetsApi.middleware])
 });
 

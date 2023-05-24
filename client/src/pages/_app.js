@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import { SessionProvider } from "next-auth/react";
 import Providers from "@/redux/provider";
 
-export default function App({ Component, pageProps }) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
   const [loadingDarkMode, setLoadingDarkMode] = useState(true);
   useEffect(() => {
     if (!localStorage.theme) {
@@ -18,14 +21,15 @@ export default function App({ Component, pageProps }) {
   if (loadingDarkMode) {
     return undefined;
   }
+
   return (
     <>
-      <SessionProvider>
-      <Providers>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </Providers>
+      <SessionProvider session={session}>
+        <Providers>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </Providers>
       </SessionProvider>
     </>
   );

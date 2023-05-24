@@ -25,7 +25,7 @@ export default function login() {
       </button>
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded-xl"
-        onClick={() => signIn("google")}
+        onClick={() => signIn("google", { callbackUrl: '/home' })}
       >
         {" "}
         Signin whit google
