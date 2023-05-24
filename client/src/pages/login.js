@@ -3,7 +3,6 @@ import React from "react";
 
 export default function login() {
   const { data: session, status } = useSession();
-  console.log(session, status);
   if (status === "loading") return <p>Loading...</p>;
 
   return (
