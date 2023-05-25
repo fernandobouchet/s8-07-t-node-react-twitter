@@ -15,7 +15,7 @@ const createTweet = async (req, res) => {
     await tweet.save();
 
     //await User.findByIdAndUpdate(userId, { $push: { tweets: tweet._id } });
-    tweet = await tweet.populate('author', 'name image username email confirmed');
+    tweet = (await tweet.populate('author', 'name image username email confirmed'));
 
     res.send(tweet);
   } catch (error) {
@@ -28,7 +28,7 @@ const getAllTweets = async (_req, res) => {
     const allTweets = await Tweet.find().populate(
       'author',
       'name image username email confirmed'
-    ).sort({createdAt: -1});
+    ).populate('likes','name image username email').sort({createdAt: -1});
     res.status(200).send(allTweets);
   } catch (error) {
     console.log(error);
