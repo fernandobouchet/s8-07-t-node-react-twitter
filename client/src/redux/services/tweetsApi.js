@@ -43,7 +43,7 @@ export const tweetsApi = createApi(
       likeTweet: builder.mutation({
         query: (tweetId) => ({
           url: `like/${tweetId}`,
-          method: 'POST',
+          method: 'PUT',
           credentials: 'include',
           headers: {
             'content-type': 'application/json'
