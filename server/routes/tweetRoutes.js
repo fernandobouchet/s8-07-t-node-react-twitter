@@ -6,8 +6,7 @@ import {
   likeTweet,
   unlikeTweet,
 } from '../controllers/tweetController.js';
-import multer from 'multer';
-const upload = multer({ dest: 'public/images' });
+import upload from '../middlewares/multer.js';
 
 const tweetRouter = Router();
 

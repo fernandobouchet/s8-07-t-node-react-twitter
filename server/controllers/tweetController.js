@@ -37,7 +37,7 @@ const createTweet = async (req, res) => {
  
    try {
      const imagePaths = images.map((image) => {
-       const imagePath = `images/${image.filename}.jpg`;
+       const imagePath = `${process.env.API_URL}/public/images/${image.filename}`;
        return imagePath;
      });
  

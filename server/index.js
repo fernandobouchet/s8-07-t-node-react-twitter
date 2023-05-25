@@ -23,6 +23,7 @@ app.use(express.json());
 // Enable incoming Form-Data
 app.use(express.urlencoded({ extended: true }));
 
+
 if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 else app.use(morgan("combined"));
 
@@ -37,6 +38,7 @@ app.use(express.static(path.join(publicPath, "public")));
 app.use("/api", router);
 app.use("/api", tweetRouter);
 app.use("/api", commentRouter);
+app.use('/public/images', express.static('public/images'));
 
 
 // Endpoints
