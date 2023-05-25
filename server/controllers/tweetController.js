@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Tweet from '../models/Tweet.js';
 
 //crear tweet
@@ -75,10 +76,10 @@ const updateTweet = async (req, res) => {
 
 //like a tweet
 const likeTweet = async (req, res) => {
-  const tweetId = req.params.id;
-  const userId = req.params.userId; // Obtener el ID del usuario desde los parámetros de la URL
-
   try {
+    const tweetId = req.params.id;
+    const { id } = req.user;  // Obtener el ID del usuario desde el middleware
+  
     const tweet = await Tweet.findById(tweetId);
 
     if (!tweet) {
@@ -86,49 +87,19 @@ const likeTweet = async (req, res) => {
     }
 
     // Verificar si el usuario ya dio like al tweet
-    const alreadyLiked =
-      tweet.likes &&
-      tweet.likes.some((like) => like.user.toString() === userId);
+    const alreadyLiked = tweet.likes.includes(id);
 
     if (alreadyLiked) {
-      return res.status(400).json({ message: 'Tweet ya tiene me gusta' });
+      // Si ya dio like, eliminar el like
+      tweet.likes = tweet.likes.filter(userId => !userId.toString() === id);
+      await tweet.save();
+      res.json({ message: 'Like eliminado correctamente' });
+    } else {
+      // Si no dio like, agregar el like
+      tweet.likes.push(id);
+      await tweet.save();
+      res.json({ message: 'Like agregado correctamente' });
     }
-
-    // Agregar el like al tweet
-    tweet.likes.push({ user: userId });
-    await tweet.save();
-
-    res.json(tweet.likes);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error del servidor' });
-  }
-};
-
-//unlike a tweet
-const unlikeTweet = async (req, res) => {
-  const tweetId = req.params.id;
-  const {id} = req.user; // Obtener el ID del usuario desde los parámetros de la URL
-
-  try {
-    const tweet = await Tweet.findById(tweetId);
-
-    if (!tweet) {
-      return res.status(404).json({ message: 'Tweet no encontrado' });
-    }
-
-    const likeIndex = tweet.likes.findIndex((like) => like.user === id);
-
-    if (likeIndex === -1) {
-      return res
-        .status(400)
-        .json({ message: 'El tweet no tiene me gusta del usuario' });
-    }
-
-    tweet.likes.splice(likeIndex, 1);
-    await tweet.save();
-
-    res.json(tweet.likes);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error del servidor' });
@@ -140,6 +111,5 @@ export {
   getTweetsByUserId,
   updateTweet,
   likeTweet,
-  unlikeTweet,
   getAllTweets,
 };

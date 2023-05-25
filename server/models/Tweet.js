@@ -25,11 +25,9 @@ const tweetSchema = new mongoose.Schema({
         type: String
     }],
     likes: [{
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'User'
-        }
-      }],
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
 },
     { timestamps: true });
 
