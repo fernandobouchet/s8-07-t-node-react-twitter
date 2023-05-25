@@ -4,24 +4,20 @@ import Image from 'next/image'
 import { BiMessageRounded } from 'react-icons/bi'
 import { HiBadgeCheck } from 'react-icons/hi'
 import { HiOutlineArrowsUpDown } from 'react-icons/hi2'
-import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
 import { FiShare } from 'react-icons/fi'
 import { SlOptions } from 'react-icons/sl'
 import { IoStatsChart } from 'react-icons/io5'
 import { IoIosLock } from 'react-icons/io'
 
 import { getTimeAgo } from '../../utils/formateadorTiemposRelativos'
-import { useLikeTweetMutation } from '@/redux/services/tweetsApi'
+import Likes from './Likes'
 
 const Tweet = (props) => {
-  const { _id, id, content, timestamp = 0, media, likes, retweets, author, comments, like = false, createdAt } = props
+  const { id, content, timestamp = 0, media, retweets, author, comments, createdAt,__v} = props
   const formatNum = (num) => (num === 0 ? "" : num);
 
-  const [likeTweet] = useLikeTweetMutation()
-  const onLikeTweet = async (tweetId, userId) => likeTweet(tweetId, userId)
-
   return (
-        <div key={id} className='h-auto w-full flex flex-row p-3 items-start cursor-pointer border-b dark:border-white/20 border-black/5 bg-white dark:bg-black dark:hover:bg-white/5 hover:bg-black/5 text-[#536471] dark:text-[#e7e9ea]' >
+        <div key={id} className='h-auto w-full flex flex-row p-4 items-start cursor-pointer border-b dark:border-white/20 border-black/5 bg-white dark:bg-black dark:hover:bg-white/5 hover:bg-black/5 text-[#536471] dark:text-[#e7e9ea]' >
             {
                 (author?.image) ? (
                     <Image src={author.image} alt={author.name} width={64} height={64} className='h-12 w-12 rounded-full mr-4 hover:opacity-90' />)
@@ -77,13 +73,10 @@ const Tweet = (props) => {
                         <HiOutlineArrowsUpDown className='icons group-hover:bg-[#00ba7c]/10' title='Retweetear' />
                         <p className='text-sm' >{formatNum(retweets.length)}</p>
                     </div>
-                    <div onClick={_id ? () => onLikeTweet(_id, author._id) : null} className={`flex items-center align-middle space-x-1 cursor-pointer group ${like ? 'text-[#f91880]' : 'hover:text-[#f91880]'}`} >
-                        {like ? <AiFillHeart className='icons group-hover:bg-[#f91880]/10' title='Me gusta' /> : <AiOutlineHeart className='icons group-hover:bg-[#f91880]/10' title='Me gusta' />}
-                        <p className='text-sm' >{formatNum(likes.length)}</p>
-                    </div>
+                    <Likes {...props}/>
                     <div className='flex items-center align-middle space-x-1 cursor-pointer hover:text-[#1C9BEF] group' >
                         <IoStatsChart className='icons group-hover:bg-[#1C9BEF]/10' title='Ver' />
-                        <p className='text-sm' ></p>
+                        <p className='text-sm' >{__v}</p>
                     </div>
                     <div className='flex items-center align-middle space-x-1 cursor-pointer hover:text-[#1d9bf0] group' >
                         <FiShare className='icons group-hover:bg-[#1d9bf0]/10' title='Compartir' />
@@ -111,7 +104,7 @@ const TimeAgo = ({ timestamp, styleds = "" }) => {
   }, [time]);
 
   return (
-        <span className={styleds} >{time.includes("0s") ? "Justo ahora" : time}</span>
+        <span className={styleds} >{time}</span>
   )
 }
 
