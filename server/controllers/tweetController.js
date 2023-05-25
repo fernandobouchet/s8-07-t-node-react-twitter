@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import Tweet from '../models/Tweet.js';
 
 //crear tweet
@@ -91,7 +90,7 @@ const likeTweet = async (req, res) => {
 
     if (alreadyLiked) {
       // Si ya dio like, eliminar el like
-      tweet.likes = tweet.likes.filter(userId => !userId.toString() === id);
+      tweet.likes = tweet.likes.filter(userId => userId.toString() !== id);
       await tweet.save();
       res.json({ message: 'Like eliminado correctamente' });
     } else {
