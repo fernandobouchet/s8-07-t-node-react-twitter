@@ -3,7 +3,6 @@ import Image from 'next/image'
 
 import { BiMessageRounded } from 'react-icons/bi'
 import { HiBadgeCheck } from 'react-icons/hi'
-import { HiOutlineArrowsUpDown } from 'react-icons/hi2'
 import { FiShare } from 'react-icons/fi'
 import { SlOptions } from 'react-icons/sl'
 import { IoStatsChart } from 'react-icons/io5'
@@ -11,9 +10,10 @@ import { IoIosLock } from 'react-icons/io'
 
 import { getTimeAgo } from '../../utils/formateadorTiemposRelativos'
 import Likes from './Likes'
+import Retweet from './Retweet'
 
 const Tweet = (props) => {
-  const { id, content, timestamp = 0, media, retweets, author, comments, createdAt,__v} = props
+  const { id, content, timestamp = 0, media, author, comments, createdAt, __v} = props
   const formatNum = (num) => (num === 0 ? "" : num);
 
   return (
@@ -69,10 +69,8 @@ const Tweet = (props) => {
                         <BiMessageRounded className='icons group-hover:bg-[#1C9BEF]/10' title='Responder' />
                         <p className='text-sm' >{formatNum(comments.length)}</p>
                     </div>
-                    <div className='flex items-center align-middle space-x-1 cursor-pointer hover:text-[#00ba7c] group' >
-                        <HiOutlineArrowsUpDown className='icons group-hover:bg-[#00ba7c]/10' title='Retweetear' />
-                        <p className='text-sm' >{formatNum(retweets.length)}</p>
-                    </div>
+                    
+                    <Retweet {...props}/>
                     <Likes {...props}/>
                     <div className='flex items-center align-middle space-x-1 cursor-pointer hover:text-[#1C9BEF] group' >
                         <IoStatsChart className='icons group-hover:bg-[#1C9BEF]/10' title='Ver' />
