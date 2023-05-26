@@ -8,9 +8,10 @@ const tweetSchema = new mongoose.Schema({
         type: String
     },
     author: {
+       type: String,
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        //required: true
+        required: true
     },
     retweets: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -23,18 +24,22 @@ const tweetSchema = new mongoose.Schema({
     hashtags: [{
         type: String
     }],
-    likes: [{
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'User'
-        }
-      }],
+  
       images: [
         {
           type: String,
         },
       ],
+    likes: [{
+
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+},
+    { timestamps: true });
+
 });
+
 const Tweet = mongoose.model('Tweet', tweetSchema);
 
 export default Tweet;
