@@ -38,8 +38,6 @@ function Home() {
     }, [isSelected])
 
 
-    console.log(allTweets)
-
     return (
         <>
             <Head>

@@ -2,7 +2,7 @@ export const initialState = [
   {
     _id: 'ac82',
     content: 'DALE CAMPEON DALE CAMPEON!!!!!!! 🌎🏆',
-    createdAt: new Date(2023, 12, 4).toISOString(),
+    timestamp: Date.now() - (7 * 24 * 60 * 60 * 1000),
     media: null,
     likes: [],
     retweets: [],
@@ -21,7 +21,7 @@ export const initialState = [
   {
     _id: 'ab19',
     content: 'CAMPEONES DEL MUNDO!!!!!!! 🌎🏆',
-    createdAt: new Date().toISOString(),
+    timestamp: Date.now() - (4 * 24 * 60 * 60 * 1000),
     media: 'https://pbs.twimg.com/media/FkWOB7-WQAAPLaU?format=jpg&name=small',
     likes: [
       {
@@ -44,7 +44,7 @@ export const initialState = [
     comments: [{
       id: '123sc',
       content: 'VAMOS MESSI!! DALE CAMPEON!!!!!!! 🌎🏆',
-      createdAt: new Date().toISOString(),
+      timestamp: Date.now() - (6 * 24 * 60 * 60 * 1000),
       media: null,
       likes: [],
       retweets: [],
@@ -64,7 +64,7 @@ export const initialState = [
   {
     _id: '43dd',
     content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo asperiores molestias eaque magnam, dolore aperiam, dolor modi totam rerum officiis quis in ad',
-    createdAt: new Date().toISOString(),
+    timestamp: Date.now() - (8* 24 * 60 * 60 * 1000),
     media: "https://pbs.twimg.com/media/FvO6aUXXwAEMWHo?format=jpg&name=large",
     likes: [],
     retweets: [],
@@ -83,7 +83,7 @@ export const initialState = [
   {
     _id: '23gaa',
     content: '👟🔥 @adidasfootball',
-    createdAt: new Date().toISOString(),
+    timestamp: Date.now() - (9* 24 * 60 * 60 * 1000),
     media: 'https://pbs.twimg.com/media/FufRHP3WYAcESCp?format=jpg&name=small',
     likes: [
       {
@@ -108,7 +108,7 @@ export const initialState = [
   {
     _id: 'ab12',
     content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo asperiores molestias eaque magnam, dolore aperiam, dolor modi totam rerum officiis quis in ad',
-    createdAt: new Date().toISOString(),
+    timestamp: Date.now() - (5* 24 * 60 * 60 * 1000),
     media: null,
     likes: [],
     retweets: [],
@@ -127,7 +127,7 @@ export const initialState = [
   {
     _id: 'ab16',
     content: '👟🔥 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo asperiores molestias eaque magnam',
-    createdAt: new Date().toISOString(),
+    timestamp: Date.now() - (2 * 24 * 60 * 60 * 1000),
     media: "https://picsum.photos/500/600",
     likes: [
       {
@@ -152,7 +152,7 @@ export const initialState = [
   {
     _id: 'ab1d',
     content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo asperiores molestias eaque magnam, dolore aperiam, dolor modi totam rerum officiis quis in ad',
-    createdAt: new Date().toISOString(),
+    timestamp: Date.now() - (3 * 24 * 60 * 60 * 1000),
     media: null,
     likes: [],
     retweets: [],
@@ -171,7 +171,7 @@ export const initialState = [
   {
     _id: 'ac23',
     content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo asperiores molestias eaque magnam 🔥',
-    createdAt: new Date().toISOString(),
+    timestamp: Date.now() - (5 * 24 * 60 * 60 * 1000),
     media: "https://picsum.photos/400/500",
     likes: [
       {

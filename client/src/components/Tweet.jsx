@@ -11,13 +11,12 @@ import { IoStatsChart } from 'react-icons/io5'
 import { IoIosLock } from 'react-icons/io'
 
 import { getTimeAgo } from '../../utils/formateadorTiemposRelativos'
-import { generateRandomIncrement } from '../../utils/NumeroAleatorioSegunTimestampt'
 
 const Tweet = (props) => {
-    const { id, content, createdAt, media, likes, retweets, author, comments, like = false } = props
+  const { id, content, timestamp = 0, media, likes, retweets, author, comments, like = false } = props
 
-    const formatNum = (num) => (num === 0 ? "" : num);
-    return (
+  const formatNum = (num) => (num === 0 ? "" : num);
+  return (
         <div key={id} className='h-auto w-full flex flex-row p-3 items-start cursor-pointer border-b dark:border-white/20 border-black/5 bg-white dark:bg-black dark:hover:bg-white/5 hover:bg-black/5 text-[#536471] dark:text-[#e7e9ea]' >
             <Image src={author.image} alt={author.name} width={64} height={64} className='h-12 w-12 rounded-full mr-4 hover:opacity-90' />
             <div className="w-full flex flex-col gap-1 text-[#536471] dark:bg-transparent" >
@@ -30,8 +29,8 @@ const Tweet = (props) => {
                             author.verified && <HiBadgeCheck className='text-[#1d9bf0] ml-1' title='Cuenta verificada' />
                         }
                     </h4>
-                    <span>{author.username !== undefined ? `@${author.username}` : `@${author.name.replace(/\s/g, "").toLocaleLowerCase()}`}</span>
-                    <TimeAgo timestamp={createdAt} />
+                    <span>{'@' + author.username}</span>
+                    <TimeAgo timestamp={timestamp} />
                 </div>
                 <p className='ml-2 dark:text-white w-[90%]' >{content}</p>
                 {
@@ -48,7 +47,7 @@ const Tweet = (props) => {
                                 <img src="https://pbs.twimg.com/profile_images/1612291632342122499/h2jKhVoh_400x400.jpg" alt="userImg" className='h-8 w-8 rounded-full bg-black hover:opacity-90' />
                                 <h4 className="inline-flex items-center align-middle font-bold text-black dark:text-white group-hover:underline" >Leo Messi <HiBadgeCheck className='text-[#1d9bf0] ml-1' title='Cuenta verificada' /> </h4>
                                 <span>@leomessisite</span>
-                                <TimeAgo timestamp={createdAt} />
+                                <TimeAgo timestamp={timestamp} />
                             </div>
                             <p>{retweets[0].content}</p>
                         </div>
@@ -72,7 +71,7 @@ const Tweet = (props) => {
                     </div>
                     <div className='flex items-center align-middle space-x-1 cursor-pointer hover:text-[#1C9BEF] group' >
                         <IoStatsChart className='icons group-hover:bg-[#1C9BEF]/10' title='Ver' />
-                        <p className='text-sm' >{generateRandomIncrement(createdAt)}</p>
+                        <p className='text-sm' >4</p>
                     </div>
                     <div className='flex items-center align-middle space-x-1 cursor-pointer hover:text-[#1d9bf0] group' >
                         <FiShare className='icons group-hover:bg-[#1d9bf0]/10' title='Compartir' />
@@ -83,19 +82,19 @@ const Tweet = (props) => {
                 <SlOptions className='icons w-10 h-10 group-hover:bg-[#1C9BEF]/10' title='Mas opciones' />
             </div>
         </div>
-    )
+  )
 }
 
-const TimeAgo = ({ timestamp, styleds = "." }) => {
-    const [time, setTime] = useState(timestamp)
+const TimeAgo = ({ timestamp, styleds = "" }) => {
+  const [time, setTime] = useState(timestamp)
 
-    useEffect(() => {
-        setTime(timestamp)
-    }, [time])
+  useEffect(() => {
+    setTime(timestamp)
+  }, [time])
 
-    return (
-        <span className={styleds}>{` · ${getTimeAgo(timestamp)}`}</span>
-    )
+  return (
+        <span className={styleds} >{getTimeAgo(timestamp)}</span>
+  )
 }
 
 export default Tweet
