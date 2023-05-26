@@ -9,14 +9,12 @@ import {
 
 import upload from '../middlewares/multer.js';
 
-
 import { sessionMiddleware } from '../middleware/sessionMiddleware.js';
 
 const tweetRouter = Router();
+tweetRouter.post('/create', [upload.array('images'), sessionMiddleware], createTweet);
 
-tweetRouter.post('/create', sessionMiddleware, createTweet);
-
-const tweetRouter = Router();
+//tweetRouter.post('/create', sessionMiddleware, createTweet);
 
 //tweetRouter.post('/create', upload.array('images'), createTweet);
 

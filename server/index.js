@@ -10,7 +10,7 @@ import tweetRouter from './routes/tweetRoutes.js';
 import commentRouter from './routes/commentRoutes.js';
 import chatRoutes from './routes/messageRoutes.js';
 import messageRoutes from './routes/chatRoutes.js';
-
+import path from 'path'
 // Routers
 
 // Init express app
@@ -58,7 +58,7 @@ app.use(express.static(path.join(publicPath, "public")));
 
 app.use('/public/images', express.static('public/images'));
 
->
+
 
 // Endpoints
 app.get('/', (req, res) => {
