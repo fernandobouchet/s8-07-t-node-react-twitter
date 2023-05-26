@@ -6,18 +6,12 @@ import {
   likeTweet,
   getAllTweets,
 } from '../controllers/tweetController.js';
-
 import upload from '../middlewares/multer.js';
-
-import { sessionMiddleware } from '../middleware/sessionMiddleware.js';
+import { sessionMiddleware } from '../middlewares/sessionMiddleware.js';
 
 const tweetRouter = Router();
-tweetRouter.post('/create', [upload.array('images'), sessionMiddleware], createTweet);
 
-//tweetRouter.post('/create', sessionMiddleware, createTweet);
-
-//tweetRouter.post('/create', upload.array('images'), createTweet);
-
+tweetRouter.post('/create', [sessionMiddleware ,upload.array('images')], createTweet);
 tweetRouter.get('/user/:userId', getTweetsByUserId);
 tweetRouter.get('/tweets', getAllTweets);
 tweetRouter.put('/:id', sessionMiddleware, updateTweet);

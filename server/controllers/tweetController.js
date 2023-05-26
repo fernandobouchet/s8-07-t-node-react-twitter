@@ -1,44 +1,38 @@
 
 import Tweet from '../models/Tweet.js';
 
-
 //crear tweet
 const createTweet = async (req, res) => {
-
-  const { id } = req.user;
-  const { content, hashtags } = req.body;
-  const images = req.files;
-
   try {
-    const imagePaths = images.map((image) => {
-      const imagePath = `${process.env.API_URL}/public/images/${image.filename}`;
-      return imagePath;
-    });
+    const { id } = req.user;
+    const { content, hashtags } = req.body;
+    const images = req.files;
+    let imagePaths = [];
 
-    const tweet = new Tweet({
-      //author: id,
+    if (images) { 
+      imagePaths = images.map((image) => {
+        const imagePath = `${process.env.API_URL}L/public/images/${image.filename}`;
+        return imagePath;
+      });
+    }
+
+    let tweet = new Tweet({
+      author: id,
       content,
       hashtags,
       images: imagePaths,
     });
 
     await tweet.save();
-    tweet = (await tweet.populate('author', 'name image username email confirmed'));
+    tweet = await tweet.populate('author', 'name image username email confirmed');
 
     res.status(201).json(tweet);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to create tweet' });
-  };
-}
-    //await User.findByIdAndUpdate(userId, { $push: { tweets: tweet._id } });
-//     tweet = (await tweet.populate('author', 'name image username email confirmed'));
+  }
+};
 
-//     res.send(tweet);
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// };
 
 const getAllTweets = async (_req, res) => {
   try {

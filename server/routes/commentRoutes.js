@@ -6,7 +6,7 @@ import {
   getCommentByUserId,
   updateComment,
 } from '../controllers/commentController.js';
-import { sessionMiddleware } from '../middleware/sessionMiddleware.js';
+import { sessionMiddleware } from '../middlewares/sessionMiddleware.js';
 
 const commentRouter = Router();
 
