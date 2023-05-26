@@ -9,18 +9,20 @@ import { useSession } from "next-auth/react";
 import { BiCalendar, BiMap } from "react-icons/bi";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
-import { createTweet } from "../../lib/tweets";
-import { useRouter } from "next/router";
+// import { createTweet } from "../../lib/tweets";
+import { useCreateTweetMutation } from "@/redux/services/tweetsApi";
+// import { useRouter } from "next/router";
 
-const Post = ({ addTweets }) => {
+const Post = () => {
   const { data: session, status } = useSession();
-  const router = useRouter();
-  if (status === "unauthenticated") {
-    router.push("/login");
-  }
+  // const router = useRouter();
+  // if (status === "unauthenticated") {
+  //   router.push("/login");
+  // }
   const [tweetText, setTweetText] = useState("");
   const [ubicacion, setUbicacion] = useState("");
   const [files, setFiles] = useState([]);
+  const [createTweet] = useCreateTweetMutation()
 
   const handleTweetChange = (event) => {
     setTweetText(event.target.value);
@@ -40,10 +42,7 @@ const Post = ({ addTweets }) => {
         hashtags: ['Tweet'],
         media: img
       };
-      const result = await createTweet(tweet);
-      addTweets(prevState => (
-        [result, ...prevState]
-      ));
+       createTweet(tweet);
       setTweetText('');
       setFiles([]);
       setUbicacion("");
@@ -55,11 +54,19 @@ const Post = ({ addTweets }) => {
       <div className="p-4">
         <div className="flex w-full items-start">
           <div className="flex-shrink-0">
-            <img
-              className="h-12 w-12 rounded-full"
-              src={session?.user?.image}
-              alt="Profile"
-            />
+            {
+              !session?.user?.image || status === "loading" ? (
+                <svg className="text-gray-200 w-14 h-14 dark:text-gray-700" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clipRule="evenodd"></path></svg>
+              ) : (
+                <Image
+                      width={250}
+                      height={320}
+                      src={session.user.image}
+                      alt="Profile"
+                      className="h-12 w-12 rounded-full"
+                    />
+              )
+            }
           </div>
           <div className="ml-3 w-full flex-row ">
             <textarea
@@ -232,7 +239,7 @@ const FileUploader = ({ files, setFiles }) => {
     setFiles(updatedFiles);
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
     <div

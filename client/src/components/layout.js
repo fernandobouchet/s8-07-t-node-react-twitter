@@ -28,13 +28,14 @@ import { Popover, Transition } from "@headlessui/react";
 import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
 import { usePopper } from "react-popper";
-import Login from "./Login";
+import QuienSeguir from "./layoutComponents/QuienSeguir";
+import QueEstaPasando from "./layoutComponents/QueEstaPasando";
+import Login from "./layoutComponents/Login";
 import FooterUnauthenticated from "./FooterUnauthenticated";
 
 function Header() {
   const { pathname } = useRouter();
   const { data: session, status } = useSession();
-  console.log(session);
   const [openSettings, setOpenSettings] = useState(false);
   const [openUserPopper, setOpenUserPopper] = useState();
   const [popperUser, setPopperUser] = useState();
@@ -62,7 +63,7 @@ function Header() {
     <header className="flex w-full justify-end md:w-24 lg:max-w-[300px] xl:w-full">
       <div className="noscrollbar flex h-full min-w-max flex-col items-center gap-5 overflow-y-auto border-r-black/5 px-2 dark:border-r-white/20 max-md:w-full md:fixed md:border-r xl:w-[300px] xl:px-4">
         <div className="fixed top-0 flex w-full items-center justify-between border-b border-b-black/10 bg-white px-4 py-3 dark:border-b-white/20 dark:bg-black md:hidden">
-          <Link href="/">
+          <Link href="/home">
             <TwitterIcon size={24} />
           </Link>
 
@@ -85,7 +86,7 @@ function Header() {
         <div className="hidden w-full flex-col gap-1.5 py-1 max-xl:items-center md:flex">
           <Link
             className="w-fit rounded-full p-3 transition duration-300 hover:bg-black/10 hover:dark:bg-white/10"
-            href="/"
+            href="/home"
           >
             <TwitterIcon size={28} />
           </Link>
@@ -170,7 +171,7 @@ function Header() {
             <p className="dark:text-white max-xl:hidden">Perfil</p>
           </Link>
 
-          {status !== "authenticated" ? (
+          {session ? (
             <Popover className="relative mt-auto w-full max-md:hidden">
               <Transition
                 className="fixed"
@@ -239,17 +240,19 @@ function Header() {
             </Popover>
           ) : null}
 
-          <button className="mt-5 w-fit rounded-full bg-[#7855FF] p-3.5 transition duration-300 hover:bg-[#6c4de6] xl:w-[85%] xl:p-3">
-            <div className="xl:hidden">
-              <CreateTweetIcon size={24} />
-            </div>
-            <p className="text-lg font-semibold text-white max-xl:hidden">
-              Twittear
-            </p>
-          </button>
+          {session && (
+            <button className="mt-5 w-fit rounded-full bg-[#7855FF] p-3.5 transition duration-300 hover:bg-[#6c4de6] xl:w-[85%] xl:p-3">
+              <div className="xl:hidden">
+                <CreateTweetIcon size={24} />
+              </div>
+              <p className="text-lg font-semibold text-white max-xl:hidden">
+                Twittear
+              </p>
+            </button>
+          )}
         </div>
 
-        {status !== "authenticated" ? (
+        {session ? (
           <Popover className="mt-auto w-full max-md:hidden">
             <Transition
               className="fixed w-[300px]"
@@ -273,7 +276,7 @@ function Header() {
                   onClick={() => signOut()}
                   className="w-full px-4 py-2 text-left transition duration-300 hover:bg-black/5 hover:dark:bg-white/10"
                 >
-                  Cerrar la sesion de {session?.username}
+                  Cerrar la sesion de {session?.user?.name}
                 </button>
                 <div className="-my-1 h-3 w-3 origin-bottom-left rotate-45 transform border-b border-r bg-white dark:border-white/20 dark:bg-black max-xl:ml-5 xl:mx-auto"></div>
               </Popover.Panel>
@@ -284,23 +287,25 @@ function Header() {
               className="mb-4 flex w-full cursor-pointer justify-between gap-4 rounded-full outline-none transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 max-xl:w-fit max-lg:mx-auto max-md:hidden lg:px-3 lg:py-2"
             >
               <div className="flex items-center gap-3">
-                <Image
+                {!session?.user?.image || status === "loading" ? (
+                  <svg className="text-gray-200 w-14 h-14 dark:text-gray-700" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clipRule="evenodd"></path></svg>
+                ) : (<Image
                   className="m-auto h-10 w-10 rounded-full object-cover"
                   src={
-                    session?.image ? session.image : "/img/defaultprofile.jpg"
+                    session.user ? session.user.image : "/img/defaultprofile.jpg"
                   }
                   width={50}
                   height={50}
                   alt="Foto de perfil"
                   unoptimized
                   priority
-                />
+                />)}
                 <div className="text-base max-xl:hidden">
                   <p className="max-w-[14ch] truncate font-semibold dark:text-white">
-                    {session?.name}
+                    {session?.user?.name}
                   </p>
                   <p className="-mt-0.5 max-w-[14ch] truncate text-sm text-slate-500">
-                    {session?.username}
+                    {session?.user?.email.split("@")[0]}
                   </p>
                 </div>
               </div>
@@ -317,7 +322,7 @@ function Header() {
 
 function Footer() {
   const { pathname } = useRouter();
-
+  const { status } = useSession();
   return (
     <>
       <nav className="fixed inset-x-0 bottom-0 flex items-center justify-around border-t border-t-black/10 bg-white p-2 dark:border-t-white/20 dark:bg-black md:hidden">
@@ -377,7 +382,10 @@ function Footer() {
             </div>
           </div>
           <div>
-            <Login />
+            {
+              status === 'unauthenticated' ? <Login /> : <div className="flex flex-col col-1 gap-2"><QueEstaPasando /> <QuienSeguir /></div>
+            }
+
           </div>
           <div className="flex flex-wrap gap-x-2 gap-y-1 text-[.75rem] font-medium dark:text-gray-500">
             <button className="hover:underline">Condiciones de Servicio</button>
@@ -398,7 +406,7 @@ function Footer() {
 }
 
 export default function Layout({ children }) {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   return (
     <>
       <div className="flex w-full justify-center max-md:flex-col">
