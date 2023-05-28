@@ -65,7 +65,9 @@ function Home() {
       <Header isSelected={isSelected} setIsSelected={setIsSelected} />
       <Post addTweets={setAllTweets} />
       {allTweets.length && !isLoading
-        ? data.filter((tweet) => tweet.author).map((tweet) => <Tweet key={tweet._id} {...tweet} />)
+        ? data
+            .filter((tweet) => tweet.author)
+            .map((tweet) => <Tweet key={tweet._id} {...tweet} />)
         : [1, 2, 3, 4, 5, 6, 7].map((tweet) => <SkeletonTweet key={tweet} />)}
     </>
   );
