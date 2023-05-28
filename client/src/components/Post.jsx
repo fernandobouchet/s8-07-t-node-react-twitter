@@ -13,7 +13,7 @@ import Image from "next/image";
 import { useCreateTweetMutation } from "@/redux/services/tweetsApi";
 // import { useRouter } from "next/router";
 
-const Post = ({ addTweets }) => {
+const Post = () => {
   const { data: session, status } = useSession();
   // const router = useRouter();
   // if (status === "unauthenticated") {

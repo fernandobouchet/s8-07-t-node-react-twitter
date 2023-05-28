@@ -1,27 +1,38 @@
+
 import Tweet from '../models/Tweet.js';
 
 //crear tweet
 const createTweet = async (req, res) => {
-  const { id } = req.user;
-  const { content, hashtags } = req.body;
-
   try {
+    const { id } = req.user;
+    const { content, hashtags } = req.body;
+    const images = req.files;
+    let imagePaths = [];
+
+    if (images) { 
+      imagePaths = images.map((image) => {
+        const imagePath = `${process.env.API_URL}L/public/images/${image.filename}`;
+        return imagePath;
+      });
+    }
+
     let tweet = new Tweet({
       author: id,
       content,
       hashtags,
+      images: imagePaths,
     });
 
     await tweet.save();
+    tweet = await tweet.populate('author', 'name image username email confirmed');
 
-    //await User.findByIdAndUpdate(userId, { $push: { tweets: tweet._id } });
-    tweet = (await tweet.populate('author', 'name image username email confirmed'));
-
-    res.send(tweet);
+    res.status(201).json(tweet);
   } catch (error) {
-    console.log(error.message);
+    console.error(error);
+    res.status(500).json({ error: 'Failed to create tweet' });
   }
 };
+
 
 const getAllTweets = async (_req, res) => {
   try {
@@ -35,6 +46,7 @@ const getAllTweets = async (_req, res) => {
     res.status(500).send({ message: 'Error getting all tweets' });
   }
 };
+
 
 //traer tweets por usuario
 const getTweetsByUserId = async (req, res) => {

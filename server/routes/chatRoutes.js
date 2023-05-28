@@ -8,7 +8,7 @@ import {
     renameGroup,
 } from "../controllers/chatController.js";
 //!const { protect } = require("../middleware/authMiddleware");
-import { sessionMiddleware } from "../middleware/sessionMiddleware.js";
+import { sessionMiddleware } from '../middlewares/sessionMiddleware.js';
 const messageRoutes = Router()
 
 messageRoutes.route("/").post(sessionMiddleware, accessChat);

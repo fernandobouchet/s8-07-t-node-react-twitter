@@ -8,7 +8,7 @@ const tweetSchema = new mongoose.Schema({
         type: String
     },
     author: {
-        type: String,
+       type: String,
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
@@ -24,12 +24,20 @@ const tweetSchema = new mongoose.Schema({
     hashtags: [{
         type: String
     }],
+  
+      images: [
+        {
+          type: String,
+        },
+      ],
     likes: [{
+
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
 },
     { timestamps: true });
+
 
 const Tweet = mongoose.model('Tweet', tweetSchema);
 

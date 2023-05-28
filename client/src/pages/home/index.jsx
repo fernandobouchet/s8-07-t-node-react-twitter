@@ -1,55 +1,22 @@
 import Post from "@/components/Post";
 import Tweet from "@/components/Tweet";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { initialState } from "@/data/tweets";
 import Head from "next/head";
-import { getAllTweets } from "../../../lib/tweets";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useAppSelector } from "@/redux/hooks";
 import { useGetAllTweetsQuery } from "@/redux/services/tweetsApi";
 import SkeletonTweet from "@/components/SkeletonTweet";
 
 function Home() {
-  const { isLoading, isFetching, data, error } = useGetAllTweetsQuery();
+  const { isLoading, isFetching, data, error } = useGetAllTweetsQuery(undefined, {
+    refetchOnReconnect: true,
+  });
   const [isSelected, setIsSelected] = useState("para-ti");
-  const [allTweets, setAllTweets] = useState(initialState);
-  const [auxAllTweets, setAuxAllTweets] = useState(initialState);
 
   console.log(isLoading, isFetching, data, error);
   const { status } = useSession();
   const router = useRouter();
-
-  const filterTweets = (payload) => {
-    setAllTweets(
-      auxAllTweets.filter((tweet) =>
-        payload === "siguiendo"
-          ? tweet.author.username !== "Cristiano"
-          : tweet.author.username !== ""
-      )
-    );
-  };
-  const addTweets = (payload) => {
-    setAuxAllTweets([payload, ...auxAllTweets]);
-    setAllTweets([payload, ...auxAllTweets]);
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getAllTweets();
-        setAllTweets((prevState) => [...data, ...prevState]);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchData();
-  }, []);
-  useEffect(() => {
-    filterTweets(isSelected);
-  }, [isSelected]);
 
   if (status === "unauthenticated") {
     router.push("/login");
@@ -63,6 +30,9 @@ function Home() {
       </Head>
 
       <Header isSelected={isSelected} setIsSelected={setIsSelected} />
+      <Post />
+      { !isLoading
+        ? data.filter((tweet) => tweet.author).map((tweet) => <Tweet key={tweet._id} {...tweet} />)
       <Post addTweets={setAllTweets} />
       {allTweets.length && !isLoading
         ? data

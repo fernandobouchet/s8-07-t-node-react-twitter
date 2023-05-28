@@ -36,7 +36,6 @@ import FooterUnauthenticated from "./FooterUnauthenticated";
 function Header() {
   const { pathname } = useRouter();
   const { data: session, status } = useSession();
-  console.log(session);
   const [openSettings, setOpenSettings] = useState(false);
   const [openUserPopper, setOpenUserPopper] = useState();
   const [popperUser, setPopperUser] = useState();
