@@ -9,12 +9,11 @@ import { useGetAllTweetsQuery } from "@/redux/services/tweetsApi";
 import SkeletonTweet from "@/components/SkeletonTweet";
 
 function Home() {
-  const { isLoading, isFetching, data, error } = useGetAllTweetsQuery(undefined, {
+  const { isLoading, data, error } = useGetAllTweetsQuery(undefined, {
     refetchOnReconnect: true,
   });
   const [isSelected, setIsSelected] = useState("para-ti");
 
-  console.log(isLoading, isFetching, data, error);
   const { status } = useSession();
   const router = useRouter();
 
