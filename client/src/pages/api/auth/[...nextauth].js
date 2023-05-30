@@ -7,6 +7,7 @@ import clientPromise from "lib/mongodb";
 
 export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
+
   // Configure one or more authentication providers
   providers: [
     GithubProvider({
@@ -25,10 +26,12 @@ export const authOptions = {
   ],
   callbacks: {
     async session({ session, user }) {
+      session.user.name = user.name;
       session.user._id = user.id;
       return session;
     },
   },
+  secret: process.env.SECRET,
 };
 
 export default NextAuth(authOptions);

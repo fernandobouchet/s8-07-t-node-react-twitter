@@ -4,7 +4,7 @@ import { IoImageOutline, IoCloseOutline } from "react-icons/io5";
 import { HiOutlineGif } from "react-icons/hi2";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { BsEmojiSmile } from "react-icons/bs";
-import { useSession } from "next-auth/react";
+import { getCsrfToken, useSession } from "next-auth/react";
 
 import { BiCalendar, BiMap } from "react-icons/bi";
 import { useDropzone } from "react-dropzone";
@@ -15,6 +15,7 @@ import { useCreateTweetMutation } from "@/redux/services/tweetsApi";
 
 const Post = () => {
   const { data: session, status } = useSession();
+  console.log(session?.user.token);
   // const router = useRouter();
   // if (status === "unauthenticated") {
   //   router.push("/login");
@@ -22,7 +23,7 @@ const Post = () => {
   const [tweetText, setTweetText] = useState("");
   const [ubicacion, setUbicacion] = useState("");
   const [files, setFiles] = useState([]);
-  const [createTweet] = useCreateTweetMutation()
+  const [createTweet] = useCreateTweetMutation();
 
   const handleTweetChange = (event) => {
     setTweetText(event.target.value);
@@ -34,39 +35,89 @@ const Post = () => {
     let img = null;
     if (files.length !== 0) {
       img = URL.createObjectURL(files[0].file);
+      const formData = new FormData();
+      formData.append("content", tweetText);
+      formData.append("hashtags", "Tweet");
+      formData.append("media", img);
     }
 
     if (tweetText.length !== 0 || files.length !== 0) {
       const tweet = {
         content: tweetText,
-        hashtags: ['Tweet'],
-        media: img
+        hashtags: ["Tweet"],
+        media: img,
       };
-       createTweet(tweet);
-      setTweetText('');
+      createTweet(tweet);
+      setTweetText("");
       setFiles([]);
       setUbicacion("");
     }
   };
+  /*  const handleTweetSubmit = async (event) => {
+    event.preventDefault();
+    console.log("Texto del tweet:", tweetText.length);
+    let img = null;
+    if (files.length !== 0) {
+      img = URL.createObjectURL(files[0].file);
+    }
 
+    if (tweetText.length !== 0 || files.length !== 0) {
+      const formData = new FormData();
+      formData.append("content", tweetText);
+      formData.append("hashtags", "Tweet");
+      formData.append("media", img);
+
+      // Obtain session_token from the session cookie
+      const sessionToken = session?.session_token;
+
+      // Create headers with the content-type and session_token
+      const headers = {
+        "content-type": "multipart/form-data",
+        session_token: sessionToken,
+      };
+
+      const requestOptions = {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+        headers,
+      };
+
+      createTweet(requestOptions);
+
+      setTweetText("");
+      setFiles([]);
+      setUbicacion("");
+    }
+  }; */
   return (
     <div className="h-auto w-full border-b border-black/5 dark:border-white/20 dark:bg-black dark:text-[#e7e9ea]">
       <div className="p-4">
         <div className="flex w-full items-start">
           <div className="flex-shrink-0">
-            {
-              !session?.user?.image || status === "loading" ? (
-                <svg className="text-gray-200 w-14 h-14 dark:text-gray-700" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clipRule="evenodd"></path></svg>
-              ) : (
-                <Image
-                      width={250}
-                      height={320}
-                      src={session.user.image}
-                      alt="Profile"
-                      className="h-12 w-12 rounded-full"
-                    />
-              )
-            }
+            {!session?.user?.image || status === "loading" ? (
+              <svg
+                className="h-14 w-14 text-gray-200 dark:text-gray-700"
+                aria-hidden="true"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                  clipRule="evenodd"
+                ></path>
+              </svg>
+            ) : (
+              <Image
+                width={250}
+                height={320}
+                src={session.user.image}
+                alt="Profile"
+                className="h-12 w-12 rounded-full"
+              />
+            )}
           </div>
           <div className="ml-3 w-full flex-row ">
             <textarea
