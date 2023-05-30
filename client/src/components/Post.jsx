@@ -32,23 +32,16 @@ const Post = () => {
   const handleTweetSubmit = async (event) => {
     event.preventDefault();
     console.log("Texto del tweet:", tweetText.length);
-    let img = null;
+    const body = new FormData()
     if (files.length !== 0) {
-      img = URL.createObjectURL(files[0].file);
-      const formData = new FormData();
-      formData.append("content", tweetText);
-      formData.append("hashtags", "Tweet");
-      formData.append("media", img);
+      body.append("images", files[0].file)
     }
 
     if (tweetText.length !== 0 || files.length !== 0) {
-      const tweet = {
-        content: tweetText,
-        hashtags: ["Tweet"],
-        media: img,
-      };
-      createTweet(tweet);
-      setTweetText("");
+      body.append("content", tweetText)
+      body.append("hashtags", ['Tweet'])
+       createTweet(body);
+      setTweetText('');
       setFiles([]);
       setUbicacion("");
     }
@@ -176,9 +169,6 @@ const Post = () => {
             <div className="flex w-full flex-row justify-between ">
               <div className="flex w-full items-center gap-1">
                 <FileUploader files={files} setFiles={setFiles} />
-                {/* <div className='flex items-center align-middle space-x-1 cursor-pointer text-[#1C9BEF] group' >
-                                    <IoImageOutline className='icons group-hover:bg-[#1C9BEF]/10' title='Fotos y Videos' />
-                                </div> */}
                 <div className="group flex cursor-pointer items-center space-x-1 align-middle text-[#1C9BEF]">
                   <HiOutlineGif
                     className="icons group-hover:bg-[#1C9BEF]/10 "

@@ -13,7 +13,7 @@ import Likes from './Likes'
 import Retweet from './Retweet'
 
 const Tweet = (props) => {
-  const { id, content, timestamp = 0, media, author, comments, createdAt, __v} = props
+  const { id, content, timestamp = 0, media, author, comments, createdAt, __v,images} = props
   const formatNum = (num) => (num === 0 ? "" : num);
 
   return (
@@ -42,11 +42,11 @@ const Tweet = (props) => {
                 </div>
                 <p className='ml-2 dark:text-white w-[90%]' >{content}</p>
                 {
-                    media && (
+                    images.length ? (
                         <div className='max-w-fit max-h-fit py-2'>
-                            <img src={media || "https://pbs.twimg.com/media/FkWOB7-WQAAPLaU?format=jpg&name=small"} className="object-fit rounded-3xl" alt="postImg" />
+                            <img src={images[0] || "https://pbs.twimg.com/media/FkWOB7-WQAAPLaU?format=jpg&name=small"} className="object-fit rounded-3xl" alt="postImg" />
                         </div>
-                    )
+                    ) : null
                 }
                 {/* {retweets.length !== 0 && (
                     <div className="flex flex-col max-w-fit rounded-xl border border-black/5 hover:bg-black/10 overflow-hidden">
@@ -69,7 +69,6 @@ const Tweet = (props) => {
                         <BiMessageRounded className='icons group-hover:bg-[#1C9BEF]/10' title='Responder' />
                         <p className='text-sm' >{formatNum(comments.length)}</p>
                     </div>
-                    
                     <Retweet {...props}/>
                     <Likes {...props}/>
                     <div className='flex items-center align-middle space-x-1 cursor-pointer hover:text-[#1C9BEF] group' >

@@ -5,7 +5,7 @@ export const tweetsApi = createApi(
   {
     reducerPath: "tweetsApi",
     refetchOnFocus: false, // when the window is refocused, refetch the data
-    refetchOnMountOrArgChange:120,
+    refetchOnMountOrArgChange: 120,
     baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/api/", }),
     tagTypes: ["Tweets"],
     endpoints: (builder) => ({
@@ -30,17 +30,12 @@ export const tweetsApi = createApi(
       //   query: ({ token}) => `confirm/${token}`,
       // }),
       createTweet: builder.mutation({
-        query: (payload) => ({
+        query: (body) => ({
           url: "create",
           method: 'POST',
           credentials: 'include',
-          body: JSON.stringify({
-            content: payload.content,
-            hashtags: payload.hashtags
-          }),
-          headers: {
-            'content-type': 'application/json'
-          }
+          formData: true,
+          body,
         }),
         invalidatesTags: ["Tweets"],
       }),
