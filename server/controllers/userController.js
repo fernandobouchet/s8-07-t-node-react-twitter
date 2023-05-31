@@ -11,7 +11,7 @@ const getProfileById = async (req, res) => {
     if (!id) {
       res.status(400).json({ error: 'No se pudo encontrar el usuario.' })
     }
-    const profile = await User.findById(new ObjectId(id)).populate('likes tweets comments followers following');
+    const profile = await User.findById(id).populate('likes tweets comments followers following');
     res.status(200).json(profile);
   } catch (error) {
     console.error(error);
@@ -76,6 +76,7 @@ const followUserById = async (req, res) => {
     }
 
     const user = await User.findById(id);
+    const followedUser = await User.findById(userId)
 
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
@@ -86,7 +87,9 @@ const followUserById = async (req, res) => {
     }
 
     user.following.push(userId);
+    followedUser.followers.push(id);
     await user.save();
+    await followedUser.save();
     return res
       .status(200)
       .json({ message: "Has comenzado a seguir a este usuario" });
@@ -115,6 +118,7 @@ const unfollowUserById = async (req, res) => {
     }
 
     const user = await User.findById(id);
+    const followedUser = await User.findById(userId)
 
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
@@ -128,7 +132,12 @@ const unfollowUserById = async (req, res) => {
       (usersId) => usersId.toString() !== userId
     );
 
+    followedUser.followers = followedUser.followers.filter(
+      (followerId) => followerId.toString() !== id
+    );
+
     await user.save();
+    await followedUser.save();
 
     return res
       .status(200)
