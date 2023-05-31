@@ -16,13 +16,8 @@ export const usersApi = createApi({
         }
       }),
       providesTags: ["Users"],
-    })
-  }),
-})
-
-export const { useGetAllUsersQuery } = usersApi;
-
-/* getUserById: builder.query({
+    }),
+    getUserById: builder.query({
       query: (userId) => `user/${userId}`,
     }),
     createUser: builder.mutation({
@@ -33,4 +28,9 @@ export const { useGetAllUsersQuery } = usersApi;
         body,
       }),
       invalidatesTags: ["Users"],
-    }), */
+    }),
+  }),
+
+})
+
+export const { useGetAllUsersQuery, useGetUserByIdQuery, useCreateUserMutation } = usersApi;
