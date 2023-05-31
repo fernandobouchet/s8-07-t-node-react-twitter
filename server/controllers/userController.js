@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import Comment from "../models/Comment.js";
 import Session from "../models/Session.js";
 import Tweet from "../models/Tweet.js";
@@ -10,7 +11,7 @@ const getProfileById = async (req, res) => {
     if (!id) {
       res.status(400).json({ error: 'No se pudo encontrar el usuario.' })
     }
-    const profile = await User.findById(id).populate('likes tweets comments followers following');
+    const profile = await User.findById(new ObjectId(id)).populate('likes tweets comments followers following');
     res.status(200).json(profile);
   } catch (error) {
     console.error(error);
@@ -63,8 +64,6 @@ const followUserById = async (req, res) => {
   try {
     const { id } = req.user;
     const userId = req.params.id;
-
-    console.log(id, userId)
 
     if (!id || !userId) {
       return res
@@ -126,7 +125,7 @@ const unfollowUserById = async (req, res) => {
     }
 
     user.following = user.following.filter(
-      (usersId) => usersId !== userId
+      (usersId) => usersId.toString() !== userId
     );
 
     await user.save();
