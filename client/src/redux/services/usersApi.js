@@ -17,6 +17,16 @@ export const usersApi = createApi({
       }),
       providesTags: ["Users"],
     }),
+    getMyProfile: builder.query({
+      query: () => ({
+        url: "me",
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'content-type': 'application/json'
+        }
+      }),
+    }),
     getUserById: builder.query({
       query: (userId) => `profile/${userId}`,
     }),
@@ -48,9 +58,9 @@ export const usersApi = createApi({
           'content-type': 'application/json'
         },
       })
-    })
+    }),
   }),
 
 })
 
-export const { useGetAllUsersQuery, useGetUserByIdQuery, useCreateUserMutation, useFollowUserMutation, useUnFollowUserMutation } = usersApi;
+export const { useGetAllUsersQuery, useGetUserByIdQuery, useCreateUserMutation, useFollowUserMutation, useUnFollowUserMutation, useGetMyProfileQuery } = usersApi;

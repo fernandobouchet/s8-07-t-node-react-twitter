@@ -1,4 +1,4 @@
-import { useFollowUserMutation, useGetAllUsersQuery, useGetUserByIdQuery, useUnFollowUserMutation } from "@/redux/services/usersApi";
+import { useFollowUserMutation, useGetAllUsersQuery, useGetMyProfileQuery, useUnFollowUserMutation } from "@/redux/services/usersApi";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 const { default: Image } = require("next/image");
@@ -7,8 +7,7 @@ const { default: Link } = require("next/link");
 function QuienSeguir() {
   const { data: session } = useSession();
   const loggedInUserId = session?.user?._id;
-  const userActual = useGetUserByIdQuery(loggedInUserId);
-  console.log(userActual.data?.following);
+  const userActual = useGetMyProfileQuery(loggedInUserId);
   const [randomData, setRandomData] = useState([]);
   const { data, isLoading, error } = useGetAllUsersQuery();
   const [following, setFollowing] = useState([]);
@@ -28,33 +27,30 @@ function QuienSeguir() {
       const followingIds = userActual.data.following.map((user) => user._id);
       setFollowing(followingIds);
     }
-  }, [userActual.data]);
+  }, [userActual.data?.following]);
 
   const [unfollowUser] = useUnFollowUserMutation();
   const [followUser] = useFollowUserMutation();
-  const onFollowUser = async (loggedInUserId, id) => {
-    const res = await followUser(loggedInUserId, id);
-    console.log(res.error?.data);
-    setFollowing((prevFollowing) => [...prevFollowing, id]);
+
+  const onClickFollowUser = async (id) => {
+    const res = await followUser(id, loggedInUserId);
+    console.log(res);
+    if (res.data) {
+      setFollowing((prevFollowing) => [...prevFollowing, id]);
+    }
   };
-  const onUnfollowUser = async (loggedInUserId, id) => {
-    const res = await unfollowUser(loggedInUserId, id);
+
+  const onClickUnFollowUser = async (id) => {
+    const res = await unfollowUser(id, loggedInUserId);
     if (res.data) {
       setFollowing((prevFollowing) => prevFollowing.filter((userId) => userId !== id));
     }
     console.log(res);
-  }
-  function onClickFollowUser(id) {
-    onFollowUser(id, loggedInUserId);
-  }
-  function onClickUnFollowUser(id) {
-    onUnfollowUser(id, loggedInUserId);
-  }
+  };
 
   if (userActual.isFetching) {
     return <div>Loading...</div>;
   }
-
   return (
     <>
       <div className="h-[330px] w-[330px] rounded-md dark:bg-[#16181C]">
@@ -66,7 +62,7 @@ function QuienSeguir() {
         ) : (
           randomData.map((user) => (
             <div key={user._id}>
-              <div className="flex flex-row items-center gap-3 p-4">
+              <div className="flex flex-row items-center gap-2 p-4">
                 <Image
                   src={user.image}
                   width={50}
@@ -82,7 +78,7 @@ function QuienSeguir() {
                   </p>
                 </div>
                 {following.includes(user._id) ? (
-                  <button onClick={() => onClickUnFollowUser(user._id)} className="ml-2 h-9 w-[95px] rounded-full bg-red-500 text-sm font-bold text-white">
+                  <button onClick={() => onClickUnFollowUser(user._id)} className="ml-2 h-9 w-[75px] rounded-full bg-red-500 text-sm font-bold text-white">
                     Unfollow
                   </button>
                 ) : (
