@@ -6,12 +6,12 @@ export const tweetsApi = createApi(
     reducerPath: "tweetsApi",
     refetchOnFocus: false, // when the window is refocused, refetch the data
     refetchOnMountOrArgChange: 120,
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/api/", }),
+    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/api/tweets/", }),
     tagTypes: ["Tweets"],
     endpoints: (builder) => ({
       getAllTweets: builder.query({
         query: () => ({
-          url: "tweets",
+          url: "all",
           method: 'GET',
           credentials: 'include',
           headers: {

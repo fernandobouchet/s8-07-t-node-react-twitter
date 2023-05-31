@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { dbConnection } from './config/mongo.js';
-import router from './routes/userRoutes.js';
+import userRouter from './routes/userRoutes.js';
 import tweetRouter from './routes/tweetRoutes.js';
 import commentRouter from './routes/commentRoutes.js';
 import chatRoutes from './routes/messageRoutes.js';
@@ -45,9 +45,9 @@ dbConnection().catch((error) => {
 });
 
 
-app.use('/api', router);
-app.use('/api', tweetRouter);
-app.use('/api', commentRouter);
+app.use('/api/users', userRouter);
+app.use('/api/tweets', tweetRouter);
+app.use('/api/comments', commentRouter);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 
