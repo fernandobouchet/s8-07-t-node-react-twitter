@@ -1,6 +1,7 @@
 
 import Retweet from '../models/Retweet.js';
 import Tweet from '../models/Tweet.js';
+import User from '../models/User.js';
 
 //crear tweet
 const createTweet = async (req, res) => {
@@ -77,7 +78,6 @@ const getAllTweets = async (_req, res) => {
     res.status(500).send({ message: 'Error getting all tweets' });
   }
 };
-
 
 const getTweetById = async (req, res) => {
   try {
@@ -241,6 +241,39 @@ const deleteRetweet = async (req, res) => {
 };
 
 
+const getAllFollowsTweets = async (req, res) => {
+  try {
+    const { id } = req.user;
+
+    const user = await User.findById(id).populate('following', '_id');
+
+    const followedUserIds = user.following.map(user => user._id);
+
+    const tweets = await Tweet.find({ author: { $in: followedUserIds } }).populate(
+      'author',
+      'name image username email confirmed'
+    ).populate('likes retweets', 'name image username email');
+
+    const retweets = await Retweet.find({ author: { $in: followedUserIds } }).populate({
+      path: 'author',
+      select: 'name image username email confirmed'
+    }).populate({
+      path: 'originalTweet',
+      populate: {
+        path: 'author likes retweets',
+        select: 'name image username email confirmed'
+      }
+    });
+
+    const allTweets = [...tweets, ...retweets].sort((a, b) => b.createdAt - a.createdAt);
+
+    res.status(200).send(allTweets);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: 'Error getting all tweets' });
+  }
+};
+
 export {
   createTweet,
   deleteTweet,
@@ -250,5 +283,6 @@ export {
   likeTweet,
   getAllTweets,
   createRetweet,
-  deleteRetweet
+  deleteRetweet,
+  getAllFollowsTweets
 };
