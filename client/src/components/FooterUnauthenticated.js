@@ -80,14 +80,14 @@ function ModalRegister({ setModalRegister }) {
         </div>
         <div className="mt-12">
           <button
-            onClick={() => signIn("google")}
+            onClick={() => signIn("google", { callbackUrl: '/home' })}
             className="mx-3 my-2 flex  w-[300px] items-center justify-center rounded-full border-2 px-4 py-2 hover:bg-gray-300 dark:bg-gray-50 dark:text-black dark:hover:bg-gray-300"
           >
             <FcGoogle className="mr-5 h-6 w-6" />
             <p className="mr-4">Registrase con Google</p>
           </button>
           <button
-            onClick={() => signIn("facebook")}
+            onClick={() => signIn("facebook", { callbackUrl: '/home' })}
             className="mx-3 mt-4 flex w-[300px] items-center justify-center rounded-full border-2 px-4 py-2 font-semibold text-black hover:bg-gray-300 dark:bg-gray-50 dark:text-black dark:hover:bg-gray-300"
           >
             <AiFillFacebook className="h-6 w-6" />

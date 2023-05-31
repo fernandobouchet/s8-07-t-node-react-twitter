@@ -1,37 +1,108 @@
+import { useFollowUserMutation, useGetAllUsersQuery, useGetUserByIdQuery, useUnFollowUserMutation } from "@/redux/services/usersApi";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 const { default: Image } = require("next/image");
 const { default: Link } = require("next/link");
 
 function QuienSeguir() {
-  return (<div className="w-[330px] h-[318px] rounded-md dark:bg-[#16181C]">
-    <h2 className="dark:text-white text-[23px] ml-3 mt-2 font-semibold"> A quién seguir</h2>
-    <div className="flex flex-row gap-5 p-4 items-center">
-      <Image src={"https://pbs.twimg.com/profile_images/1412629073956950022/8KqC1cmp_400x400.jpg"} width={50} height={100} alt="Avatar" className="rounded-full" unoptimized></Image>
-      <div className="grow">
-        <h3 className="dark:text-white font-bold">Rodrigo de Paul</h3>
-        <p className="dark:text-gray-400">@rodrigodepaul</p>
-      </div>
-      <button className="dark:text-black bg-white rounded-full w-[72px] h-9 text-sm font-bold ml-2">Seguir</button>
-    </div>
-    <div className="flex flex-row gap-5 p-4 items-center">
-      <Image src={"https://pbs.twimg.com/profile_images/515223776553103361/KF1NzwTW_400x400.jpeg"} width={50} height={100} alt="Avatar" className="rounded-full" unoptimized></Image>
-      <div className="grow">
-        <h3 className="dark:text-white font-bold">Lionel Scaloni</h3>
-        <p className="dark:text-gray-400">@rodrigodepaul</p>
-      </div>
-      <button className="dark:text-black bg-white rounded-full w-[72px] h-9 text-sm font-bold ml-auto">Seguir</button>
-    </div>
-    <div className="flex flex-row gap-5 p-4 items-center">
-      <Image src={"https://pbs.twimg.com/profile_images/1604559776297385991/UoGVbhBu_400x400.jpg"} width={50} height={100} alt="Avatar" className="rounded-full" unoptimized></Image>
-      <div className="grow">
-        <h3 className="dark:text-white font-bold">AFA</h3>
-        <p className="dark:text-gray-400">@afa</p>
-      </div>
-      <button className="dark:text-black bg-white rounded-full w-[72px] h-9 text-sm font-bold ml-auto">Seguir</button>
+  const { data: session } = useSession();
+  const loggedInUserId = session?.user?._id;
+  const userActual = useGetUserByIdQuery(loggedInUserId);
+  console.log(userActual.data?.following);
+  const [randomData, setRandomData] = useState([]);
+  const { data, isLoading, error } = useGetAllUsersQuery();
+  const [following, setFollowing] = useState([]);
 
-    </div>
-    <Link href="/explore" className="text-blue-500 ml-3 text-md">Mostrar más</Link>
+  useEffect(() => {
+    if (data) {
+      const filteredData = data.filter((user) => user._id !== loggedInUserId);
+      const randomUsers = [...filteredData]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3);
+      setRandomData(randomUsers);
+    }
+  }, [data, loggedInUserId]);
 
-  </div >)
+  useEffect(() => {
+    if (userActual.data?.following) {
+      const followingIds = userActual.data.following.map((user) => user._id);
+      setFollowing(followingIds);
+    }
+  }, [userActual.data]);
+
+  const [unfollowUser] = useUnFollowUserMutation();
+  const [followUser] = useFollowUserMutation();
+  const onFollowUser = async (loggedInUserId, id) => {
+    const res = await followUser(loggedInUserId, id);
+    console.log(res.error?.data);
+    setFollowing((prevFollowing) => [...prevFollowing, id]);
+  };
+  const onUnfollowUser = async (loggedInUserId, id) => {
+    const res = await unfollowUser(loggedInUserId, id);
+    if (res.data) {
+      setFollowing((prevFollowing) => prevFollowing.filter((userId) => userId !== id));
+    }
+    console.log(res);
+  }
+  function onClickFollowUser(id) {
+    onFollowUser(id, loggedInUserId);
+  }
+  function onClickUnFollowUser(id) {
+    onUnfollowUser(id, loggedInUserId);
+  }
+
+  if (userActual.isFetching) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <>
+      <div className="h-[330px] w-[330px] rounded-md dark:bg-[#16181C]">
+        <h2 className="ml-3 mt-2 text-[23px] font-semibold dark:text-white">
+          A quién seguir
+        </h2>
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          randomData.map((user) => (
+            <div key={user._id}>
+              <div className="flex flex-row items-center gap-3 p-4">
+                <Image
+                  src={user.image}
+                  width={50}
+                  height={100}
+                  alt="Avatar"
+                  className="rounded-full"
+                  unoptimized
+                />
+                <div className="grow">
+                  <h3 className="font-bold dark:text-white">{user.name}</h3>
+                  <p className="dark:text-gray-400 text-xs">
+                    @{user.email.split("@")[0]}
+                  </p>
+                </div>
+                {following.includes(user._id) ? (
+                  <button onClick={() => onClickUnFollowUser(user._id)} className="ml-2 h-9 w-[95px] rounded-full bg-red-500 text-sm font-bold text-white">
+                    Unfollow
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => onClickFollowUser(user._id)}
+                    className="ml-2 h-9 w-[65px] rounded-full bg-white text-sm font-bold dark:text-black"
+                  >
+                    Seguir
+                  </button>
+                )}
+              </div>
+            </div>
+          ))
+        )}
+        <Link href="/explore" className="text-md ml-3 text-blue-500">
+          Mostrar más
+        </Link>
+      </div>
+    </>
+  );
 }
 
 export default QuienSeguir;
