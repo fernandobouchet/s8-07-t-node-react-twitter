@@ -18,7 +18,7 @@ export const usersApi = createApi({
       providesTags: ["Users"],
     }),
     getUserById: builder.query({
-      query: (userId) => `user/${userId}`,
+      query: (userId) => `profile/${userId}`,
     }),
     createUser: builder.mutation({
       query: (body) => ({
@@ -29,8 +29,28 @@ export const usersApi = createApi({
       }),
       invalidatesTags: ["Users"],
     }),
+    followUser: builder.mutation({
+      query: (userId) => ({
+        url: `follow/${userId}`,
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'content-type': 'application/json'
+        },
+      })
+    }),
+    unFollowUser: builder.mutation({
+      query: (userId) => ({
+        url: `unfollow/${userId}`,
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+          'content-type': 'application/json'
+        },
+      })
+    })
   }),
 
 })
 
-export const { useGetAllUsersQuery, useGetUserByIdQuery, useCreateUserMutation } = usersApi;
+export const { useGetAllUsersQuery, useGetUserByIdQuery, useCreateUserMutation, useFollowUserMutation, useUnFollowUserMutation } = usersApi;
