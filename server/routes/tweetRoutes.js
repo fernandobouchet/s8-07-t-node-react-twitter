@@ -15,10 +15,10 @@ import { sessionMiddleware } from '../middlewares/sessionMiddleware.js';
 
 const tweetRouter = Router();
 
-tweetRouter.get('/allTweets', getAllTweets);
+tweetRouter.get('/all', getAllTweets);
 tweetRouter.get('/user/:userId', getTweetsByUserId);
 
-tweetRouter.post('/', [sessionMiddleware, upload.array('images')], createTweet);
+tweetRouter.post('/create', [sessionMiddleware, upload.array('images')], createTweet);
 tweetRouter.get('/:id', getTweetById);
 tweetRouter.put('/:id', [sessionMiddleware, upload.array('images')], updateTweet);
 tweetRouter.delete('/:id', sessionMiddleware, deleteTweet);
