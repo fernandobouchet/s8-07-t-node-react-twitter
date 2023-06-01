@@ -53,7 +53,7 @@ function QuienSeguir() {
   }
   return (
     <>
-      <div className="h-[330px] w-[330px] rounded-md dark:bg-[#16181C]">
+      <div className="h-[330px] max-w-[330px] rounded-xl dark:bg-[#16181C]">
         <h2 className="ml-3 mt-2 text-[23px] font-semibold dark:text-white">
           A quién seguir
         </h2>
@@ -62,7 +62,7 @@ function QuienSeguir() {
         ) : (
           randomData.map((user) => (
             <div key={user._id}>
-              <div className="flex flex-row items-center gap-2 p-4">
+              <div className="flex flex-row items-center my-1.5 gap-2 p-3">
                 <Image
                   src={user.image}
                   width={50}

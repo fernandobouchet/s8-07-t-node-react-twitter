@@ -40,7 +40,7 @@ import FooterUnauthenticated from "./FooterUnauthenticated";
 import { HiChevronRight } from "react-icons/hi";
 
 function Header() {
-  const { pathname } = useRouter();
+  const { pathname, query } = useRouter();
   const { data: session, status } = useSession();
   const [openSettings, setOpenSettings] = useState(false);
   const [openUserPopper, setOpenUserPopper] = useState();
@@ -137,10 +137,10 @@ function Header() {
             href="/messages"
             className={
               "flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
-              (pathname === "/messages" ? "font-bold" : "")
+              (pathname.includes("messages") ? "font-bold" : "")
             }
           >
-            <MessagesIcon size={28} active={pathname === "/messages"} />{" "}
+            <MessagesIcon size={28} active={pathname.includes("messages")} />{" "}
             <p className="dark:text-white max-xl:hidden">Mensajes</p>
           </Link>
 
@@ -167,13 +167,13 @@ function Header() {
           </Link>
 
           <Link
-            href="/profile"
+            href={"/" + session?.user?.username}
             className={
               "flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
-              (pathname === "/profile" ? "font-bold" : "")
+              (query.profile === session?.user?.username ? "font-bold" : "")
             }
           >
-            <ProfileIcon size={28} active={pathname === "/profile"} />{" "}
+            <ProfileIcon size={28} active={query.profile === session?.user?.username} />{" "}
             <p className="dark:text-white max-xl:hidden">Perfil</p>
           </Link>
 
@@ -238,7 +238,7 @@ function Header() {
 
               <Popover.Button
                 ref={setOpenOptionPopper}
-                className="flex w-fit items-center gap-4 rounded-3xl p-3 text-xl outline-none transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4"
+                className="flex w-fit items-center gap-4 rounded-3xl p-3 text-xl outline-none transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 max-xl:m-auto lg:pr-4"
               >
                 <MoreIcon size={28} />
                 <p className="dark:text-white max-xl:hidden">Más opciones</p>
@@ -282,7 +282,7 @@ function Header() {
                   onClick={() => signOut()}
                   className="w-full px-4 py-2 text-left transition duration-300 hover:bg-black/5 hover:dark:bg-white/10"
                 >
-                  Cerrar la sesion de {session?.user?.name}
+                  Cerrar la sesion de @{session?.user?.username}
                 </button>
                 <div className="-my-1 h-3 w-3 origin-bottom-left rotate-45 transform border-b border-r bg-white dark:border-white/20 dark:bg-black max-xl:ml-5 xl:mx-auto"></div>
               </Popover.Panel>
@@ -325,8 +325,8 @@ function Header() {
                   <p className="max-w-[14ch] truncate font-semibold dark:text-white">
                     {session?.user?.name}
                   </p>
-                  <p className="-mt-0.5 max-w-[14ch] capitalize truncate text-sm text-slate-500">
-                    @{session?.data?.username}
+                  <p className="-mt-0.5 max-w-[14ch] truncate text-sm text-slate-500">
+                    @{session?.user?.username}
                   </p>
                 </div>
               </div>
@@ -384,7 +384,7 @@ function Footer() {
             (pathname === "/" ? "font-bold" : "")
           }
         >
-          <MessagesIcon size={28} active={pathname === "/messages"} />
+          <MessagesIcon size={28} active={pathname.includes("messages")} />
         </Link>
       </nav>
 

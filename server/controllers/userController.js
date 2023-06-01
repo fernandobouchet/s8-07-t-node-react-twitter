@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb';
+import { isValidObjectId } from 'mongoose';
 import Comment from "../models/Comment.js";
 import Session from "../models/Session.js";
 import Tweet from "../models/Tweet.js";
@@ -11,7 +12,15 @@ const getProfileById = async (req, res) => {
     if (!id) {
       res.status(400).json({ error: 'No se pudo encontrar el usuario.' })
     }
-    const profile = await User.findById(id).populate('likes tweets comments followers following');
+
+    let profile
+
+    if (isValidObjectId(id)) {
+      profile = await User.findById(id).populate('likes tweets comments followers following');
+    } else {
+      profile = await User.findOne({ username: id }).populate('likes tweets comments followers following');
+    }
+
     res.status(200).json(profile);
   } catch (error) {
     console.error(error);

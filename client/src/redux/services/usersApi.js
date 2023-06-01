@@ -28,7 +28,14 @@ export const usersApi = createApi({
       }),
     }),
     getUserById: builder.query({
-      query: (userId) => `profile/${userId}`,
+      query: (userId) => ({
+        url: `profile/${userId}`,
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'content-type': 'application/json'
+        }
+      }),
     }),
     createUser: builder.mutation({
       query: (body) => ({

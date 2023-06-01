@@ -31,7 +31,7 @@ export const authOptions = {
       const data = await fetch("http://localhost:8000/api/users/profile/" + user.id, {
         credentials: 'same-origin'
       }).then((res) => res.json()).catch(error => error)
-      session.data = data;
+      session.user = data;
       return session;
     },
   },
