@@ -6,7 +6,6 @@ import {
   BookmarksIcon,
   ChevronUpIcon,
   CreateTweetIcon,
-  EditIcon,
   ExploreIcon,
   HelpIcon,
   HomeIcon,
@@ -213,7 +212,7 @@ function Header() {
                   </button>
                   <div
                     className={
-                      "w-full transition-all duration-500 " +
+                      "w-full transition-[height] duration-500 " +
                       (openSettings ? "h-[176px]" : "h-0 overflow-hidden")
                     }
                   >
@@ -223,12 +222,10 @@ function Header() {
                     >
                       <SettingsIcon size={18} /> Configuración y Privacidad
                     </Link>
-                    <button className="flex w-full items-center gap-4 p-4 py-2.5 text-left font-semibold transition duration-300 hover:bg-black/5 hover:dark:bg-white/10">
+                    <a href="https://help.twitter.com/es" target="_blank" rel="noreferrer noopener" className="flex w-full items-center gap-4 p-4 py-2.5 text-left font-semibold transition duration-300 hover:bg-black/5 hover:dark:bg-white/10">
                       <HelpIcon size={18} /> Centro de Ayuda
-                    </button>
-                    <button className="flex w-full items-center gap-4 p-4 py-2.5 text-left font-semibold transition duration-300 hover:bg-black/5 hover:dark:bg-white/10">
-                      <EditIcon size={18} /> Mostrar
-                    </button>
+                    </a>
+                    <Darkmode />
                     <button className="flex w-full items-center gap-4 p-4 py-2.5 text-left font-semibold transition duration-300 hover:bg-black/5 hover:dark:bg-white/10">
                       <ShortcutsIcon size={18} /> Atajos de teclado
                     </button>
@@ -411,7 +408,7 @@ function Footer() {
               </div>
             )}
           </div>
-          <div className="flex flex-wrap gap-x-2 gap-y-1 text-[.75rem] font-medium dark:text-gray-500">
+          <div className="flex flex-wrap gap-x-2 gap-y-1 text-[.75rem] font-medium dark:text-gray-500 mb-20">
             <button className="hover:underline">Condiciones de Servicio</button>
             <button className="hover:underline">Política de Privacidad</button>
             <button className="hover:underline">Política de cookies</button>
@@ -419,9 +416,6 @@ function Footer() {
             <button className="hover:underline">Información de anuncios</button>
             <button className="hover:underline">Más opciones...</button>
             <p>© 2023 X Corp.</p>
-          </div>
-          <div>
-            <Darkmode />
           </div>
         </div>
       </footer>
@@ -466,10 +460,10 @@ export default function Layout({ children }) {
             <Link
               href="/settings/account"
               className={
-                "flex w-full items-center justify-between p-4 transition duration-200 dark:text-white max-md:hidden " +
-                (asPath === "/settings/account"
-                  ? "bg-black/5 dark:bg-white/10"
-                  : "hover:bg-black/5 hover:dark:bg-white/10")
+                "flex w-full items-center justify-between p-4 transition duration-200 dark:text-white max-md:hidden border-r " +
+                (pathname.includes("/settings/account") || pathname.includes("/settings/password") || pathname.includes("/settings/deactivate")
+                  ? "bg-black/5 dark:bg-white/10 border-r-indigo-500"
+                  : "hover:bg-black/5 hover:dark:bg-white/10 border-r-transparent")
               }
             >
               Tu cuenta <HiChevronRight size={24} />
@@ -477,10 +471,10 @@ export default function Layout({ children }) {
             <Link
               href="/settings/privacy_and_safety"
               className={
-                "flex w-full items-center justify-between p-4 transition duration-200 dark:text-white max-md:hidden " +
-                (asPath === "/settings/privacy_and_safety"
-                  ? "bg-black/5 dark:bg-white/10"
-                  : "hover:bg-black/5 hover:dark:bg-white/10")
+                "flex w-full items-center justify-between p-4 transition duration-200 dark:text-white max-md:hidden border-r " +
+                (pathname.includes("/settings/privacy_and_safety")
+                  ? "bg-black/5 dark:bg-white/10 border-r-indigo-500"
+                  : "hover:bg-black/5 hover:dark:bg-white/10 border-r-transparent")
               }
             >
               Privacidad y seguridad <HiChevronRight size={24} />
@@ -549,7 +543,7 @@ export default function Layout({ children }) {
                 <Link
                   href={"/messages/" + e.name}
                   key={e.id}
-                  className="flex flex-wrap gap-4 p-3 hover:bg-black dark:hover:bg-white/10"
+                  className="flex flex-wrap gap-4 p-3 hover:bg-black/5 dark:hover:bg-white/10"
                 >
                   <Image
                     className="h-14 w-14 rounded-full"
