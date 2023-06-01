@@ -34,9 +34,9 @@ const getMyProfile = async (req, res) => {
 const updateMyProfile = async (req, res) => {
   try {
     const { id } = req.user;
-    const { bio, username, name, confirmed } = req.body;
+    const { bio, username, name, confirmed, birthday, genre, languages, website, location } = req.body;
     const updatedProfile = await User.findByIdAndUpdate(id, {
-      bio, username, name, confirmed
+      bio, username, name, confirmed, birthday, genre, languages, website, location
     }, { new: true });
     res.status(200).json(updatedProfile);
   } catch (error) {
