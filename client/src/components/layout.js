@@ -321,12 +321,12 @@ function Header() {
                     unoptimized
                   />
                 )}
-                <div className="text-base max-xl:hidden">
+                <div className="text-base text-left max-xl:hidden">
                   <p className="max-w-[14ch] truncate font-semibold dark:text-white">
                     {session?.user?.name}
                   </p>
-                  <p className="-mt-0.5 max-w-[14ch] truncate text-sm text-slate-500">
-                    {session?.user?.email.split("@")[0]}
+                  <p className="-mt-0.5 max-w-[14ch] capitalize truncate text-sm text-slate-500">
+                    @{session?.data?.username}
                   </p>
                 </div>
               </div>
