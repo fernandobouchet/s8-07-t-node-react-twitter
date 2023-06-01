@@ -1,5 +1,7 @@
+import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { BiSend } from 'react-icons/bi'
 import { FiInfo } from 'react-icons/fi'
@@ -8,6 +10,8 @@ import { HiGif } from 'react-icons/hi2'
 import { IoImage } from 'react-icons/io5'
 
 const Message = () => {
+  const { query } = useRouter()
+
   function handleResizeInput(e) {
     if (e.target.value < 10) {
       document.querySelector(".msguser").style.height = "auto"
@@ -21,7 +25,11 @@ const Message = () => {
   }
 
   return (
-    <section className='text-white md:border-x border-x-black/5 dark:border-x-white/20 w-full h-full md:max-w-[570px] relative overflow-y-scroll'>
+    <>
+    <Head>
+      <title>@{query?.message} / Twitter</title>
+    </Head>
+    <section className='dark:text-white md:border-x border-x-black/5 dark:border-x-white/20 w-full h-full md:max-w-[570px] relative overflow-y-scroll'>
       <div className='flex justify-between items-center p-5 w-full dark:text-white backdrop-blur-md sticky top-0'>
         <Link href="/messages"><HiArrowLeft size={24} /></Link>
         <div className='flex items-center gap-3 font-bold text-lg'>
@@ -37,7 +45,7 @@ const Message = () => {
         </div>
         <button><FiInfo size={24} /></button>
       </div>
-      <Link href="/elonmusk" className="flex flex-col w-[95%] mx-auto pt-5 pb-10 items-center text-center justify-center transition duration-300 hover:bg-black/5 dark:hover:bg-white/10 dark:text-white">
+      <Link href="/elonmusk" className="flex flex-col w-[95%] mx-auto pt-5 pb-10 items-center text-center justify-center transition duration-300 hover:bg-black/[3%] dark:hover:bg-white/10 dark:text-white">
         <Image
           className="h-20 w-20 object-cover rounded-full border-4 border-black cursor-pointer"
           src="/img/defaultprofile.jpg"
@@ -60,21 +68,22 @@ const Message = () => {
       </section>
 
       <section className='max-h-[150px] fixed bg-white dark:bg-black w-full md:max-w-[570px] bottom-0 border-t border-r border-black/5 dark:border-white/20'>
-        <div className='msguser text-white flex items-center gap-4 px-4 bg-black/5 dark:bg-white/10 w-[96%] mx-auto my-2 rounded-xl'>
+        <div className='msguser dark:text-white flex items-center gap-4 px-4 bg-black/5 dark:bg-white/10 w-[96%] mx-auto my-2 rounded-xl'>
           <div className='flex items-center gap-2 py-2'>
-            <button><IoImage size={18} /></button>
-            <button><HiGif size={18} /></button>
-            <button><HiEmojiHappy size={18} /></button>
+            <button><IoImage size={18} className='text-indigo-500' /></button>
+            <button><HiGif size={18} className='text-indigo-500' /></button>
+            <button><HiEmojiHappy size={18} className='text-indigo-500' /></button>
           </div>
           <textarea
             placeholder='Escribe un mensaje'
             className='bg-transparent outline-none h-6 min-h-full w-full overflow-y-scroll resize-none'
             onChange={(e) => handleResizeInput(e)}
           />
-          <button><BiSend size={18} /></button>
+          <button><BiSend size={18} className='text-indigo-500' /></button>
         </div>
       </section>
     </section>
+    </>
   )
 }
 
