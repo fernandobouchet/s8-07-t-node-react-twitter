@@ -12,6 +12,7 @@ import { IoLocationOutline } from "react-icons/io5"
 import { IoMdLink } from "react-icons/io"
 
 const ProfileSection = ({ session }) => {
+  console.log(session);
   const [openImageBG, setOpenImageBG] = useState(false)
   const [openImage, setOpenImage] = useState(false)
   const { asPath, pathname, query, back } = useRouter()
@@ -193,10 +194,10 @@ const ProfileSection = ({ session }) => {
 
           <p className="font-bold text-lg">{session?.user?.name ? session?.user?.name : "elonmusk"}</p>
           <p className="max-w-[24ch] -mt-2.5 truncate text-sm text-slate-500">
-            @{session?.user?.name ? session?.user?.name : "elonmusk"}
+            @{session?.data?.username ? session?.data?.username : "elonmusk"}
           </p>
 
-          <p>when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing</p>
+          <p>{session?.data?.bio}</p>
 
           <div className="flex items-center gap-2 flex-wrap">
             <p className="flex items-center gap-1"><IoLocationOutline size={18} className="text-gray-400" /> Mundo</p>
@@ -209,14 +210,14 @@ const ProfileSection = ({ session }) => {
               className="flex items-center gap-2"
               href={"/" + (session?.user?.name ? session?.user?.name : "elonmusk") + "/following"}
             >
-              {session?.user?.following ? session?.user?.following : 0} <p className="text-gray-400">Siguiendo</p>
+              {session?.data?.following ? session?.data?.following.length : 0} <p className="text-gray-400">Siguiendo</p>
             </Link>
 
             <Link
               className="flex items-center gap-2"
               href={"/" + (session?.user?.name ? session?.user?.name : "elonmusk") + "/followers"}
             >
-              {session?.user?.followers ? session?.user?.followers : 0} <p className="text-gray-400">Seguidores</p>
+              {session?.data?.followers ? session?.data?.followers.length : 0} <p className="text-gray-400">Seguidores</p>
             </Link>
           </div>
         </div>
