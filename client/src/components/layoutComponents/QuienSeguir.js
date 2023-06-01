@@ -9,7 +9,7 @@ function QuienSeguir() {
   const loggedInUserId = session?.user?._id;
   const userActual = useGetMyProfileQuery(loggedInUserId);
   const [randomData, setRandomData] = useState([]);
-  const { data, isLoading, error } = useGetAllUsersQuery();
+  const { data, isLoading } = useGetAllUsersQuery();
   const [following, setFollowing] = useState([]);
 
   useEffect(() => {
