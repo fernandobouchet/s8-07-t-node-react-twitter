@@ -61,7 +61,7 @@ function QuienSeguir() {
           <div>Loading...</div>
         ) : (
           randomData.map((user) => (
-            <div key={user._id}>
+            <Link href={"/" + user.username} key={user._id}>
               <div className="flex flex-row items-center my-1.5 gap-2 p-3">
                 <Image
                   src={user.image}
@@ -90,7 +90,7 @@ function QuienSeguir() {
                   </button>
                 )}
               </div>
-            </div>
+            </Link>
           ))
         )}
         <Link href="/explore" className="text-md ml-3 text-blue-500">

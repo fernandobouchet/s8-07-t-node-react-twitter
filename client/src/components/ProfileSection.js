@@ -147,7 +147,7 @@ const ProfileSection = ({ session, profile }) => {
           <div className="flex justify-between flex-wrap items-center gap-4">
           <Image
             onClick={() => setOpenImage(!openImage)}
-            className="h-32 w-32 -mt-16 object-cover rounded-full border-4 border-black cursor-pointer"
+            className="h-32 w-32 -mt-16 object-cover rounded-full border-4 border-white dark:border-black cursor-pointer"
             src={
               profile?.user?.image ? profile?.user?.image : "/img/defaultprofile.jpg"
             }
@@ -160,7 +160,7 @@ const ProfileSection = ({ session, profile }) => {
           {
             profile
               ? profile?.user?.username === session?.user?.username
-                ? <Link href="/settings/account/your_twitter_data" className="border-2 rounded-3xl border-black/5 py-1.5 px-3.5 font-semibold dark:border-white/20 text-white w-fit h-fit">
+                ? <Link href="/settings/account/your_twitter_data" className="hover:bg-black/5 dark:hover:bg-white/10 transition duration-200 border rounded-3xl border-black/20 py-1.5 px-3.5 font-semibold dark:border-white/30 dark:text-white w-fit h-fit">
               Editar Perfil
             </Link>
                 : <div className="ml-auto flex items-center gap-2 flex-wrap">
@@ -284,16 +284,16 @@ const ProfileSection = ({ session, profile }) => {
 
       <div className="text-gray-400 mt-4 flex overflow-x-scroll">
         <Link href={"/" + (profile?.user?.username ? profile?.user?.username : "elonmusk")} className="w-full px-4 whitespace-pre hover:bg-black/5 dark:hover:bg-white/20 font-bold transition duration-300">
-          <p className={"border-b-4 w-fit mx-auto py-3 " + (pathname === "/[profile]" ? "border-b-indigo-500 text-white " : "border-b-transparent")}>Tweets</p>
+          <p className={"border-b-4 w-fit mx-auto py-3 " + (pathname === "/[profile]" ? "border-b-indigo-500 dark:text-white text-black" : "border-b-transparent")}>Tweets</p>
         </Link>
         <Link href={"/" + (profile?.user?.username ? profile?.user?.username : "elonmusk") + "/with_replies"} className="w-full px-4 whitespace-pre hover:bg-black/5 dark:hover:bg-white/20 font-bold transition duration-300">
-          <p className={"border-b-4 w-fit mx-auto py-3 " + (pathname.includes("with_replies") ? "border-b-indigo-500 text-white" : "border-b-transparent")}>Respuestas</p>
+          <p className={"border-b-4 w-fit mx-auto py-3 " + (pathname.includes("with_replies") ? "border-b-indigo-500 dark:text-white text-black" : "border-b-transparent")}>Respuestas</p>
         </Link>
         <Link href={"/" + (profile?.user?.username ? profile?.user?.username : "elonmusk") + "/media"} className="w-full px-4 whitespace-pre hover:bg-black/5 dark:hover:bg-white/20 font-bold transition duration-300">
-          <p className={"border-b-4 w-fit mx-auto py-3 " + (pathname.includes("/media") ? "border-b-indigo-500 text-white" : "border-b-transparent")}>Fotos y videos</p>
+          <p className={"border-b-4 w-fit mx-auto py-3 " + (pathname.includes("/media") ? "border-b-indigo-500 dark:text-white text-black" : "border-b-transparent")}>Fotos y videos</p>
         </Link>
         <Link href={"/" + (profile?.user?.username ? profile?.user?.username : "elonmusk") + "/likes"} className="w-full px-4 whitespace-pre hover:bg-black/5 dark:hover:bg-white/20 font-bold transition duration-300">
-          <p className={"border-b-4 w-fit mx-auto py-3 " + (pathname.includes("/likes") ? "border-b-indigo-500 text-white" : "border-b-transparent")}>Me Gusta</p>
+          <p className={"border-b-4 w-fit mx-auto py-3 " + (pathname.includes("/likes") ? "border-b-indigo-500 dark:text-white text-black" : "border-b-transparent")}>Me gusta</p>
         </Link>
       </div>
       <hr className='border-black/5 -mt-4 dark:border-white/20'></hr>
