@@ -1,5 +1,7 @@
+import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { BiSend } from 'react-icons/bi'
 import { FiInfo } from 'react-icons/fi'
@@ -8,6 +10,8 @@ import { HiGif } from 'react-icons/hi2'
 import { IoImage } from 'react-icons/io5'
 
 const Message = () => {
+  const { query } = useRouter()
+
   function handleResizeInput(e) {
     if (e.target.value < 10) {
       document.querySelector(".msguser").style.height = "auto"
@@ -21,6 +25,10 @@ const Message = () => {
   }
 
   return (
+    <>
+    <Head>
+      <title>@{query?.message} / Twitter</title>
+    </Head>
     <section className='text-white md:border-x border-x-black/5 dark:border-x-white/20 w-full h-full md:max-w-[570px] relative overflow-y-scroll'>
       <div className='flex justify-between items-center p-5 w-full dark:text-white backdrop-blur-md sticky top-0'>
         <Link href="/messages"><HiArrowLeft size={24} /></Link>
@@ -75,6 +83,7 @@ const Message = () => {
         </div>
       </section>
     </section>
+    </>
   )
 }
 
