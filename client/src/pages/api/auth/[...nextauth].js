@@ -7,6 +7,7 @@ import clientPromise from "lib/mongodb";
 
 export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
+
   // Configure one or more authentication providers
   providers: [
     GithubProvider({
@@ -23,10 +24,18 @@ export const authOptions = {
     }),
     // ...add more providers here
   ],
-  secret: process.env.JWT_SECRET,
-  pages: {
-    signIn: "/login",
+  callbacks: {
+    async session({ session, user }) {
+      session.user.name = user.name;
+      session.user._id = user.id;
+      const data = await fetch("http://localhost:8000/api/users/profile/" + user.id, {
+        credentials: 'same-origin'
+      }).then((res) => res.json()).catch(error => error)
+      session.data = data;
+      return session;
+    },
   },
+  secret: process.env.SECRET,
 };
 
 export default NextAuth(authOptions);
