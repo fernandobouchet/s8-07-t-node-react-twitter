@@ -36,7 +36,7 @@ const Tweet = (props) => {
                             author?.confirmed && <HiBadgeCheck className='text-[#1d9bf0] ml-1' title='Cuenta verificada' />
                         }
                     </h4>
-                    <span>{'@' + (author?.username || author?.email.split("@")[0])}</span>
+                    <span>{'@' + author?.username}</span>
                     {
                         (timestamp || createdAt) && <TimeAgo timestamp={timestamp || createdAt} />
                     }
