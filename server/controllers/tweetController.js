@@ -274,6 +274,56 @@ const getAllFollowsTweets = async (req, res) => {
   }
 };
 
+const getTweetsByDate = async (req, res) => {
+  const limit = parseInt(req.query.limit) || 10; // Si no se especifica el límite, traer 10 por defecto
+  try {
+    const tweets = await Tweet.find().sort({ createdAt: -1 }).limit(limit);
+    res.json(tweets);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: 'Error al obtener los tweets' });
+  }
+};
+
+const getTopTweets = async (req, res) => {
+  try {
+    const topTweets = await Tweet.aggregate([
+      { $unwind: "$likes" },
+      { $group: { _id: "$_id", likes: { $sum: 1 } } },
+      { $sort: { likes: -1 } },
+      { $limit: 10 },
+      { $lookup: { from: "tweets", localField: "_id", foreignField: "_id", as: "tweet" } },
+      { $unwind: "$tweet" },
+      { $project: { _id: "$tweet._id", content: "$tweet.content", likes: 1 } }
+    ]);
+
+    res.json(topTweets);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const getTopHashtags = async (req, res) => {
+  try {
+    const topHashtags = await Tweet.aggregate([
+      { $unwind: "$hashtags" },
+      { $group: { _id: "$hashtags", count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: 10 },
+      { $project: { _id: 0, hashtag: "$_id", count: 1 } }
+    ]);
+
+    res.json(topHashtags);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+
+
 export {
   createTweet,
   deleteTweet,
@@ -284,5 +334,8 @@ export {
   getAllTweets,
   createRetweet,
   deleteRetweet,
-  getAllFollowsTweets
+  getAllFollowsTweets,
+  getTweetsByDate,
+  getTopTweets,
+  getTopHashtags
 };
