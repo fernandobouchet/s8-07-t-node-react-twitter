@@ -22,7 +22,7 @@ En el lado del servidor, se utiliza Node.js junto con Express para la creación 
 ## Authors
 
 **UX/UI**
-- Franco de Carli [Linkedin]() 
+- Franco de Carli [Linkedin](https://www.linkedin.com/in/francoandres-decarli/) [Behance](https://www.behance.net/francodecarli)
 - Melina Ibarra [Linkedin]()
 
 **Front-End**
