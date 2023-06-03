@@ -1,3 +1,4 @@
+import { API_URL } from "../../../utils/api";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // const { initialState } = require("@/data/tweets.js");
 
@@ -6,7 +7,7 @@ export const tweetsApi = createApi(
     reducerPath: "tweetsApi",
     refetchOnFocus: false, // when the window is refocused, refetch the data
     refetchOnMountOrArgChange: 120,
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/api/tweets/", }),
+    baseQuery: fetchBaseQuery({ baseUrl: `${API_URL}/api/tweets/`, }),
     tagTypes: ["Tweets"],
     endpoints: (builder) => ({
       getAllTweets: builder.query({

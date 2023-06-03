@@ -30,7 +30,7 @@ function Home() {
 
       <Header isSelected={isSelected} setIsSelected={setIsSelected} />
       <Post />
-      {!isLoading
+      {!isLoading && data !== undefined
         ? data
           .filter((tweet) => tweet.author)
           .map((tweet) => <Tweet key={tweet._id} {...tweet} />)
