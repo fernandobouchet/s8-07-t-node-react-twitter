@@ -46,6 +46,10 @@ const getMyProfile = async (req, res) => {
   try {
     const { id } = req.user;
     const profile = await User.findById(id).populate('likes tweets comments followers following');
+    if (profile.username === undefined) {
+      profile.username = profile.email.split("@")[0];
+      await profile.save();
+    }
     res.status(200).json(profile);
   } catch (error) {
     console.error(error);

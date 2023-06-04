@@ -12,6 +12,7 @@ import { IoLocationOutline } from "react-icons/io5"
 import { IoMdLink } from "react-icons/io"
 import { useUnFollowUserMutation, useFollowUserMutation } from "@/redux/services/usersApi"
 import Splash from "./splash"
+import { formatDate } from "../../utils/formatoFechas"
 
 const ProfileSection = ({ session, profile }) => {
   const [unfollowUser] = useUnFollowUserMutation();
@@ -261,7 +262,7 @@ const ProfileSection = ({ session, profile }) => {
                 : null
             }
 
-            <p className="flex items-center gap-1 text-gray-400"><HiCalendarDays size={18}/> Se unió en {profile?.user?.createdAt ? profile.user.createdAt : "marzo de 2023" }</p>
+            <p className="flex items-center gap-1 text-gray-400"><HiCalendarDays size={18}/> Se unió en {profile?.user?.createdAt ? formatDate(profile.user.createdAt) : "marzo de 2023" }</p>
           </div>
 
           <div className="flex items-center gap-4 dark:text-white">
