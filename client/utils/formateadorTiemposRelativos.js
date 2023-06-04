@@ -15,7 +15,7 @@ export const getTimeAgo = (timestamp) => {
     const secondsElapsed = Math.floor(timeDiff / 1000);
 
     if (secondsElapsed === 0) {
-      return '1s'
+      return '0s'
     }
 
     for (const { unit, seconds } of TIME_UNITS) {
