@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, useRef } from 'react'
 import { AppContext } from '@/context/AppContext'
 import Image from 'next/image'
 import { BiMessageRounded } from 'react-icons/bi'
@@ -12,13 +12,14 @@ import Likes from './Likes'
 import Retweet from './Retweet'
 import Link from 'next/link'
 import { useSession } from "next-auth/react";
-
+import { URL_CLIENT } from '../../utils/api'
+import { Popover, Transition } from '@headlessui/react'
+import { ReportIcon, TrashIcon } from './icons'
 const Tweet = (props) => {
   const { id, _id, content, timestamp = 0, author, comments = [], createdAt, __v, images = [], isComment = false } = props
   const formatNum = (num) => (num === 0 ? "" : num);
   const [appContext, setAppContext] = useContext(AppContext)
   const { data: session } = useSession();
-
   const onComment = () => {
     if (session) {
       setAppContext({
@@ -28,6 +29,18 @@ const Tweet = (props) => {
       })
     }
   }
+
+  const shareTweet = () => {
+    if (navigator.share && !isComment) {
+      navigator.share({
+        title: `Compartir Tweet de ${author?.name}`,
+        text: content,
+        url: `${URL_CLIENT}/tweet/${_id}`
+      })
+        .then(() => console.log('Tweet compartido'))
+        .catch((error) => console.log('Error al compartir el tweet:', error));
+    }
+  };
 
   const handleImageError = (event) => {
     event.target.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG27rp6wCKcUSGuXvHpeSiFQNyHVBcak9LT5t57-dwI_KEEEtfRTvI8oBeYhCmrB9jQmw&usqp=CAU";
@@ -45,30 +58,30 @@ const Tweet = (props) => {
             <div className="w-full flex flex-col gap-1 text-[#536471] dark:bg-transparent" >
                 {isComment ? (
                     <>
-                    <div className='flex flex-row items-start group gap-1 text-lg w-full' >
-                        <Link href={"/" + author?.username}>
-                            <h4 className={` mx-2 inline-flex items-center align-middle font-bold text-black dark:text-[#e7e9ea] group-hover:underline`} >{author.name.length <= 25 ? author.name : `${author.name.slice(0, 25)}...`}
-                                {
-                                    author?.private && <IoIosLock className='text-black dark:text-white ml-1' title='Cuenta verificada' />
-                                }
-                                {
-                                    author?.confirmed && <HiBadgeCheck className='text-[#1d9bf0] ml-1' title='Cuenta verificada' />
-                                }
-                            </h4>
-                        </Link>
-                        <span>{'@' + author?.username}</span>
+                        <div className='flex flex-row items-start group gap-1 text-lg w-full' >
+                            <Link href={"/" + author?.username}>
+                                <h4 className={` mx-2 inline-flex items-center align-middle font-bold text-black dark:text-[#e7e9ea] group-hover:underline`} >{author.name.length <= 25 ? author.name : `${author.name.slice(0, 25)}...`}
+                                    {
+                                        author?.private && <IoIosLock className='text-black dark:text-white ml-1' title='Cuenta verificada' />
+                                    }
+                                    {
+                                        author?.confirmed && <HiBadgeCheck className='text-[#1d9bf0] ml-1' title='Cuenta verificada' />
+                                    }
+                                </h4>
+                            </Link>
+                            <span>{'@' + author?.username}</span>
+                            {
+                                (timestamp || createdAt) && <TimeAgo timestamp={timestamp || createdAt} />
+                            }
+                        </div>
+                        <p className='ml-2 dark:text-white w-[90%]' >{content}</p>
                         {
-                            (timestamp || createdAt) && <TimeAgo timestamp={timestamp || createdAt} />
+                            images?.length ? (
+                                <div className='max-w-fit max-h-fit py-2'>
+                                    <img src={images[0]} className="object-fit rounded-3xl bg-white border dark:border-white/20 border-black/5 " onError={handleImageError} alt="postImg" />
+                                </div>
+                            ) : null
                         }
-                    </div>
-                    <p className='ml-2 dark:text-white w-[90%]' >{content}</p>
-                    {
-                        images?.length ? (
-                            <div className='max-w-fit max-h-fit py-2'>
-                                <img src={images[0]} className="object-fit rounded-3xl bg-white border dark:border-white/20 border-black/5 " onError={handleImageError} alt="postImg" />
-                            </div>
-                        ) : null
-                    }
                     </>
                 ) : <Link href={`/tweet/${_id}`}>
                     <div className='flex flex-row items-start group gap-1 text-lg w-full' >
@@ -114,14 +127,12 @@ const Tweet = (props) => {
                         <IoStatsChart className='icons group-hover:bg-[#1C9BEF]/10' title='Ver' />
                         <p className='text-sm' >{__v}</p>
                     </div>
-                    <div className='flex items-center align-middle space-x-1 cursor-pointer hover:text-[#1d9bf0] group' >
+                    <div onClick={shareTweet} className='flex items-center align-middle space-x-1 cursor-pointer hover:text-[#1d9bf0] group' >
                         <FiShare className='icons group-hover:bg-[#1d9bf0]/10' title='Compartir' />
                     </div>
                 </div>
             </div>
-            <div className='w-auto flex items-center align-middle -ml-5 cursor-pointer hover:text-[#1d9bf0] group' >
-                <SlOptions className='icons w-10 h-10 group-hover:bg-[#1C9BEF]/10' title='Mas opciones' />
-            </div>
+            <Options {...props} user={session?.user} />
         </div>
   )
 }
@@ -141,6 +152,43 @@ const TimeAgo = ({ timestamp, styleds = "" }) => {
 
   return (
         <span className={styleds}>{` · ${time}`}</span>
+  )
+}
+
+const Options = ({ user, author }) => {
+  const popperRef = useRef(null);
+
+  return (
+        <div className='w-auto flex items-center align-middle -ml-5 cursor-pointer hover:text-[#1d9bf0] group' >
+        <Popover className="-mt-1 ml-auto">
+            <Transition
+                enter="transition duration-200 ease-out"
+                enterFrom="transform scale-95 opacity-0"
+                enterTo="transform scale-100 opacity-100"
+                leave="transition duration-95 ease-out"
+                leaveFrom="transform scale-100 opacity-100"
+                leaveTo="transform scale-95 opacity-0"
+            >
+                <Popover.Panel className="dark:shadowtw absolute right-0 flex h-fit w-max flex-col overflow-hidden rounded-xl border bg-white font-medium dark:border-white/20 dark:bg-black dark:text-white">
+                    {
+                       user?._id !== author?._id
+                         ? <button className="flex w-full items-center gap-2 px-4 py-2.5 text-left font-bold transition duration-200 hover:bg-black/5 dark:hover:bg-white/10">
+                        <ReportIcon size={20} /> Denunciar la conversación
+                    </button>
+                         : <button className="flex w-full items-center gap-2 px-4 py-2.5 text-left font-bold text-red-600 transition duration-200 hover:bg-black/5 dark:hover:bg-white/10">
+                        <TrashIcon size={20} /> Eliminar conversación
+                    </button>
+                    }
+                </Popover.Panel>
+            </Transition>
+            <Popover.Button
+                className={"outline-none"}
+                ref={popperRef}
+            >
+                <SlOptions className='icons w-10 h-10 group-hover:bg-[#1C9BEF]/10' title='Mas opciones' />
+            </Popover.Button>
+        </Popover>
+    </div>
   )
 }
 
