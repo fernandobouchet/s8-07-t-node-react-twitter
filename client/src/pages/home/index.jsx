@@ -1,6 +1,8 @@
 import Post from "@/components/Post";
 import Tweet from "@/components/Tweet";
-import React, { useState } from "react";
+import Modal from "@/components/Modal";
+import { AppContext } from '@/context/AppContext'
+import React, { useState, useContext } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -9,20 +11,16 @@ import { useGetAllTweetsQuery } from "@/redux/services/tweetsApi";
 import SkeletonTweet from "@/components/SkeletonTweet";
 
 function Home() {
-  const { isLoading, isFetching, data, error } = useGetAllTweetsQuery(
-    undefined,
-    {
-      refetchOnReconnect: true,
-    }
-  );
+  const { isLoading, data } = useGetAllTweetsQuery(undefined, {
+    refetchOnReconnect: true,
+  });
   const [isSelected, setIsSelected] = useState("para-ti");
-
-  console.log(isLoading, isFetching, data, error);
   const { status } = useSession();
   const router = useRouter();
+  const [appContext] = useContext(AppContext)
 
   if (status === "unauthenticated") {
-    router.push("/login");
+    router.push("/");
     return <></>;
   }
 
@@ -34,11 +32,12 @@ function Home() {
 
       <Header isSelected={isSelected} setIsSelected={setIsSelected} />
       <Post />
-      {!isLoading
+      {!isLoading && data !== undefined
         ? data
-            .filter((tweet) => tweet.author)
-            .map((tweet) => <Tweet key={tweet._id} {...tweet} />)
+          .filter((tweet) => tweet.author && !tweet.isRetweet)
+          .map((tweet) => <Tweet key={tweet._id} {...tweet} />)
         : [1, 2, 3, 4, 5, 6, 7].map((tweet) => <SkeletonTweet key={tweet} />)}
+        {appContext.active ? <Modal /> : null}
     </>
   );
 }

@@ -18,12 +18,31 @@ const userSchema = new mongoose.Schema(
     },
     username: {
       type: String,
-      required: true,
+      unique: true,
+    },
+    birthday: {
+      type: Date,
+    },
+    location: {
+      type: String,
+      default: '',
+    },
+    genre: {
+      type: String,
+      default: '',
     },
     bio: {
       type: String,
       default: '',
     },
+    website: {
+      type: String,
+      default: '',
+    },
+    languages: [{
+      type: String,
+      default: ['']
+    }],
     confirmed: {
       type: Boolean,
       default: false,
@@ -31,7 +50,7 @@ const userSchema = new mongoose.Schema(
     likes: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Like',
+        ref: 'Tweet',
       },
     ],
     tweets: [
@@ -58,6 +77,10 @@ const userSchema = new mongoose.Schema(
         ref: 'User',
       },
     ],
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
   },
   { timestamps: true }
 );

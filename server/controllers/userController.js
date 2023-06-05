@@ -1,113 +1,139 @@
+import { isValidObjectId } from 'mongoose';
+import Comment from "../models/Comment.js";
+import Session from "../models/Session.js";
+import Tweet from "../models/Tweet.js";
 import User from "../models/User.js";
-import comparePassword from '../helpers/comparePassword.js';
-
-
-//registro
-const registerUser = async (req, res) => {
-  const { email, name, password } = req.body;
-
-  const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    return res.status(400).json({ msg: "El usuario ya existe" });
-  }
-
-  if (password.length < 8) {
-    return res
-      .status(400)
-      .json({ msg: "La contraseña debe tener al menos 8 caracteres" });
-  }
-
-  try {
-    const user = new User({ email, name, password });
-    const savedUser = await user.save();
-
-    res.status(201).json({
-      id: savedUser._id,
-      name: savedUser.name,
-      email: savedUser.email,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ msg: "Ocurrió un error al registrar al usuario" });
-  }
-};
 
 //ver perfil
-const userProfile = async (req, res) => {
+const getProfileById = async (req, res) => {
   try {
-    const profile = await User.findById(req.params.id).lean();
-    res.json(profile);
+    const { id } = req.params;
+    if (!id) {
+      res.status(400).json({ error: 'No se pudo encontrar el usuario.' })
+    }
+
+    let profile
+
+    if (isValidObjectId(id)) {
+      profile = await User.findById(id).populate('likes tweets comments followers following');
+      const tweets = await Tweet.find({author : id });
+      profile.tweets = tweets;
+      const comments = await Comment.find({author: id})
+      profile.comments = comments;
+      const likes = await Tweet.find({likes : id});
+      profile.likes = likes;
+    } else {
+      profile = await User.findOne({ username: id }).populate('likes tweets comments followers following');
+      const tweets = await Tweet.find({author : profile.id });
+      profile.tweets = tweets;
+      const comments = await Comment.find({author: profile.id})
+      profile.comments = comments;
+      const likes = await Tweet.find({likes : profile.id});
+      profile.likes = likes;
+    }
+
+
+    res.status(200).json(profile);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ error: 'Error al encontrar el usuario.' });
   }
 };
 
-//confirmar usuario
-const confirmUser = async (req, res) => {
-  const { token } = req.params;
-  const userConfirm = await User.findOne({ token });
-
-  if (!userConfirm) {
-    const error = new Error("Token no válido");
-    res.status(400).json({ msg: error.message });
-  }
+const getSessionToken = async (req, res) => {
   try {
-    userConfirm.token = null;
-    userConfirm.confirmed = true;
-    await userConfirm.save();
-    res.json({ msg: "Usuario confirmado correctamente" });
+    const { id } = req.params;    
+    if(!id) {
+      res.status(400).json({ error: 'Es necesario el ID del usuario.' })
+    }
+    const userSessionToken = await Session.findOne({ userId: id });
+    res.status(200).json(userSessionToken.sessionToken)
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener el token de sesión.' });
   }
-};
+}
 
-//autenticar usuario
-const authenticateUser = async (req, res) => {
-  const { email, password } = req.body;
-  const result = await comparePassword({ email, password });
-  if (!result) {
-    const error = new Error("El usuario no existe");
-    res.status(403).json({ msg: error.message });
+const getMyProfile = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const profile = await User.findById(id).populate('likes tweets comments followers following');
+    if (profile.username === undefined) {
+      profile.username = profile.email.split("@")[0];
+      await profile.save();
+    }
+    const tweets = await Tweet.find({author : id });
+    profile.tweets = tweets;
+    const comments = await Comment.find({author: id})
+    profile.comments = comments;
+    const likes = await Tweet.find({likes : id});
+    profile.likes = likes;
+    res.status(200).json(profile);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener el perfil.' });
   }
-  if (result.isValid) {
-    const { name, id, email } = result.user;
-    const userData = { name, email, id };
-    const token = generateJWT(userData);
-    userData.token = token;
-    res.json(userData);
-  } else {
-    const error = new Error("La contraseña es incorrecta");
-    res.status(403).json({ msg: error.message });
+}
+
+const updateMyProfile = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const { bio, username, name, confirmed, birthday, genre, languages, website, location } = req.body;
+    const updatedProfile = await User.findByIdAndUpdate(id, {
+      bio, username, name, confirmed, birthday, genre, languages, website, location
+    }, { new: true });
+    res.status(200).json(updatedProfile);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al actualizar el perfil.' });
   }
-};
+}
+
+const deleteMyProfile = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const deletedProfile = await User.findByIdAndDelete(id)
+    const deletedTweets = await Tweet.findOneAndDelete({ author: id })
+    const deletedComments = await Comment.findOneAndDelete({ author: id })
+    const deletedSession = await Session.findOneAndDelete({ userId: id })
+    res.status(200).json("El perfil, los tweets y comentarios se han eliminado correctamente.")
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al eliminar el perfil.' });
+  }
+}
 
 //seguir usuario
-const followUser = async (req, res) => {
+const followUserById = async (req, res) => {
   try {
-    const { userId, userToFollowId } = req.body;
+    const { id } = req.user;
+    const userId = req.params.id;
 
-    if (!userId || !userToFollowId) {
+    if (!id || !userId) {
       return res
         .status(400)
         .json({ message: "Debe proporcionar los IDs de usuario" });
     }
 
-    if (userId === userToFollowId) {
+    if (id === userId) {
       return res.status(400).json({ message: "No puedes seguirte a ti mismo" });
     }
 
-    const user = await User.findById(userId);
+    const user = await User.findById(id);
+    const followedUser = await User.findById(userId)
 
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
-    if (user.following.includes(userToFollowId)) {
+    if (user.following.includes(userId)) {
       return res.status(400).json({ message: "Ya sigues a este usuario" });
     }
 
-    user.following.push(userToFollowId);
+    user.following.push(userId);
+    followedUser.followers.push(id);
     await user.save();
+    await followedUser.save();
     return res
       .status(200)
       .json({ message: "Has comenzado a seguir a este usuario" });
@@ -118,37 +144,44 @@ const followUser = async (req, res) => {
 };
 
 //dejar de seguir
-const unfollowUser = async (req, res) => {
+const unfollowUserById = async (req, res) => {
   try {
-    const { userId, userToUnfollowId } = req.body;
+    const { id } = req.user;
+    const userId = req.params.id;
 
-    if (!userId || !userToUnfollowId) {
+    if (!id || !userId) {
       return res
         .status(400)
         .json({ message: "Debe proporcionar los IDs de usuario" });
     }
 
-    if (userId === userToUnfollowId) {
+    if (id === userId) {
       return res
         .status(400)
         .json({ message: "No puedes dejar de seguirte a ti mismo" });
     }
 
-    const user = await User.findById(userId);
+    const user = await User.findById(id);
+    const followedUser = await User.findById(userId)
 
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
-    if (!user.following.includes(userToUnfollowId)) {
+    if (!user.following.includes(userId)) {
       return res.status(400).json({ message: "No sigues a este usuario" });
     }
 
     user.following = user.following.filter(
-      (followedUserId) => followedUserId !== userToUnfollowId
+      (usersId) => usersId.toString() !== userId
+    );
+
+    followedUser.followers = followedUser.followers.filter(
+      (followerId) => followerId.toString() !== id
     );
 
     await user.save();
+    await followedUser.save();
 
     return res
       .status(200)
@@ -180,12 +213,24 @@ const getFollowing = async (req, res) => {
   }
 };
 
+const getAllUsers = async (_req, res) => {
+  try {
+    const allUsers = await User.find({}, 'name image username email confirmed').exec();
+    res.status(200).json(allUsers)
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "No se pudieron obtener todos los usuarios" });
+  }
+}
+
 export {
-  registerUser,
-  userProfile,
-  confirmUser,
-  authenticateUser,
-  followUser,
-  unfollowUser,
+  getMyProfile,
+  updateMyProfile,
+  deleteMyProfile,
+  getProfileById,
+  followUserById,
+  unfollowUserById,
   getFollowing,
+  getAllUsers,
+  getSessionToken
 };

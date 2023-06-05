@@ -6,14 +6,14 @@ import {
   getCommentByUserId,
   updateComment,
 } from '../controllers/commentController.js';
-import { sessionMiddleware } from '../middleware/sessionMiddleware.js';
+import { sessionMiddleware } from '../middlewares/sessionMiddleware.js';
 
 const commentRouter = Router();
 
-commentRouter.get('/comment/:id', getCommentById);
-commentRouter.post('/comment', sessionMiddleware, createComment);
-commentRouter.put('/comment/:id',sessionMiddleware, updateComment);
-commentRouter.delete('/comment/:id', sessionMiddleware, deleteComment);
-commentRouter.get('/comment/user/:userId', getCommentByUserId);
+commentRouter.get('/:id', getCommentById);
+commentRouter.post('/', sessionMiddleware, createComment);
+commentRouter.put('/:id', sessionMiddleware, updateComment);
+commentRouter.delete('/:id', sessionMiddleware, deleteComment);
+commentRouter.get('/user/:userId', getCommentByUserId);
 
 export default commentRouter;

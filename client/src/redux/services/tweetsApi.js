@@ -1,3 +1,4 @@
+import { API_URL } from "../../../utils/api";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // const { initialState } = require("@/data/tweets.js");
 
@@ -6,12 +7,12 @@ export const tweetsApi = createApi(
     reducerPath: "tweetsApi",
     refetchOnFocus: false, // when the window is refocused, refetch the data
     refetchOnMountOrArgChange: 120,
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/api/", }),
+    baseQuery: fetchBaseQuery({ baseUrl: `${API_URL}/api/`, }),
     tagTypes: ["Tweets"],
     endpoints: (builder) => ({
       getAllTweets: builder.query({
         query: () => ({
-          url: "tweets",
+          url: "tweets/all",
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -23,35 +24,68 @@ export const tweetsApi = createApi(
         //   return [...response, ...initialState]
         // }
       }),
+      getAllTweetsFollowed: builder.query({
+        query: (token) => ({
+          url: "tweets/allFollowed",
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+        providesTags: ["Tweets"],
+        // transformResponse: (response) => {
+        //   return [...response, ...initialState]
+        // }
+      }),
       getTweetsByUserId: builder.query({
         query: ({ userId }) => `user/${userId}`,
+      }),
+      getTweetById: builder.query({
+        query: (id) => `tweets/${id}`,
+      }),
+      getCommentById: builder.query({
+        query: (id) => `comments/${id}`,
       }),
       // confirmToken: builder.query({
       //   query: ({ token}) => `confirm/${token}`,
       // }),
       createTweet: builder.mutation({
-        query: (payload) => ({
-          url: "create",
+        query: ({ body, token }) => ({
+          url: "tweets/create",
           method: 'POST',
           credentials: 'include',
-          body: JSON.stringify({
-            content: payload.content,
-            hashtags: payload.hashtags
-          }),
           headers: {
-            'content-type': 'application/json'
-          }
+            Authorization: `Bearer ${token}`,
+          },
+          formData: true,
+          body,
         }),
         invalidatesTags: ["Tweets"],
       }),
       likeTweet: builder.mutation({
-        query: (tweetId) => ({
-          url: `like/${tweetId}`,
+        query: ({ tweetId, token }) => ({
+          url: `tweets/like/${tweetId}`,
           method: 'PUT',
           credentials: 'include',
           headers: {
-            'content-type': 'application/json'
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
           },
+        }),
+        invalidatesTags: ["Tweets"],
+      }),
+      createCommentTweet: builder.mutation({
+        query: ({ body, token }) => ({
+          url: `comments`,
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body
         }),
         invalidatesTags: ["Tweets"],
       }),
@@ -60,5 +94,4 @@ export const tweetsApi = createApi(
 
   }
 )
-
-export const { useGetAllTweetsQuery, useGetTweetsByUserIdQuery, useCreateTweetMutation, useLikeTweetMutation } = tweetsApi
+export const { useGetAllTweetsQuery, useGetAllTweetsFollowedQuery, useGetTweetByIdQuery, useGetCommentByIdQuery, useGetTweetsByUserIdQuery, useCreateTweetMutation, useLikeTweetMutation, useCreateCommentTweetMutation } = tweetsApi

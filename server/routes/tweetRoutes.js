@@ -1,21 +1,43 @@
 import { Router } from 'express';
 import {
   createTweet,
+  deleteTweet,
+  getTweetById,
+  createRetweet,
+  deleteRetweet,
   getTweetsByUserId,
   updateTweet,
   likeTweet,
-  unlikeTweet,
   getAllTweets,
+  getAllFollowsTweets,
+  getTweetsByDate,
+  getTopTweets,
+  getTopHashtags,
+  getLikedTweetsByUserId
 } from '../controllers/tweetController.js';
-import { sessionMiddleware } from '../middleware/sessionMiddleware.js';
+import upload from '../middlewares/multer.js';
+import { sessionMiddleware } from '../middlewares/sessionMiddleware.js';
 
 const tweetRouter = Router();
 
-tweetRouter.post('/create', sessionMiddleware, createTweet);
+tweetRouter.get('/all', getAllTweets);
+tweetRouter.get('/tweetsByDate', getTweetsByDate);
+tweetRouter.get('/topTweets', getTopTweets);
+tweetRouter.get('/topHashtags', getTopHashtags)
+tweetRouter.get('/allFollowed', sessionMiddleware, getAllFollowsTweets)
+
 tweetRouter.get('/user/:userId', getTweetsByUserId);
-tweetRouter.get('/tweets', getAllTweets);
-tweetRouter.put('/:id', sessionMiddleware, updateTweet);
-tweetRouter.post('/like/:id', sessionMiddleware, likeTweet);
-tweetRouter.delete('/unlike/:id', sessionMiddleware, unlikeTweet);
+tweetRouter.get('/user/likes/:userId', getLikedTweetsByUserId)
+
+tweetRouter.post('/create', [sessionMiddleware, upload.array('images')], createTweet);
+tweetRouter.get('/:id', getTweetById);
+tweetRouter.put('/:id', [sessionMiddleware, upload.array('images')], updateTweet);
+tweetRouter.delete('/:id', sessionMiddleware, deleteTweet);
+
+tweetRouter.post('/retweet/:id', sessionMiddleware, createRetweet);
+tweetRouter.delete('/retweet/:id', sessionMiddleware, deleteRetweet);
+
+tweetRouter.put('/like/:id', sessionMiddleware, likeTweet);
+
 
 export default tweetRouter;
