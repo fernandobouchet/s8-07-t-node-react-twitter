@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
+import { AppContext } from '@/context/AppContext'
 import Image from 'next/image'
 
 import { BiMessageRounded } from 'react-icons/bi'
@@ -16,7 +17,15 @@ import Link from 'next/link'
 const Tweet = (props) => {
   const { id, content, timestamp = 0, author, comments, createdAt, __v, images } = props
   const formatNum = (num) => (num === 0 ? "" : num);
+  const [appContext, setAppContext] = useContext(AppContext)
 
+  const onComment = () => {
+    setAppContext({
+      ...appContext,
+      post: { ...props },
+      active: true
+    })
+  }
   return (
         <div key={id} className='h-auto w-full flex flex-row p-4 items-start cursor-pointer border-b dark:border-white/20 border-black/5 bg-white dark:bg-black dark:hover:bg-white/5 hover:bg-black/5 text-[#536471] dark:text-[#e7e9ea]' >
             {
@@ -28,7 +37,7 @@ const Tweet = (props) => {
             }
             <div className="w-full flex flex-col gap-1 text-[#536471] dark:bg-transparent" >
                 <Link href={"/" + author?.username} className='flex flex-row items-start group gap-1 text-lg w-full' >
-                    <h4 className="ml-2 inline-flex items-center align-middle font-bold text-black dark:text-[#e7e9ea] group-hover:underline" >{author?.name}
+                    <h4 className={` mx-2 inline-flex items-center align-middle font-bold text-black dark:text-[#e7e9ea] group-hover:underline`} >{author.name.length <= 25 ? author.name : `${author.name.slice(0, 25)}...`}
                         {
                             author?.private && <IoIosLock className='text-black dark:text-white ml-1' title='Cuenta verificada' />
                         }
@@ -49,24 +58,8 @@ const Tweet = (props) => {
                         </div>
                     ) : null
                 }
-                {/* {retweets.length !== 0 && (
-                    <div className="flex flex-col max-w-fit rounded-xl border border-black/5 hover:bg-black/10 overflow-hidden">
-                        <div className="flex flex-col items-start p-3 gap-2 text-[#536471] dark:text-[#e7e9ea]" >
-                            <div className='flex flex-row items-start group gap-2 text-lg w-full' >
-                                <img src="https://pbs.twimg.com/profile_images/1612291632342122499/h2jKhVoh_400x400.jpg" alt="userImg" className='h-8 w-8 rounded-full bg-black hover:opacity-90' />
-                                <h4 className="inline-flex items-center align-middle font-bold text-black dark:text-white group-hover:underline" >Leo Messi <HiBadgeCheck className='text-[#1d9bf0] ml-1' title='Cuenta verificada' /> </h4>
-                                <span>@leomessisite</span>
-                                <TimeAgo timestamp={timestamp} />
-                            </div>
-                            <p>{retweets[0].content}</p>
-                        </div>
-                        <div className='max-w-fit max-h-[500px]'>
-                            <img src="https://pbs.twimg.com/media/FkWOB7-WQAAPLaU?format=jpg&name=small" className="object-fit" alt="postImg" />
-                        </div>
-                    </div>
-                )} */}
                 <div className='max-w-fit flex items-center gap-2' >
-                    <div className='flex items-center align-middle space-x-1 cursor-pointer hover:text-[#1C9BEF] group' >
+                    <div onClick={onComment} className='flex items-center align-middle space-x-1 cursor-pointer hover:text-[#1C9BEF] group' >
                         <BiMessageRounded className='icons group-hover:bg-[#1C9BEF]/10' title='Responder' />
                         <p className='text-sm' >{formatNum(comments.length)}</p>
                     </div>
