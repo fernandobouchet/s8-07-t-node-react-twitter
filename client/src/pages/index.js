@@ -22,7 +22,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Inicio / Twitter</title>
+        <title>Explorar / Twitter</title>
       </Head>
       <Header />
       {

@@ -17,10 +17,10 @@ function Home() {
   const [isSelected, setIsSelected] = useState("para-ti");
   const { status } = useSession();
   const router = useRouter();
-  const [appContext, setAppContext] = useContext(AppContext)
+  const [appContext] = useContext(AppContext)
 
   if (status === "unauthenticated") {
-    router.push("/login");
+    router.push("/");
     return <></>;
   }
 

@@ -6,7 +6,7 @@ const Retweet = ({ retweets }) => {
   const [isRetweet, setIsRetweet] = useState(false)
   const { data: session } = useSession();
   const onClickRetweet = () => {
-    if(session){
+    if (session) {
       setIsRetweet(!isRetweet)
     }
   }
