@@ -13,18 +13,23 @@ import { getTimeAgo } from '../../utils/formateadorTiemposRelativos'
 import Likes from './Likes'
 import Retweet from './Retweet'
 import Link from 'next/link'
+import { useSession } from "next-auth/react";
 
 const Tweet = (props) => {
   const { id, content, timestamp = 0, author, comments, createdAt, __v, images } = props
   const formatNum = (num) => (num === 0 ? "" : num);
   const [appContext, setAppContext] = useContext(AppContext)
+  const { data: session } = useSession();
+
 
   const onComment = () => {
-    setAppContext({
-      ...appContext,
-      post: { ...props },
-      active: true
-    })
+    if(session){
+        setAppContext({
+            ...appContext,
+            post: { ...props },
+            active: true
+          })
+    }
   }
   return (
         <div key={id} className='h-auto w-full flex flex-row p-4 items-start cursor-pointer border-b dark:border-white/20 border-black/5 bg-white dark:bg-black dark:hover:bg-white/5 hover:bg-black/5 text-[#536471] dark:text-[#e7e9ea]' >

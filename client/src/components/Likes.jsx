@@ -15,8 +15,10 @@ const Likes = ({ _id, likes }) => {
   }, [loggedInUserId, likes])
 
   const onClickLike = () => {
-    likeTweet({ tweetId: _id, token: session.token })
-    setIsLiked(!isLiked)
+    if(session){
+      likeTweet({ tweetId: _id, token: session.token })
+      setIsLiked(!isLiked)
+    }
   }
 
   return (
