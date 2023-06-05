@@ -44,7 +44,7 @@ const Comment = ({ tweetId, closeModal }) => {
     }
   };
   return (
-    <div className="h-auto w-full  dark:bg-black dark:text-[#e7e9ea]">
+    <div className="h-auto w-full  dark:bg-black bg-white dark:text-[#e7e9ea]">
       <div className="">
         <div className="flex w-full items-start">
           <div className="flex-shrink-0">
@@ -74,7 +74,7 @@ const Comment = ({ tweetId, closeModal }) => {
           </div>
           <div className="ml-3 w-full flex-row ">
             <textarea
-              className="my-2 w-full resize-none bg-transparent text-xl focus:outline-none dark:text-white"
+              className="my-2 w-full resize-none bg-transparent text-xl focus:outline-none text-black dark:text-white"
               placeholder="¡Twittea tu respuesta!"
               value={tweetText}
               onChange={handleTweetChange}

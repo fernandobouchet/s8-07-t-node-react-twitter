@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { HiOutlineArrowsUpDown } from 'react-icons/hi2'
 import { useSession } from "next-auth/react";
 
-const Retweet = ({ retweets }) => {
+const Retweet = ({ retweets = [] }) => {
   const [isRetweet, setIsRetweet] = useState(false)
   const { data: session } = useSession();
   const onClickRetweet = () => {
