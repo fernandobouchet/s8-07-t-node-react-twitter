@@ -28,11 +28,16 @@ const Tweet = (props) => {
       })
     }
   }
+
+  const handleImageError = (event) => {
+    event.target.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG27rp6wCKcUSGuXvHpeSiFQNyHVBcak9LT5t57-dwI_KEEEtfRTvI8oBeYhCmrB9jQmw&usqp=CAU";
+  };
+
   return (
         <div key={id} className='h-auto w-full flex flex-row p-4 items-start cursor-pointer border-b dark:border-white/20 border-black/5 bg-white dark:bg-black dark:hover:bg-white/5 hover:bg-black/5 text-[#536471] dark:text-[#e7e9ea]' >
             {
                 (author?.image) ? (
-                    <Link href={"/" + author?.username}><Image src={author.image} alt={author.name} width={64} height={64} className='h-12 w-12 rounded-full mr-4 hover:opacity-90' /></Link>)
+                    <Link href={"/" + author?.username}><Image src={author.image} alt={author.name} onError={handleImageError} width={64} height={64} className='h-12 w-12 rounded-full mr-4 hover:opacity-90' /></Link>)
                   : (
                         <svg className="text-gray-200 w-14 h-14 dark:text-gray-700" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clipRule="evenodd"></path></svg>
                     )
@@ -60,7 +65,7 @@ const Tweet = (props) => {
                     {
                         images?.length ? (
                             <div className='max-w-fit max-h-fit py-2'>
-                                <img src={images[0] || "https://pbs.twimg.com/media/FkWOB7-WQAAPLaU?format=jpg&name=small"} className="object-fit rounded-3xl" alt="postImg" />
+                                <img src={images[0]} className="object-fit rounded-3xl bg-white border dark:border-white/20 border-black/5 " onError={handleImageError} alt="postImg" />
                             </div>
                         ) : null
                     }
@@ -86,7 +91,7 @@ const Tweet = (props) => {
                     {
                         images?.length ? (
                             <div className='max-w-fit max-h-fit py-2'>
-                                <img src={images[0] || "https://pbs.twimg.com/media/FkWOB7-WQAAPLaU?format=jpg&name=small"} className="object-fit rounded-3xl" alt="postImg" />
+                                <img src={images[0]} onError={handleImageError} className="object-fit rounded-3xl bg-white border dark:border-white/20 border-black/5 " alt="postImg" />
                             </div>
                         ) : null
                     }
