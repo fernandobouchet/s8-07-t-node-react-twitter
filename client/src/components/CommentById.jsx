@@ -33,7 +33,6 @@ const CommentById = ({ id }) => {
     {
         isSuccess ? (
           <>
-          {console.log(data)}
         <Tweet {...data} isComment={true} />
         {appContext.active ? <Modal /> : null}
         </>

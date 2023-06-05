@@ -1,16 +1,13 @@
 import React, { useContext } from 'react'
 import { MdClose } from "react-icons/md"
-import { useSession } from 'next-auth/react'
 import { AppContext } from '@/context/AppContext'
 import Comment from "./Comment"
 import { getTimeAgo } from './../../utils/formateadorTiemposRelativos';
-
 
 const Modal = () => {
   const [appContext, setAppContext] = useContext(AppContext)
   const { post } = appContext
 
-  console.log(appContext)
   const closeModal = async () => {
     setAppContext({ ...appContext, active: false })
   }

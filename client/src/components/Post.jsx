@@ -25,7 +25,6 @@ const Post = () => {
 
   const handleTweetSubmit = async (event) => {
     event.preventDefault();
-    console.log("Texto del tweet:", tweetText.length);
     const body = new FormData();
     if (files.length !== 0) {
       body.append("images", files[0].file);
