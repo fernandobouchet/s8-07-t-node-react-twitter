@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useGetAllTweetsQuery } from "@/redux/services/tweetsApi";
 import SkeletonTweet from "@/components/SkeletonTweet";
+import Retweet from "@/components/Retweet";
 
 function Home() {
   const { isLoading, data } = useGetAllTweetsQuery(undefined, {
@@ -17,12 +18,14 @@ function Home() {
   const [isSelected, setIsSelected] = useState("para-ti");
   const { status } = useSession();
   const router = useRouter();
-  const [appContext, setAppContext] = useContext(AppContext)
+  const [appContext] = useContext(AppContext)
 
   if (status === "unauthenticated") {
     router.push("/login");
     return <></>;
   }
+
+  console.log(data)
 
   return (
     <>
@@ -34,8 +37,8 @@ function Home() {
       <Post />
       {!isLoading && data !== undefined
         ? data
-          .filter((tweet) => tweet.author && !tweet.isRetweet)
-          .map((tweet) => <Tweet key={tweet._id} {...tweet} />)
+          .filter((tweet) => tweet.author)
+          .map((tweet) => tweet.isRetweet ? <Retweet key={tweet._id} {...tweet} /> : <Tweet key={tweet._id} {...tweet} />)
         : [1, 2, 3, 4, 5, 6, 7].map((tweet) => <SkeletonTweet key={tweet} />)}
         {appContext.active ? <Modal /> : null}
     </>

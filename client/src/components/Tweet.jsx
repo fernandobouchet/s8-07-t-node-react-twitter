@@ -1,18 +1,16 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useContext } from 'react'
 import { AppContext } from '@/context/AppContext'
 import Image from 'next/image'
-
 import { BiMessageRounded } from 'react-icons/bi'
 import { HiBadgeCheck } from 'react-icons/hi'
 import { FiShare } from 'react-icons/fi'
 import { SlOptions } from 'react-icons/sl'
 import { IoStatsChart } from 'react-icons/io5'
 import { IoIosLock } from 'react-icons/io'
-
-import { getTimeAgo } from '../../utils/formateadorTiemposRelativos'
 import Likes from './Likes'
-import Retweet from './Retweet'
+import Retweets from './Retweets'
 import Link from 'next/link'
+import TimeAgo from './TimeAgo'
 
 const Tweet = (props) => {
   const { id, content, timestamp = 0, author, comments, createdAt, __v, images } = props
@@ -63,7 +61,7 @@ const Tweet = (props) => {
                         <BiMessageRounded className='icons group-hover:bg-[#1C9BEF]/10' title='Responder' />
                         <p className='text-sm' >{formatNum(comments.length)}</p>
                     </div>
-                    <Retweet {...props}/>
+                    <Retweets {...props}/>
                     <Likes {...props}/>
                     <div className='flex items-center align-middle space-x-1 cursor-pointer hover:text-[#1C9BEF] group' >
                         <IoStatsChart className='icons group-hover:bg-[#1C9BEF]/10' title='Ver' />
@@ -78,24 +76,6 @@ const Tweet = (props) => {
                 <SlOptions className='icons w-10 h-10 group-hover:bg-[#1C9BEF]/10' title='Mas opciones' />
             </div>
         </div>
-  )
-}
-
-const TimeAgo = ({ timestamp, styleds = "" }) => {
-  const [time, setTime] = useState(getTimeAgo(timestamp))
-
-  useEffect(() => {
-    const newInterval = setInterval(() => {
-      setTime(getTimeAgo(timestamp))
-    }, 5000);
-
-    return () => {
-      clearInterval(newInterval);
-    };
-  }, [time]);
-
-  return (
-        <span className={styleds}>{` · ${time}`}</span>
   )
 }
 

@@ -83,10 +83,31 @@ export const tweetsApi = createApi(
         }),
         invalidatesTags: ["Tweets"],
       }),
-
+      reTweet: builder.mutation({
+        query: ({ tweetId, token }) => ({
+          url: `tweets/retweet/${tweetId}`,
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+        invalidatesTags: ["Tweets"],
+      }),
+      undoReTweet: builder.mutation({
+        query: ({ tweetId, token }) => ({
+          url: `tweets/retweet/${tweetId}`,
+          method: 'DELETE',
+          headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+        invalidatesTags: ["Tweets"],
+      }),
     }),
 
   }
 )
 
-export const { useGetAllTweetsQuery, useGetAllTweetsFollowedQuery, useGetTweetsByUserIdQuery, useCreateTweetMutation, useLikeTweetMutation, useCreateCommentTweetMutation } = tweetsApi
+export const { useGetAllTweetsQuery, useGetAllTweetsFollowedQuery, useGetTweetsByUserIdQuery, useCreateTweetMutation, useLikeTweetMutation, useCreateCommentTweetMutation, useReTweetMutation, useUndoReTweetMutation } = tweetsApi
