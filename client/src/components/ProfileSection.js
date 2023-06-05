@@ -52,10 +52,6 @@ const ProfileSection = ({ session, profile }) => {
     }
   }, [session?.user?.following, profile?.user]);
 
-  if (!profile.user) {
-    return <Splash />
-  }
-
   return (
     <>
     <section>
@@ -79,7 +75,6 @@ const ProfileSection = ({ session, profile }) => {
           width={200}
           height={200}
           alt="Fondo de Perfil"
-          unoptimized
         />
         </Dialog.Panel>
       </Dialog>
@@ -104,7 +99,6 @@ const ProfileSection = ({ session, profile }) => {
           width={400}
           height={400}
           alt="Foto de perfil"
-          unoptimized
         />
         </Dialog.Panel>
       </Dialog>
@@ -139,7 +133,6 @@ const ProfileSection = ({ session, profile }) => {
         width={200}
         height={200}
         alt="Fondo de Perfil"
-        unoptimized
       />
 
       <div className="h-fit dark:text-white w-[95%] mx-auto">
@@ -154,7 +147,6 @@ const ProfileSection = ({ session, profile }) => {
             width={100}
             height={100}
             alt="Foto de perfil"
-            unoptimized
           />
 
           {
