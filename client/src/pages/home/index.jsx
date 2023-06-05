@@ -21,7 +21,7 @@ function Home() {
   const [appContext] = useContext(AppContext)
 
   if (status === "unauthenticated") {
-    router.push("/login");
+    router.push("/");
     return <></>;
   }
 

@@ -42,6 +42,12 @@ export const tweetsApi = createApi(
       getTweetsByUserId: builder.query({
         query: ({ userId }) => `user/${userId}`,
       }),
+      getTweetById: builder.query({
+        query: (id) => `tweets/${id}`,
+      }),
+      getCommentById: builder.query({
+        query: (id) => `comments/${id}`,
+      }),
       // confirmToken: builder.query({
       //   query: ({ token}) => `confirm/${token}`,
       // }),
@@ -110,4 +116,4 @@ export const tweetsApi = createApi(
   }
 )
 
-export const { useGetAllTweetsQuery, useGetAllTweetsFollowedQuery, useGetTweetsByUserIdQuery, useCreateTweetMutation, useLikeTweetMutation, useCreateCommentTweetMutation, useReTweetMutation, useUndoReTweetMutation } = tweetsApi
+export const { useGetAllTweetsQuery, useGetAllTweetsFollowedQuery, useGetTweetsByUserIdQuery, useCreateTweetMutation, useLikeTweetMutation, useCreateCommentTweetMutation, useReTweetMutation, useUndoReTweetMutation, useGetTweetByIdQuery, useGetCommentByIdQuery } = tweetsApi

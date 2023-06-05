@@ -25,7 +25,6 @@ const Post = () => {
 
   const handleTweetSubmit = async (event) => {
     event.preventDefault();
-    console.log("Texto del tweet:", tweetText.length);
     const body = new FormData();
     if (files.length !== 0) {
       body.append("images", files[0].file);
@@ -168,64 +167,12 @@ const Post = () => {
   );
 };
 
-// const CreatePost = () => {
-//     const [text, setText] = useState('');
-//     const [searchWord, setSearchWord] = useState('');
-//     const [replaceWord, setReplaceWord] = useState('');
-
-//     const handleTextChange = (event) => {
-//         setText(event.target.textContent);
-//     };
-
-//     const handleSearchInputChange = (event) => {
-//         setSearchWord(event.target.value);
-//     };
-
-//     const handleReplaceInputChange = (event) => {
-//         setReplaceWord(event.target.value);
-//     };
-
-//     const replaceText = () => {
-//         if (!searchWord) {
-//             return text;
-//         }
-//         const regex = new RegExp(searchWord, 'gi');
-//         return text.replace(regex, `<a class="text-red-400" >${replaceWord}</a>`);
-//     };
-
-//     return (
-//         <div>
-//             <div
-//                 contentEditable={true}
-//                 onInput={handleTextChange}
-//                 placeholder="Texto original"
-//                 style={{ border: '1px solid #ccc', padding: '10px' }}
-//             ></div>
-//             <input
-//                 type="text"
-//                 value={searchWord}
-//                 onChange={handleSearchInputChange}
-//                 placeholder="Palabra a buscar"
-//             />
-//             <input
-//                 type="text"
-//                 value={replaceWord}
-//                 onChange={handleReplaceInputChange}
-//                 placeholder="Palabra de reemplazo"
-//             />
-//             <div dangerouslySetInnerHTML={{ __html: replaceText() }}></div>
-//         </div>
-//     );
-// }
-
 const FileUploader = ({ files, setFiles }) => {
   const onDrop = (acceptedFiles) => {
     // Limit the number of files to 2
     if (files.length === 2) {
       return alert("Solo se puede un max 2 fotos y videos");
     }
-
-    console.log(acceptedFiles);
 
     const updatedFiles = [
       ...files,
