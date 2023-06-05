@@ -6,10 +6,9 @@ export default function login() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  console.log(session, status);
   if (status === "loading") return <p>Loading...</p>;
 
-  if ( status !== "loading" && session) {
+  if (status !== "loading" && session) {
     router.push("/home");
     return <></>
   }

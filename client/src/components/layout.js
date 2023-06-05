@@ -248,7 +248,7 @@ function Header() {
           ) : null}
 
           {session && (
-            <button className="mt-5 w-fit rounded-full bg-[#7855FF] p-3.5 transition duration-300 hover:bg-[#6c4de6] xl:w-[85%] xl:p-3">
+            <button className="mt-5 w-fit rounded-full bg-[#1d9bf0] p-3.5 transition duration-300 hover:bg-[#1a8cd8] xl:w-[85%] xl:p-3">
               <div className="xl:hidden">
                 <CreateTweetIcon size={24} />
               </div>
