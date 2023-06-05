@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IoImageOutline, IoCloseOutline } from "react-icons/io5";
 import { HiOutlineGif } from "react-icons/hi2";
 import { AiOutlineUnorderedList } from "react-icons/ai";
@@ -7,10 +7,8 @@ import { BsEmojiSmile } from "react-icons/bs";
 import { BiCalendar, BiMap } from "react-icons/bi";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
-// import { createTweet } from "../../lib/tweets";
 import { useCreateCommentTweetMutation } from "@/redux/services/tweetsApi";
 import { useSession } from "next-auth/react";
-// import { useRouter } from "next/router";
 
 const Comment = ({ tweetId, closeModal }) => {
   const { data: session, status } = useSession();
@@ -26,7 +24,7 @@ const Comment = ({ tweetId, closeModal }) => {
   const handleTweetSubmit = async (event) => {
     event.preventDefault();
 
-    if (tweetText.length !== 0 ) {
+    if (tweetText.length !== 0) {
     const body = {
         content: tweetText,
         tweetId,
@@ -36,11 +34,10 @@ const Comment = ({ tweetId, closeModal }) => {
       setTweetText("");
       setFiles([]);
       setUbicacion("");
-      if (!isLoading && !isError ) {
+      if (!isLoading && !isError) {
         closeModal()
     }
-    if(isError) alert(isError)
-
+    if (isError) alert(isError)
     }
   };
   return (
