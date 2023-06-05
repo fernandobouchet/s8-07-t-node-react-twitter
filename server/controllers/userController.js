@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongodb';
 import { isValidObjectId } from 'mongoose';
 import Comment from "../models/Comment.js";
 import Session from "../models/Session.js";
@@ -20,6 +19,13 @@ const getProfileById = async (req, res) => {
     } else {
       profile = await User.findOne({ username: id }).populate('likes tweets comments followers following');
     }
+
+    const tweets = await Tweet.find({author : id });
+    profile.tweets = tweets;
+    const comments = await Comment.find({author: id})
+    profile.comments = comments;
+    const likes = await Tweet.find({likes : id});
+    profile.likes = likes;
 
     res.status(200).json(profile);
   } catch (error) {
@@ -50,6 +56,12 @@ const getMyProfile = async (req, res) => {
       profile.username = profile.email.split("@")[0];
       await profile.save();
     }
+    const tweets = await Tweet.find({author : id });
+    profile.tweets = tweets;
+    const comments = await Comment.find({author: id})
+    profile.comments = comments;
+    const likes = await Tweet.find({likes : id});
+    profile.likes = likes;
     res.status(200).json(profile);
   } catch (error) {
     console.error(error);
