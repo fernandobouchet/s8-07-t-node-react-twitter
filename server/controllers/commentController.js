@@ -1,14 +1,18 @@
 import Comment from '../models/Comment.js';
+import Tweet from '../models/Tweet.js';
 
 const createComment = async (req, res) => {
   try {
     const { id } = req.user
-    const { content } = req.body;
+    const { content, tweetId } = req.body;
     let newComment = new Comment({
       author: id,
       content: content,
     });
+    const tweet = await Tweet.findById(tweetId);
+    tweet.comments.push(newComment.id);
     await newComment.save();
+    await tweet.save();
     res.status(200).send(newComment);
   } catch (error) {
     console.log(error);
@@ -53,6 +57,15 @@ const updateComment = async (req, res) => {
 const deleteComment = async (req, res) => {
   try {
     const { id } = req.params;
+    const { commentId } = req.body;
+
+    const tweet = await Tweet.findById(id);
+
+    tweet.comments = tweet.comments.filter(
+      (commentsId) => commentsId.toString() !== commentId
+    );
+
+    await tweet.save()
     const updatedComment = await Comment.findByIdAndDelete(id);
 
     if (!updatedComment) {

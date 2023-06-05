@@ -93,6 +93,19 @@ const getTweetById = async (req, res) => {
   }
 };
 
+const getLikedTweetsByUserId = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const likes = await Tweet.find({likes : userId}).populate(
+      'author',
+      'name image username email confirmed'
+    ).populate('likes', 'name image username email');
+    res.status(200).send(likes);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: 'Error getting tweet' });
+  }
+}
 
 //traer tweets por usuario
 const getTweetsByUserId = async (req, res) => {
@@ -107,6 +120,8 @@ const getTweetsByUserId = async (req, res) => {
       .json({ message: 'Error al obtener los tweets del usuario' });
   }
 };
+
+
 
 //editar tweet
 const updateTweet = async (req, res) => {
@@ -337,5 +352,6 @@ export {
   getAllFollowsTweets,
   getTweetsByDate,
   getTopTweets,
-  getTopHashtags
+  getTopHashtags,
+  getLikedTweetsByUserId
 };

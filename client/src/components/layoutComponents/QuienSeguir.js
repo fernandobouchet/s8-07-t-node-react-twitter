@@ -34,7 +34,6 @@ function QuienSeguir() {
 
   const onClickFollowUser = async (id) => {
     const res = await followUser({ userId: id, token: session.token });
-    console.log(res);
     if (res.data) {
       setFollowing((prevFollowing) => [...prevFollowing, id]);
     }
@@ -45,7 +44,6 @@ function QuienSeguir() {
     if (res.data) {
       setFollowing((prevFollowing) => prevFollowing.filter((userId) => userId !== id));
     }
-    console.log(res);
   };
 
   if (userActual.isFetching) {
