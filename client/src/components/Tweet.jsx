@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef } from 'react'
+import React, { useContext, useRef } from 'react'
 import { AppContext } from '@/context/AppContext'
 import Image from 'next/image'
 import { BiMessageRounded } from 'react-icons/bi'
@@ -7,14 +7,14 @@ import { FiShare } from 'react-icons/fi'
 import { SlOptions } from 'react-icons/sl'
 import { IoStatsChart } from 'react-icons/io5'
 import { IoIosLock } from 'react-icons/io'
-import { getTimeAgo } from '../../utils/formateadorTiemposRelativos'
 import Likes from './Likes'
-import Retweet from './Retweet'
 import Link from 'next/link'
 import { useSession } from "next-auth/react";
 import { URL_CLIENT } from '../../utils/api'
 import { Popover, Transition } from '@headlessui/react'
 import { ReportIcon, TrashIcon } from './icons'
+import TimeAgo from './TimeAgo'
+import Retweets from './Retweets'
 const Tweet = (props) => {
   const { id, _id, content, timestamp = 0, author, comments = [], createdAt, __v, images = [], isComment = false } = props
   const formatNum = (num) => (num === 0 ? "" : num);
@@ -118,7 +118,7 @@ const Tweet = (props) => {
                                         <BiMessageRounded className='icons group-hover:bg-[#1C9BEF]/10' title='Responder' />
                                         <p className='text-sm' >{formatNum(comments.length)}</p>
                                     </div>
-                                    <Retweet {...props} />
+                                    <Retweets {...props} />
                                 </>
                             )
                     }
@@ -134,24 +134,6 @@ const Tweet = (props) => {
             </div>
             <Options {...props} user={session?.user} />
         </div>
-  )
-}
-
-const TimeAgo = ({ timestamp, styleds = "" }) => {
-  const [time, setTime] = useState(getTimeAgo(timestamp))
-
-  useEffect(() => {
-    const newInterval = setInterval(() => {
-      setTime(getTimeAgo(timestamp))
-    }, 5000);
-
-    return () => {
-      clearInterval(newInterval);
-    };
-  }, [time]);
-
-  return (
-        <span className={styleds}>{` · ${time}`}</span>
   )
 }
 
