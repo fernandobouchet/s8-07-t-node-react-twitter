@@ -249,7 +249,10 @@ function Header() {
           ) : null}
 
           {session && (
-            <button className="mt-5 w-fit rounded-full bg-[#1d9bf0] p-3.5 transition duration-300 hover:bg-[#1a8cd8] xl:w-[85%] xl:p-3">
+            <button
+              onClick={() => document.querySelector("#tweet")?.focus()}
+              className="mt-5 w-fit rounded-full bg-[#1d9bf0] p-3.5 transition duration-300 hover:bg-[#1a8cd8] xl:w-[85%] xl:p-3"
+            >
               <div className="xl:hidden">
                 <CreateTweetIcon size={24} />
               </div>
@@ -320,7 +323,6 @@ function Header() {
                     width={50}
                     height={50}
                     alt="Foto de perfil"
-                    unoptimized
                   />
                 )}
                 <div className="text-base text-left max-xl:hidden">
@@ -440,25 +442,37 @@ export default function Layout({ children }) {
   async function handleSnooze(senderId, value, username) {
     await fetch(`${API_URL}/api/chat/snooze?senderId=${senderId}&value=${value}&username=${username}`, {
       method: 'PATCH',
-      credentials: "include"
+      credentials: 'include',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${session.token}`,
+      },
     })
 
-    dispatch(fetchMessages(session?.user?._id))
+    dispatch(fetchMessages({ userId: session?.user?._id, token: session?.token }))
   }
 
   async function handlePin(senderId, value, username) {
     await fetch(`${API_URL}/api/chat/pin?senderId=${senderId}&value=${value}&username=${username}`, {
       method: 'PATCH',
-      credentials: "include"
+      credentials: 'include',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${session.token}`,
+      },
     })
 
-    dispatch(fetchMessages(session?.user?._id))
+    dispatch(fetchMessages({ userId: session?.user?._id, token: session?.token }))
   }
 
   async function handleDelete(senderId, receiverId, username) {
     await fetch(`${API_URL}/api/chat?senderId=${senderId}&receiverId=${receiverId}&username=${username}`, {
       method: 'DELETE',
-      credentials: "include"
+      credentials: 'include',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${session.token}`,
+      },
     })
 
     location.replace("/messages")
@@ -478,11 +492,11 @@ export default function Layout({ children }) {
     socket.emit('joinChat', session?.user?._id)
 
     socket.on('receiveMessage', () => {
-      dispatch(fetchMessages(session?.user?._id))
+      dispatch(fetchMessages({ userId: session?.user?._id, token: session?.token }))
     })
 
-    if (session?.user?._id) {
-      dispatch(fetchMessages(session?.user?._id))
+    if (session?.user?._id && session?.token) {
+      dispatch(fetchMessages({ userId: session?.user?._id, token: session?.token }))
     }
   }, [session?.user?._id, dispatch])
 
@@ -601,7 +615,7 @@ export default function Layout({ children }) {
                         {e.name}
                       </p>
                       <small className="text-gray-400 truncate">@{e.username}</small>
-                      <small className="text-gray-400 truncate">{formatDate(e.time)}</small>
+                      <small className="text-gray-400 truncate">{formatDate(e.time, true)}</small>
                       <Popover className="-mt-1 ml-auto">
                         <Transition
                           enter="transition duration-200 ease-out"
