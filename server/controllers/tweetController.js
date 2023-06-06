@@ -57,7 +57,7 @@ const getAllTweets = async (_req, res) => {
     const tweets = await Tweet.find().populate(
       'author',
       'name image username email confirmed'
-    ).populate('likes retweets', 'name image username email');
+    ).populate('likes retweets comments', 'name image username email');
 
     const retweets = await Retweet.find().populate({
       path: 'author',
@@ -65,7 +65,7 @@ const getAllTweets = async (_req, res) => {
     }).populate({
       path: 'originalTweet',
       populate: {
-        path: 'author likes retweets',
+        path: 'author likes retweets comments',
         select: 'name image username email confirmed'
       }
     });
