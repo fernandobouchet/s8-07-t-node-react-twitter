@@ -13,7 +13,6 @@ import {
   MenuIcon,
   MessagesIcon,
   MoreIcon,
-  NewMessageIcon,
   NotificationIcon,
   ProfileIcon,
   ReportIcon,
@@ -30,13 +29,18 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Popover, Transition } from "@headlessui/react";
 import { useSession, signOut } from "next-auth/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePopper } from "react-popper";
 import QuienSeguir from "./layoutComponents/QuienSeguir";
 import QueEstaPasando from "./layoutComponents/QueEstaPasando";
 import Login from "./layoutComponents/Login";
 import FooterUnauthenticated from "./FooterUnauthenticated";
 import { HiChevronRight } from "react-icons/hi";
+import { formatDate } from "../../utils/formateadorTiemposRelativos";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMessages } from "@/redux/features/messagesSlice";
+import io from "socket.io-client"
+let socket
 
 function Header() {
   const { pathname, query } = useRouter();
@@ -424,20 +428,62 @@ function Footer() {
 }
 
 export default function Layout({ children }) {
-  const { status } = useSession();
-  const { pathname, asPath } = useRouter();
-  const popperRef = useRef(null);
+  const [filtered, setFiltered] = useState([])
+  const messages = useSelector(state => state.messages);
+  const dispatch = useDispatch();
+  const { data: session, status } = useSession()
+  const { pathname, asPath } = useRouter()
+  const popperRef = useRef(null)
+  const filterRef = useRef(null)
 
-  const messages = [
-    {
-      id: 1,
-      name: "elon musk",
-    },
-    {
-      id: 2,
-      name: "alex",
-    },
-  ];
+  async function handleSnooze(senderId, value, username) {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chat/snooze?senderId=${senderId}&value=${value}&username=${username}`, {
+      method: 'PATCH',
+      credentials: "include"
+    })
+
+    dispatch(fetchMessages(session?.user?._id))
+  }
+
+  async function handlePin(senderId, value, username) {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chat/pin?senderId=${senderId}&value=${value}&username=${username}`, {
+      method: 'PATCH',
+      credentials: "include"
+    })
+
+    dispatch(fetchMessages(session?.user?._id))
+  }
+
+  async function handleDelete(senderId, receiverId, username) {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chat?senderId=${senderId}&receiverId=${receiverId}&username=${username}`, {
+      method: 'DELETE',
+      credentials: "include"
+    })
+
+    location.replace("/messages")
+  }
+
+  function handleFilter() {
+    const filter = messages.filter(msg =>
+      msg.name.toLowerCase().includes(filterRef.current.value.toLowerCase())
+    )
+
+    setFiltered(filter)
+  }
+
+  useEffect(() => {
+    socket = io(process.env.NEXT_PUBLIC_API_URL)
+
+    socket.emit('joinChat', session?.user?._id)
+
+    socket.on('receiveMessage', () => {
+      dispatch(fetchMessages(session?.user?._id))
+    })
+
+    if (session?.user?._id) {
+      dispatch(fetchMessages(session?.user?._id))
+    }
+  }, [session?.user?._id, dispatch])
 
   return (
     <>
@@ -509,87 +555,92 @@ export default function Layout({ children }) {
           pathname.includes("messages") ? (
           <section
             className={
-              "flex w-full flex-col gap-4 py-4 lg:max-w-[400px] " +
+              "flex w-full flex-col gap-4 py-4 lg:max-w-[360px] " +
               (asPath === "/messages" ? "" : "max-lg:hidden")
             }
           >
             <section className="flex flex-col gap-4">
               <div className="mx-auto flex w-[90%] flex-wrap items-center justify-between gap-2">
                 <h2 className="text-2xl font-bold dark:text-white">Mensajes</h2>
-                <div className="flex flex-wrap items-center gap-3">
-                  <button>
-                    <SettingsIcon size={20} />
-                  </button>
-                  <button>
-                    <NewMessageIcon size={20} />
-                  </button>
-                </div>
               </div>
 
               <div className="group mx-auto flex w-[90%] items-center gap-3 overflow-hidden rounded-3xl border border-black/20 bg-slate-100/20 px-3 transition duration-200 focus-within:border-indigo-500 dark:border-white/20 dark:bg-slate-500/20 dark:focus-within:border-indigo-500">
-                <button>
+                <button onClick={() => handleFilter()}>
                   <SearchIcon size={24} opacity={true} />
                 </button>
                 <input
+                  ref={filterRef}
+                  onChange={() => handleFilter()}
                   type="text"
-                  className="w-full bg-transparent py-2.5 outline-none"
+                  className="w-full bg-transparent py-2.5 outline-none dark:text-white"
                   placeholder="Buscar Mensajes Directos"
                 ></input>
               </div>
             </section>
 
             <section className="flex w-full flex-col">
-              {messages.map((e) => (
+              {
+              messages?.length
+                ? (filtered?.length ? filtered : messages).map((e) => (
                 <Link
-                  href={"/messages/" + e.name}
-                  key={e.id}
-                  className="flex flex-wrap gap-4 p-3 hover:bg-black/5 dark:hover:bg-white/10"
+                  href={"/messages/" + e.username}
+                  key={e._id}
+                  className={"flex flex-wrap gap-4 p-3 hover:bg-black/5 dark:hover:bg-white/10 max-w-full " + (asPath.includes(e.username) ? "bg-black/5 dark:bg-white/10" : "")}
                 >
                   <Image
                     className="h-14 w-14 rounded-full"
-                    src="/img/defaultprofile.jpg"
+                    src={e?.image ? e.image : "/img/defaultprofile.jpg"}
                     width={50}
                     height={50}
                     alt="Foto de perfil"
                   />
-                  <p className="font-bold dark:text-white">
-                    {e.name} <small className="text-gray-400">@alexqs96.</small>
-                  </p>
+                  <div className="flex flex-col md:max-w-[260px] w-full">
+                    <div className="flex items-center gap-1 w-full">
+                      <p className="font-bold dark:text-white truncate">
+                        {e.name}
+                      </p>
+                      <small className="text-gray-400 truncate">@{e.username}</small>
+                      <small className="text-gray-400 truncate">{formatDate(e.time)}</small>
+                      <Popover className="-mt-1 ml-auto">
+                        <Transition
+                          enter="transition duration-200 ease-out"
+                          enterFrom="transform scale-95 opacity-0"
+                          enterTo="transform scale-100 opacity-100"
+                          leave="transition duration-95 ease-out"
+                          leaveFrom="transform scale-100 opacity-100"
+                          leaveTo="transform scale-95 opacity-0"
+                        >
+                          <Popover.Panel className="dark:shadowtw absolute right-0 flex h-fit w-max flex-col overflow-hidden rounded-xl border bg-white font-medium dark:border-white/20 dark:bg-black dark:text-white">
+                            <button onClick={() => handlePin(session?.user?._id, !e?.pin, e.username)} className="flex w-full items-center gap-2 px-4 py-2.5 text-left font-bold transition duration-200 hover:bg-black/5 dark:hover:bg-white/10">
+                              <AttachMessageIcon size={20} /> Fijar conversación
+                            </button>
+                            <button onClick={() => handleSnooze(session?.user?._id, !e?.snooze, e.username)} className="flex w-full items-center gap-2 px-4 py-2.5 text-left font-bold transition duration-200 hover:bg-black/5 dark:hover:bg-white/10">
+                              <SilenceMessageIcon size={20} /> Aplazar conversación
+                            </button>
+                            <button className="flex w-full items-center gap-2 px-4 py-2.5 text-left font-bold transition duration-200 hover:bg-black/5 dark:hover:bg-white/10">
+                              <ReportIcon size={20} /> Denunciar la conversación
+                            </button>
+                            <button onClick={() => handleDelete(session?.user?._id, e?.chatId, e.username)} className="flex w-full items-center gap-2 px-4 py-2.5 text-left font-bold text-red-600 transition duration-200 hover:bg-black/5 dark:hover:bg-white/10">
+                              <TrashIcon size={20} /> Eliminar conversación
+                            </button>
+                          </Popover.Panel>
+                        </Transition>
 
-                  <Popover className="-mt-1 ml-auto">
-                    <Transition
-                      enter="transition duration-200 ease-out"
-                      enterFrom="transform scale-95 opacity-0"
-                      enterTo="transform scale-100 opacity-100"
-                      leave="transition duration-95 ease-out"
-                      leaveFrom="transform scale-100 opacity-100"
-                      leaveTo="transform scale-95 opacity-0"
-                    >
-                      <Popover.Panel className="dark:shadowtw absolute right-0 flex h-fit w-max flex-col overflow-hidden rounded-xl border bg-white font-medium dark:border-white/20 dark:bg-black dark:text-white">
-                        <button className="flex w-full items-center gap-2 px-4 py-2.5 text-left font-bold transition duration-200 hover:bg-black/5 dark:hover:bg-white/10">
-                          <AttachMessageIcon size={20} /> Fijar conversación
-                        </button>
-                        <button className="flex w-full items-center gap-2 px-4 py-2.5 text-left font-bold transition duration-200 hover:bg-black/5 dark:hover:bg-white/10">
-                          <SilenceMessageIcon size={20} /> Aplazar conversación
-                        </button>
-                        <button className="flex w-full items-center gap-2 px-4 py-2.5 text-left font-bold transition duration-200 hover:bg-black/5 dark:hover:bg-white/10">
-                          <ReportIcon size={20} /> Denunciar la conversación
-                        </button>
-                        <button className="flex w-full items-center gap-2 px-4 py-2.5 text-left font-bold text-red-600 transition duration-200 hover:bg-black/5 dark:hover:bg-white/10">
-                          <TrashIcon size={20} /> Eliminar conversación
-                        </button>
-                      </Popover.Panel>
-                    </Transition>
+                        <Popover.Button
+                          className="rounded-full p-2 outline-none transition duration-200 hover:bg-black/5 dark:hover:bg-white/10"
+                          ref={popperRef}
+                        >
+                          <MenuIcon size={18} />
+                        </Popover.Button>
+                      </Popover>
+                    </div>
+                    <p className="text-gray-400 truncate">{e.lastmessage}</p>
+                  </div>
 
-                    <Popover.Button
-                      className="rounded-full p-2 outline-none transition duration-200 hover:bg-black/5 dark:hover:bg-white/10"
-                      ref={popperRef}
-                    >
-                      <MenuIcon size={18} />
-                    </Popover.Button>
-                  </Popover>
                 </Link>
-              ))}
+                  ))
+                : null
+              }
             </section>
           </section>
           )
