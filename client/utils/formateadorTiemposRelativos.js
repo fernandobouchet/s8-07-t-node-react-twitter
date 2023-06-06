@@ -1,5 +1,5 @@
 const TIME_UNITS = [
-  { unit: 'día', seconds: 86400 },
+  { unit: ' día', seconds: 86400 },
   { unit: 'h', seconds: 3600 },
   { unit: 'min', seconds: 60 },
   { unit: 's', seconds: 1 }
