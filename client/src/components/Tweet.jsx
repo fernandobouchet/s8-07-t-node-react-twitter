@@ -8,14 +8,13 @@ import { SlOptions } from 'react-icons/sl'
 import { IoStatsChart } from 'react-icons/io5'
 import { IoIosLock } from 'react-icons/io'
 import Likes from './Likes'
-import Retweets from './Retweets'
 import Link from 'next/link'
-import TimeAgo from './TimeAgo'
-
 import { useSession } from "next-auth/react";
 import { URL_CLIENT } from '../../utils/api'
 import { Popover, Transition } from '@headlessui/react'
 import { ReportIcon, TrashIcon } from './icons'
+import TimeAgo from './TimeAgo'
+import Retweets from './Retweets'
 const Tweet = (props) => {
   const { id, _id, content, timestamp = 0, author, comments = [], createdAt, __v, images = [], isComment = false } = props
   const formatNum = (num) => (num === 0 ? "" : num);
@@ -101,8 +100,6 @@ const Tweet = (props) => {
                             (timestamp || createdAt) && <TimeAgo timestamp={timestamp || createdAt} />
                         }
                     </div>
-                    <Retweets {...props}/>
-                    <Likes {...props}/>
                     <p className='ml-2 dark:text-white w-[90%]' >{content}</p>
                     {
                         images?.length ? (

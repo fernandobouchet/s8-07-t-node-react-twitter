@@ -25,7 +25,7 @@ function Home() {
     return <></>;
   }
 
-  console.log(data)
+  // console.log(data) descomentar y revisar los que son retwitts para arreglar la linea 40 y 41
 
   return (
     <>
@@ -37,8 +37,8 @@ function Home() {
       <Post />
       {!isLoading && data !== undefined
         ? data
-          .filter((tweet) => tweet.author)
-          .map((tweet) => tweet.isRetweet ? <Retweet key={tweet._id} {...tweet} /> : <Tweet key={tweet._id} {...tweet} />)
+          .filter((tweet) => tweet.author && !tweet.isRetweet) // por el momento lo dejo asi para que no rompa
+          .map((tweet) => tweet.isRetweet && tweet.originalTweet != null ? <Retweet key={tweet._id} {...tweet} /> : <Tweet key={tweet._id} {...tweet} />)
         : [1, 2, 3, 4, 5, 6, 7].map((tweet) => <SkeletonTweet key={tweet} />)}
         {appContext.active ? <Modal /> : null}
     </>
