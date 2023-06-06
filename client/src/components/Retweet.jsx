@@ -26,7 +26,7 @@ const Retweet = (props) => {
         <Link href={"/" + originalAuthor?.username}>
             <div className="flex hover:underline">
           <HiOutlineArrowsUpDown className='icons group-hover:bg-[#00ba7c]/10' title='Retweetear' />
-          <p className='self-center'>{originalAuthor?.id === loggedInUserId ? "Retwitteado por ti" : `${originalAuthor?.name} retwitteó`}</p>
+          <p className='self-center'>{originalAuthor?._id === loggedInUserId ? "Retwitteado por ti" : `${originalAuthor?.name} retwitteó`}</p>
         </div>
       </Link>
       </div>
