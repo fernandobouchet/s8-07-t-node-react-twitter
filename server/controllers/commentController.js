@@ -94,10 +94,64 @@ const getCommentByUserId = async (req, res) => {
   }
 };
 
+const likeComment = async(req,res) => {
+  try {
+    const { id } = req.params;
+    const commentId = req.params.id;
+
+    const comment = await Comment.findById(commentId);
+    
+    if (!comment) {
+      return res.status(404).send({ message: 'El comentario no existe.' });
+    }
+    
+    const commentAlreadyLiked = comment.likes.includes(id);
+
+    if (commentAlreadyLiked) {
+      return res.status(400).json({ message: 'El usuario ya ha likeado este comentario.' });
+    }
+    comment.likes.push(id);
+    await comment.save();
+    return res.json({ message: 'Agregado like al comentario correctamente' });
+
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ message: 'Error al likear comentario.' });
+  }
+}
+
+const unLikeComment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const commentId = req.params.id;
+
+    const comment = await Comment.findById(commentId);
+    
+    if (!comment) {
+      return res.status(404).send({ message: 'El comentario no existe.' });
+    }
+    
+    const commentAlreadyLiked = comment.likes.includes(id);
+
+    if (!commentAlreadyLiked) {
+      return res.status(400).json({ message: 'El usuario no ha likeado este comentario.' });
+    }
+    comment.likes = comment.likes.filter(userId => userId.toString() !== id);
+    await comment.save();
+    return res.json({ message: 'Eliminado like al comentario correctamente' });
+
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ message: 'Error al quitar like al comentario.' });
+  }
+};
+
 export {
   createComment,
   getCommentById,
   updateComment,
   deleteComment,
   getCommentByUserId,
+  likeComment,
+  unLikeComment
 };
