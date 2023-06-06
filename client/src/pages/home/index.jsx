@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useGetAllTweetsQuery } from "@/redux/services/tweetsApi";
 import SkeletonTweet from "@/components/SkeletonTweet";
+import Retweet from "@/components/Retweet";
 
 function Home() {
   const { isLoading, data } = useGetAllTweetsQuery(undefined, {
@@ -24,6 +25,8 @@ function Home() {
     return <></>;
   }
 
+  // console.log(data) descomentar y revisar los que son retwitts para arreglar la linea 40 y 41
+
   return (
     <>
       <Head>
@@ -34,8 +37,8 @@ function Home() {
       <Post />
       {!isLoading && data !== undefined
         ? data
-          .filter((tweet) => tweet.author && !tweet.isRetweet)
-          .map((tweet) => <Tweet key={tweet._id} {...tweet} />)
+          .filter((tweet) => tweet.author && !tweet.isRetweet) // por el momento lo dejo asi para que no rompa
+          .map((tweet) => tweet.isRetweet && tweet.originalTweet != null ? <Retweet key={tweet._id} {...tweet} /> : <Tweet key={tweet._id} {...tweet} />)
         : [1, 2, 3, 4, 5, 6, 7].map((tweet) => <SkeletonTweet key={tweet} />)}
         {appContext.active ? <Modal /> : null}
     </>

@@ -80,7 +80,6 @@ const ProfileSection = ({ session, profile }) => {
           width={200}
           height={200}
           alt="Fondo de Perfil"
-          unoptimized
         />
         </Dialog.Panel>
       </Dialog>
@@ -105,7 +104,6 @@ const ProfileSection = ({ session, profile }) => {
           width={400}
           height={400}
           alt="Foto de perfil"
-          unoptimized
         />
         </Dialog.Panel>
       </Dialog>
@@ -140,7 +138,6 @@ const ProfileSection = ({ session, profile }) => {
         width={200}
         height={200}
         alt="Fondo de Perfil"
-        unoptimized
       />
 
       <div className="h-fit dark:text-white w-[95%] mx-auto">
@@ -155,7 +152,6 @@ const ProfileSection = ({ session, profile }) => {
             width={100}
             height={100}
             alt="Foto de perfil"
-            unoptimized
           />
 
           {
@@ -263,6 +259,7 @@ const ProfileSection = ({ session, profile }) => {
             }
 
             <p className="flex items-center gap-1 text-gray-400"><HiCalendarDays size={18}/> Se unió en {profile?.user?.createdAt ? formatDate(profile.user.createdAt) : "marzo de 2023" }</p>
+
           </div>
 
           <div className="flex items-center gap-4 dark:text-white">
