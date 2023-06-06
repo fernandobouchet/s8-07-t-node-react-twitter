@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { API_URL } from "../../../utils/api";
 
 export const fetchMessages = createAsyncThunk(
   "messages/fetchMessages",
   async (userId) => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/chat?userId=${userId}`,
+      `${API_URL}/api/chat?userId=${userId}`,
       {
         credentials: "include",
       }

@@ -40,6 +40,7 @@ import { formatDate } from "../../utils/formateadorTiemposRelativos";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMessages } from "@/redux/features/messagesSlice";
 import io from "socket.io-client"
+import { API_URL } from "../../utils/api";
 let socket
 
 function Header() {
@@ -437,7 +438,7 @@ export default function Layout({ children }) {
   const filterRef = useRef(null)
 
   async function handleSnooze(senderId, value, username) {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chat/snooze?senderId=${senderId}&value=${value}&username=${username}`, {
+    await fetch(`${API_URL}/api/chat/snooze?senderId=${senderId}&value=${value}&username=${username}`, {
       method: 'PATCH',
       credentials: "include"
     })
@@ -446,7 +447,7 @@ export default function Layout({ children }) {
   }
 
   async function handlePin(senderId, value, username) {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chat/pin?senderId=${senderId}&value=${value}&username=${username}`, {
+    await fetch(`${API_URL}/api/chat/pin?senderId=${senderId}&value=${value}&username=${username}`, {
       method: 'PATCH',
       credentials: "include"
     })
@@ -455,7 +456,7 @@ export default function Layout({ children }) {
   }
 
   async function handleDelete(senderId, receiverId, username) {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chat?senderId=${senderId}&receiverId=${receiverId}&username=${username}`, {
+    await fetch(`${API_URL}/api/chat?senderId=${senderId}&receiverId=${receiverId}&username=${username}`, {
       method: 'DELETE',
       credentials: "include"
     })
@@ -472,7 +473,7 @@ export default function Layout({ children }) {
   }
 
   useEffect(() => {
-    socket = io(process.env.NEXT_PUBLIC_API_URL)
+    socket = io(API_URL)
 
     socket.emit('joinChat', session?.user?._id)
 

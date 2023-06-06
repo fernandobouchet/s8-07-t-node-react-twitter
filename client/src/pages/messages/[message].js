@@ -12,6 +12,7 @@ import { HiGif } from 'react-icons/hi2'
 import { IoImage } from 'react-icons/io5'
 import { useDispatch } from 'react-redux'
 import io from "socket.io-client"
+import { API_URL } from '../../../utils/api'
 let socket
 
 const Message = () => {
@@ -38,7 +39,7 @@ const Message = () => {
   const loadMessages = async () => {
     try {
       if (session?.user?._id && profile?._id) {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/messages?senderId=${session?.user?._id}&receiverId=${profile?._id}&timestamp=${new Date().getTime()}`, {
+        const response = await fetch(`${API_URL}/api/messages?senderId=${session?.user?._id}&receiverId=${profile?._id}&timestamp=${new Date().getTime()}`, {
           method: "GET",
           headers: {
             'content-type': 'application/json'
@@ -79,7 +80,7 @@ const Message = () => {
 
   useEffect(() => {
     if (session?.user?._id) {
-      socket = io(process.env.NEXT_PUBLIC_API_URL)
+      socket = io(API_URL)
       // Cargar mensajes iniciales
       loadMessages()
 
@@ -91,7 +92,7 @@ const Message = () => {
       // Volver a solicitar los mensajes
       socket.on('updateMessages', () => {
         loadMessages()
-        dispatch(fetchMessages(session?.user?._id))
+        dispatch(fetchMessages(session.token))
       })
 
       socket.emit('joinChat', profile?._id)
