@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { API_URL } from "../../../utils/api";
 
 export const chatsApi = createApi({
   reducerPath: "chatsApi",
   refetchOnFocus: false,
-  baseQuery: fetchBaseQuery({ baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/api/chat`, }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${API_URL}/api/chat`, }),
   tagTypes: ["Chats"],
   endpoints: (builder) => ({
     fetchChats: builder.query({
