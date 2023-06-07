@@ -12,6 +12,7 @@ import { HiOutlineArrowsUpDown } from 'react-icons/hi2'
 import TimeAgo from './TimeAgo'
 import { URL_CLIENT } from '../../utils/api'
 import Options from './Options'
+import Content from './Content';
 
 const Retweet = (props) => {
   const { originalTweet, author: originalAuthor } = props;
@@ -69,7 +70,7 @@ const Retweet = (props) => {
                         (timestamp || createdAt) && <TimeAgo timestamp={timestamp || createdAt} />
                     }
                 </Link>
-                <p className='ml-2 max-sm:text-xs dark:text-white w-[90%]' >{content}</p>
+                <Content content={content}/>
                 {
                     images.length ? (
                         <div className='max-w-fit max-h-fit py-2'>

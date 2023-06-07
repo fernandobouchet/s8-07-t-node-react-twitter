@@ -13,6 +13,7 @@ import { URL_CLIENT } from '../../utils/api'
 import TimeAgo from './TimeAgo'
 import Retweets from './Retweets'
 import Options from './Options'
+import Content from './Content'
 const Tweet = (props) => {
   const { id, _id, content, timestamp = 0, author, comments = [], createdAt, __v, images = [], isComment = false } = props
   const formatNum = (num) => (num === 0 ? "" : num);
@@ -72,7 +73,7 @@ const Tweet = (props) => {
                                 (timestamp || createdAt) && <TimeAgo styleds={"max-sm:text-xs "} timestamp={timestamp || createdAt} />
                             }
                         </div>
-                        <p className='ml-2 dark:text-white max-sm:text-xs w-[90%]' >{content}</p>
+                        <Content content={content}/>
                         {
                             images?.length ? (
                                 <div className='max-w-fit max-h-fit py-2'>
@@ -98,7 +99,7 @@ const Tweet = (props) => {
                             (timestamp || createdAt) && <TimeAgo styleds={"max-sm:text-xs "} timestamp={timestamp || createdAt} />
                         }
                     </div>
-                    <p className='ml-2 dark:text-white max-sm:text-xs w-[90%]' >{content}</p>
+                    <Content content={content}/>
                     {
                         images?.length ? (
                             <div className='max-w-fit max-h-fit py-2'>

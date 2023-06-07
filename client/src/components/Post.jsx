@@ -10,6 +10,7 @@ import Image from "next/image";
 // import { createTweet } from "../../lib/tweets";
 import { useCreateTweetMutation } from "@/redux/services/tweetsApi";
 import { useSession } from "next-auth/react";
+import { obtenerHashtags } from "../../utils/functions";
 // import { useRouter } from "next/router";
 
 const Post = () => {
@@ -32,7 +33,7 @@ const Post = () => {
 
     if (tweetText.length !== 0 || files.length !== 0) {
       body.append("content", tweetText);
-      body.append("hashtags", ["Tweet"]);
+      body.append("hashtags", obtenerHashtags(tweetText));
       createTweet({ body, token: session.token });
       setTweetText("");
       setFiles([]);
@@ -110,14 +111,14 @@ const Post = () => {
             </div>
 
             <div className="my-2 w-full justify-end border-b border-black/5 py-2 dark:border-white/20">
-              {!ubicacion.length ? (
+              {ubicacion.length ? (
                 <span
                   onClick={() => setUbicacion("")}
                   className="inline-flex cursor-pointer items-center max-sm:text-xs rounded-full bg-[#1C9BEF]/20 px-2 py-1 font-semibold text-[#1C9BEF] hover:bg-[#ff1100]/30 hover:text-[#ff1100]/80"
                 >
                   {" "}
                   <BiMap className="mr-1" title="Etiquetar ubicacion" />{" "}
-                  {"ubicacion"}
+                  {ubicacion}
                 </span>
               ) : (
                 ""

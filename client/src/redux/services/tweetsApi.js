@@ -143,4 +143,4 @@ export const tweetsApi = createApi(
   }
 )
 
-export const { useGetAllTweetsQuery, useGetAllTweetsFollowedQuery, useGetTweetsByUserIdQuery, useCreateTweetMutation, useLikeTweetMutation, useLikeCommentMutation, useDislikeCommentMutation, useCreateCommentTweetMutation, useReTweetMutation, useUndoReTweetMutation, useGetTweetByIdQuery, useGetCommentByIdQuery } = tweetsApi
+export const { useGetAllTweetsQuery, useGetAllTweetsFollowedQuery, useGetTopHashtagsQuery, useGetTweetsByUserIdQuery, useCreateTweetMutation, useLikeTweetMutation, useLikeCommentMutation, useDislikeCommentMutation, useCreateCommentTweetMutation, useReTweetMutation, useUndoReTweetMutation, useGetTweetByIdQuery, useGetCommentByIdQuery } = tweetsApi
