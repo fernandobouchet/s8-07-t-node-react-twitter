@@ -7,7 +7,7 @@ export default function UserHover({ user, onClickFollowUser, data }) {
   // Mover la llamada al hook al cuerpo principal del componente
   return (
     <div
-      className="fixed right-52 top-64 flex h-[300px] w-[300px] flex-col rounded-lg bg-black"
+      className="fixed right-52 top-64 flex h-[300px] w-[300px] flex-col rounded-lg bg-white dark:bg-black"
       key={_id}
     >
       <div className="flex justify-around">

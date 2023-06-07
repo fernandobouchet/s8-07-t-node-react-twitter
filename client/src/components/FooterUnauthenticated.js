@@ -151,13 +151,13 @@ export default function FooterUnauthenticated() {
         </div>
         <div className="flex h-full w-full items-center gap-4 ">
           <button
-            onClick={handleModal}
+            onClick={() => [setShowModal(true), setModalRegister(false)]}
             className="w-full rounded-full border-2 border-white/20 p-2 font-semibold text-white hover:bg-gray-300 md:w-auto"
           >
             Iniciar sesión
           </button>
           <button
-            onClick={() => setModalRegister(true)}
+            onClick={() => [setShowModal(false), setModalRegister(true)]}
             className="w-full rounded-full border-2 border-white/20 bg-white p-2 font-semibold text-black hover:bg-gray-300 md:w-auto"
           >
             Regístrate
