@@ -6,7 +6,7 @@ import {
 } from "@/redux/services/usersApi";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import UserHover from "./UserHover";
+/* import UserHover from "./UserHover"; */
 import Loading from "../Loading";
 const { default: Image } = require("next/image");
 const { default: Link } = require("next/link");
@@ -19,9 +19,9 @@ function QuienSeguir() {
   const { data, isLoading } = useGetAllUsersQuery();
   const [following, setFollowing] = useState([]);
   const [hovered, setHovered] = useState(false);
-  /* const [hoveredUserId, setHoveredUserId] = useState(null);
+  /*   const [hoveredUserId, setHoveredUserId] = useState(null);
   const [dataToRender, setDataToRender] = useState(null);
-    const handleUserMouseEnter = (id) => {
+  const handleUserMouseEnter = (id) => {
     setDataToRender(data);
     setHoveredUserId(id);
   };
@@ -103,7 +103,7 @@ function QuienSeguir() {
             <div
               className="my-1.5 flex flex-row items-center gap-2 p-3 hover:bg-gray-200 dark:hover:bg-gray-800"
               key={user._id}
-              /* onMouseEnter={() => handleUserMouseEnter(user._id)}
+              /*    onMouseEnter={() => handleUserMouseEnter(user._id)}
               onMouseLeave={handleUserMouseLeave} */
             >
               <Image
