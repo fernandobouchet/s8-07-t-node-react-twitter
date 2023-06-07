@@ -56,9 +56,9 @@ const Tweet = (props) => {
             <div className="w-full flex flex-col gap-1 text-[#536471] dark:bg-transparent" >
                 {isComment ? (
                     <>
-                        <div className='flex flex-row items-start group gap-1 text-lg w-full' >
+                        <div className='flex flex-row items-baseline group gap-1 text-lg w-full' >
                             <Link href={"/" + author?.username}>
-                                <h4 className={` mx-2 inline-flex items-center align-middle font-bold text-black dark:text-[#e7e9ea] group-hover:underline`} >{author.name.length <= 25 ? author.name : `${author.name.slice(0, 25)}...`}
+                                <h4 className={` mx-2 inline-flex items-center max-sm:text-xs align-baseline font-bold text-black dark:text-[#e7e9ea] group-hover:underline`} >{author.name.length <= 18 ? author.name : `${author.name.slice(0, 17)}...`}
                                     {
                                         author?.private && <IoIosLock className='text-black dark:text-white ml-1' title='Cuenta verificada' />
                                     }
@@ -67,12 +67,12 @@ const Tweet = (props) => {
                                     }
                                 </h4>
                             </Link>
-                            <span>{'@' + author?.username}</span>
+                            <span className="max-sm:text-xs" >{'@' + author?.username}</span>
                             {
-                                (timestamp || createdAt) && <TimeAgo timestamp={timestamp || createdAt} />
+                                (timestamp || createdAt) && <TimeAgo styleds={"max-sm:text-xs "} timestamp={timestamp || createdAt} />
                             }
                         </div>
-                        <p className='ml-2 dark:text-white w-[90%]' >{content}</p>
+                        <p className='ml-2 dark:text-white max-sm:text-xs w-[90%]' >{content}</p>
                         {
                             images?.length ? (
                                 <div className='max-w-fit max-h-fit py-2'>
@@ -82,9 +82,9 @@ const Tweet = (props) => {
                         }
                     </>
                 ) : <Link href={`/tweet/${_id}`}>
-                    <div className='flex flex-row items-start group gap-1 text-lg w-full' >
+                    <div className='flex flex-row group gap-1 items-baseline w-full' >
                         <Link href={"/" + author?.username}>
-                            <h4 className={` mx-2 inline-flex items-center align-middle font-bold text-black dark:text-[#e7e9ea] group-hover:underline`} >{author.name.length <= 25 ? author.name : `${author.name.slice(0, 25)}...`}
+                            <h4 className={` mx-2 inline-flex items-center max-sm:text-xs align-middle font-bold text-black dark:text-[#e7e9ea] group-hover:underline`} >{author.name.length <= 18 ? author.name : `${author.name.slice(0, 17)}...`}
                                 {
                                     author?.private && <IoIosLock className='text-black dark:text-white ml-1' title='Cuenta verificada' />
                                 }
@@ -93,12 +93,12 @@ const Tweet = (props) => {
                                 }
                             </h4>
                         </Link>
-                        <span>{'@' + author?.username}</span>
+                        <span className="max-sm:text-xs ">{'@' + author?.username}</span>
                         {
-                            (timestamp || createdAt) && <TimeAgo timestamp={timestamp || createdAt} />
+                            (timestamp || createdAt) && <TimeAgo styleds={"max-sm:text-xs "} timestamp={timestamp || createdAt} />
                         }
                     </div>
-                    <p className='ml-2 dark:text-white w-[90%]' >{content}</p>
+                    <p className='ml-2 dark:text-white max-sm:text-xs w-[90%]' >{content}</p>
                     {
                         images?.length ? (
                             <div className='max-w-fit max-h-fit py-2'>
@@ -114,7 +114,7 @@ const Tweet = (props) => {
                                 <>
                                     <div onClick={onComment} className='flex items-center align-middle space-x-1 cursor-pointer hover:text-[#1C9BEF] group' >
                                         <BiMessageRounded className='icons group-hover:bg-[#1C9BEF]/10' title='Responder' />
-                                        <p className='text-sm' >{formatNum(comments.length)}</p>
+                                        <p className='text-sm max-sm:text-xs' >{formatNum(comments.length)}</p>
                                     </div>
                                     <Retweets {...props} loggedInUserId={session?.user?._id} />
                                 </>
@@ -123,7 +123,7 @@ const Tweet = (props) => {
                     <Likes {...props} isComment={isComment} />
                     <div className='flex items-center align-middle space-x-1 cursor-pointer hover:text-[#1C9BEF] group' >
                         <IoStatsChart className='icons group-hover:bg-[#1C9BEF]/10' title='Ver' />
-                        <p className='text-sm' >{__v}</p>
+                        <p className='text-sm max-sm:text-xs' >{__v}</p>
                     </div>
                     <div onClick={shareTweet} className='flex items-center align-middle space-x-1 cursor-pointer hover:text-[#1d9bf0] group' >
                         <FiShare className='icons group-hover:bg-[#1d9bf0]/10' title='Compartir' />

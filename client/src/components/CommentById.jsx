@@ -5,16 +5,16 @@ import SkeletonTweet from './SkeletonTweet';
 import Tweet from './Tweet';
 import Modal from './Modal';
 
-const CommentById = ({ id }) => {
-  const { isLoading, data, isError, isSuccess } = useGetCommentByIdQuery(id, {
-    refetchOnReconnect: true,
-  });
+const CommentById = ({ id,data }) => {
+  // const { isLoading, data, isError, isSuccess } = useGetCommentByIdQuery(id, {
+  //   refetchOnReconnect: true,
+  // });
   const [appContext] = useContext(AppContext)
 
   return (
     <div className="ml-8 border-l-2 border-[#1d9bf0] bg-white dark:bg-black" >
      {
-        (isLoading) ? (
+        (data ==false) ? (
             < SkeletonTweet />
         )
           : (
@@ -22,7 +22,7 @@ const CommentById = ({ id }) => {
             )
     }
     {
-        isError ? (
+        data == false ? (
             <div className="grid place-content-center my-40 text-center gap-y-8 dark:text-white">
       <p className="text-7xl font-semibold">Oops</p>
       <p className="text-3xl font-semibold">Esta pagina no existe.</p>
@@ -31,8 +31,10 @@ const CommentById = ({ id }) => {
     }
 
     {
-        isSuccess ? (
+        data ? (
           <>
+          {console.log(data)}
+
         <Tweet {...data} isComment={true} />
         {appContext.active ? <Modal /> : null}
         </>
