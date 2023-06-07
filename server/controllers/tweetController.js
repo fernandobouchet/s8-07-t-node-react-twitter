@@ -7,7 +7,7 @@ import User from '../models/User.js';
 const createTweet = async (req, res) => {
   try {
     const { id } = req.user;
-    const { content, hashtags } = req.body;
+    const { content, hashtags, confirmation } = req.body;
 
     const images = req.files;
     let imagePaths = [];
@@ -17,6 +17,25 @@ const createTweet = async (req, res) => {
         const imagePath = `${process.env.API_URL}/public/images/${image.filename}`;
         return imagePath;
       });
+    }
+
+    //filtrar palabras malsonantes
+    const forbiddenWords = ['puto', 'puta', 'perra'];
+    const forbiddenWordsList = forbiddenWords.filter((word) =>
+      content.toLowerCase().includes(word)
+    );
+
+    //verificar palabras y solicitar confirmacion
+    if (forbiddenWordsList.length > 0 && !confirmation) {
+      const confirmationMessage = `¿Estás seguro de mandar el tweet? Tienes las siguientes palabras malsonantes: ${forbiddenWordsList.join(', ')}`;
+
+      //solicitar confirmación
+      return res.status(200).json({ message: 'Confirmation required', confirmationMessage });
+    }
+
+    if (forbiddenWordsList.length > 0 && confirmation !== 'true') {
+      //si no confirma, se cancela el tweet
+      return res.status(200).json({ message: 'Tweet canceled' });
     }
 
     let tweet = new Tweet({
