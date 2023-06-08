@@ -67,6 +67,18 @@ export const tweetsApi = createApi(
         }),
         invalidatesTags: ["Tweets"],
       }),
+      deleteTweet: builder.mutation({
+        query: ({ id, token }) => ({
+          url: `tweets/${id}`,
+          method: 'DELETE',
+          credentials: 'include',
+          headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
+        }),
+        invalidatesTags: ["Tweets", "TweetById"],
+      }),
       likeTweet: builder.mutation({
         query: ({ tweetId, token }) => ({
           url: `tweets/like/${tweetId}`,
@@ -143,4 +155,4 @@ export const tweetsApi = createApi(
   }
 )
 
-export const { useGetAllTweetsQuery, useGetAllTweetsFollowedQuery, useGetTweetsByUserIdQuery, useCreateTweetMutation, useLikeTweetMutation, useLikeCommentMutation, useDislikeCommentMutation, useCreateCommentTweetMutation, useReTweetMutation, useUndoReTweetMutation, useGetTweetByIdQuery, useGetCommentByIdQuery } = tweetsApi
+export const { useGetAllTweetsQuery, useGetAllTweetsFollowedQuery, useGetTopHashtagsQuery, useGetTweetsByUserIdQuery, useCreateTweetMutation, useLikeTweetMutation, useLikeCommentMutation, useDislikeCommentMutation, useDeleteTweetMutation, useCreateCommentTweetMutation, useReTweetMutation, useUndoReTweetMutation, useGetTweetByIdQuery, useGetCommentByIdQuery } = tweetsApi
