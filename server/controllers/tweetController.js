@@ -2,13 +2,31 @@
 import Retweet from '../models/Retweet.js';
 import Tweet from '../models/Tweet.js';
 import User from '../models/User.js';
+import ForbiddenWords from '../models/forbiddenWords.js';
 
 //crear tweet
 const createTweet = async (req, res) => {
   try {
     const { id } = req.user;
-    const { content, hashtags } = req.body;
+    const { content, hashtags, confirmation } = req.body;
 
+    //filtrar palabras malsonantes
+    const forbiddenWordsList  = await ForbiddenWords.findOne({})
+
+    if(forbiddenWordsList !== null) {
+    const foundedForbiddenWords = forbiddenWordsList.words.filter((word) =>
+      content.toLowerCase().includes(word)
+    );
+
+    //verificar palabras y solicitar confirmacion
+    if (foundedForbiddenWords.length > 0 && !confirmation) {
+      const confirmationMessage = `¿Estás seguro de mandar el tweet? Tienes las siguientes palabras malsonantes: ${foundedForbiddenWords.join(', ')}`;
+
+      //solicitar confirmación
+      return res.status(200).json({ message: 'Confirmation required', confirmationMessage, forbiddenWords: foundedForbiddenWords });
+      }
+    }
+    
     const images = req.files;
     let imagePaths = [];
 
@@ -19,13 +37,14 @@ const createTweet = async (req, res) => {
       });
     }
 
+    console.log("Que es ",hashtags.split(","))
+  
     let tweet = new Tweet({
       author: id,
       content,
-      hashtags,
+      hashtags:hashtags.split(","),
       images: imagePaths,
     });
-
     await tweet.save();
     tweet = await tweet.populate('author', 'name image username email confirmed');
 

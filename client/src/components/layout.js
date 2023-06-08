@@ -193,7 +193,7 @@ function Header() {
         </div>
       </div>
       <div className="noscrollbar flex h-full min-w-max flex-col items-center gap-5 overflow-y-auto border-r-black/5 px-1 lg:px-2 dark:border-r-white/20 max-md:w-full md:fixed md:border-r xl:w-[300px] xl:px-4">
-        <div className="fixed top-0 flex w-full items-center justify-between border-b border-b-black/10 bg-white px-4 py-3 dark:border-b-white/20 dark:bg-black md:hidden">
+        <div className="fixed z-[9] top-0 flex w-full items-center justify-between border-b border-b-black/10 bg-white px-4 py-3 dark:border-b-white/20 dark:bg-black md:hidden">
           {
             status === "unauthenticated"
               ? <Link href="/home">
@@ -530,7 +530,7 @@ function Footer() {
 
       <footer className={"w-[350px] max-lg:hidden " + (pathname.includes("messages") || pathname.includes("settings") ? "md:hidden" : "")}>
         <div className="noscrollbar fixed flex max-w-[350px] flex-col gap-5 overflow-y-scroll border-l-black/5 px-4 dark:border-l-white/20 md:h-full md:border-l">
-          <div className="sticky top-0 w-full bg-white py-1 dark:bg-black">
+          <div className={`${pathname.includes("explore") ? "hidden" : ""} sticky top-0 w-full bg-white py-1 dark:bg-black`}>
             <div className="group flex w-full items-center gap-3 overflow-hidden rounded-3xl border border-black/20 bg-slate-100/20 px-3 transition duration-200 focus-within:border-indigo-500 dark:border-white/20 dark:bg-slate-500/20 dark:focus-within:border-indigo-500">
               <button>
                 <SearchIcon size={24} opacity={true} />
@@ -547,7 +547,10 @@ function Footer() {
               <Login />
             ) : (
               <div className="col-1 flex flex-col gap-2">
-                <QueEstaPasando /> <QuienSeguir />
+                {
+                  pathname.includes("explore") ? null : <QueEstaPasando />
+                }
+                 <QuienSeguir />
               </div>
             )}
           </div>

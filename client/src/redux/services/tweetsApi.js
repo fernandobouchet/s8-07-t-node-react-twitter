@@ -66,6 +66,14 @@ export const tweetsApi = createApi(
         }),
         providesTags: ["Tweets"],
       }),
+      getTopHashtags: builder.query({
+        query: () => `tweets/topHashtags`,
+        providesTags: ["Tweets"],
+      }),
+      getTopTweets: builder.query({
+        query: () => `tweets/topTweets`,
+        providesTags: ["Tweets"],
+      }),
       getTweetById: builder.query({
         query: (id) => `tweets/${id}`,
         providesTags: ["TweetById"],
@@ -97,6 +105,18 @@ export const tweetsApi = createApi(
           body,
         }),
         invalidatesTags: ["Tweets"],
+      }),
+      deleteTweet: builder.mutation({
+        query: ({ id, token }) => ({
+          url: `tweets/${id}`,
+          method: 'DELETE',
+          credentials: 'include',
+          headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
+        }),
+        invalidatesTags: ["Tweets", "TweetById"],
       }),
       likeTweet: builder.mutation({
         query: ({ tweetId, token }) => ({
@@ -174,4 +194,4 @@ export const tweetsApi = createApi(
   }
 )
 
-export const { useGetAllTweetsQuery, useGetAllLikedTweetsQuery, useGetAllTweetsFollowedQuery, useGetTweetsByUserIdQuery, useCreateTweetMutation, useLikeTweetMutation, useLikeCommentMutation, useDislikeCommentMutation, useCreateCommentTweetMutation, useReTweetMutation, useUndoReTweetMutation, useGetTweetByIdQuery, useGetCommentByIdQuery } = tweetsApi
+export const { useGetAllTweetsQuery, useGetAllLikedTweetsQuery, useGetAllTweetsFollowedQuery, useGetTopHashtagsQuery, useGetTopTweetsQuery, useGetTweetsByUserIdQuery, useCreateTweetMutation, useLikeTweetMutation, useLikeCommentMutation, useDislikeCommentMutation, useDeleteTweetMutation, useCreateCommentTweetMutation, useReTweetMutation, useUndoReTweetMutation, useGetTweetByIdQuery, useGetCommentByIdQuery } = tweetsApi
