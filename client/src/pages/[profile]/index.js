@@ -12,7 +12,7 @@ export default function Profile () {
   let profile = {}
   const { query } = useRouter()
   const { data } = useGetUserByIdQuery({ userId: query?.profile, token: session?.token })
-  const { data: mineTweets } = useGetTweetsByUserIdQuery({ userId: session?.user?._id, token: session?.token })
+  const { data: mineTweets } = useGetTweetsByUserIdQuery({ userId: query?.profile === session?.user?.username ? session?.user?._id : data?._id, token: session?.token })
 
   if (loading) {
     <p className="dark:text-white">Cargando</p>

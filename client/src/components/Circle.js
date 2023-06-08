@@ -21,16 +21,15 @@ const Pie = ({ percentage, colour, size }) => {
         strokeDashoffset={pct <= 100 ? strokePct : 0}
       ></circle>
       <circle
+        className={strokePct !== circ ? "dark:stroke-white/20 stroke-black/[7%]" : ""}
         r={r}
         cx={size / 2}
         cy={size / 2}
         fill="transparent"
-        stroke={strokePct !== circ ? "rgba(47, 51, 54, .5)" : ""}
         strokeWidth={size / 10}
         strokeDasharray={circ}
         strokeDashoffset={0}
       ></circle>
-
       <text
         className="dark:fill-white"
         x="50%"
