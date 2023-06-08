@@ -3,6 +3,7 @@ import { useSession, signIn } from "next-auth/react"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { useGetUserByIdQuery } from "@/redux/services/usersApi"
+import QuienSeguir from "@/components/layoutComponents/QuienSeguir"
 
 export default function Profile () {
   const { data: session, loading, status } = useSession()
@@ -33,7 +34,7 @@ export default function Profile () {
     <ProfileSection session={session} profile={profile} />
 
     <section className="w-[95%] mx-auto my-4 dark:text-white">
-      <h2 className="text-xl font-bold">A quién seguir</h2>
+      <QuienSeguir expand={true} />
     </section>
 
     <div>

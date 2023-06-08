@@ -237,16 +237,21 @@ function Header() {
             <TwitterIcon size={28} />
           </Link>
 
-          <Link
-            href="/home"
-            className={
-              "flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
-              (pathname === "/" ? "font-bold" : "")
-            }
-          >
-            <HomeIcon size={28} active={pathname === "/home"} />{" "}
-            <p className="dark:text-white max-xl:hidden">Inicio</p>
-          </Link>
+          {
+            !session
+              ? null : (
+              <Link
+                href="/home"
+                className={
+                  "flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
+                  (pathname === "/" ? "font-bold" : "")
+                }
+              >
+                <HomeIcon size={28} active={pathname === "/home"} />{" "}
+                <p className="dark:text-white max-xl:hidden">Inicio</p>
+              </Link>
+              )
+          }
 
           <Link
             href="/explore"
@@ -259,64 +264,55 @@ function Header() {
             <p className="dark:text-white max-xl:hidden">Explorar</p>
           </Link>
 
-          <Link
-            href="/notifications"
-            className={
-              "flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
-              (pathname === "/notifications" ? "font-bold" : "")
-            }
-          >
-            <NotificationIcon
-              size={28}
-              active={pathname === "/notifications"}
-            />{" "}
-            <p className="dark:text-white max-xl:hidden">Notificaciones</p>
-          </Link>
+          {
+            !session
+              ? <Darkmode sidebar={true} /> : null
+          }
 
-          <Link
-            href="/messages"
-            className={
-              "flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
-              (pathname.includes("messages") ? "font-bold" : "")
-            }
-          >
-            <MessagesIcon size={28} active={pathname.includes("messages")} />{" "}
-            <p className="dark:text-white max-xl:hidden">Mensajes</p>
-          </Link>
-
-          <Link
-            href="/lists"
-            className={
-              "flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
-              (pathname === "/lists" ? "font-bold" : "")
-            }
-          >
-            <ListIcon size={28} active={pathname === "/lists"} />{" "}
-            <p className="dark:text-white max-xl:hidden">Listas</p>
-          </Link>
-
-          <Link
-            href="/bookmarks"
-            className={
-              "flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
-              (pathname === "/bookmarks" ? "font-bold" : "")
-            }
-          >
-            <BookmarkIcon size={28} active={pathname === "/bookmarks"} />{" "}
-            <p className="dark:text-white max-xl:hidden">Guardados</p>
-          </Link>
-
-          <Link
-            href={"/" + session?.user?.username}
-            className={
-              "flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
-              (query.profile === session?.user?.username ? "font-bold" : "")
-            }
-          >
-            <ProfileIcon size={28} active={query.profile === session?.user?.username} />{" "}
-            <p className="dark:text-white max-xl:hidden">Perfil</p>
-          </Link>
-
+          {
+            !session
+              ? null : (
+                <>
+                <Link
+                  href="/notifications"
+                  className={"flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
+                    (pathname === "/notifications" ? "font-bold" : "")}
+                >
+                  <NotificationIcon
+                    size={28}
+                    active={pathname === "/notifications"} />{" "}
+                  <p className="dark:text-white max-xl:hidden">Notificaciones</p>
+                </Link><Link
+                  href="/messages"
+                  className={"flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
+                    (pathname.includes("messages") ? "font-bold" : "")}
+                >
+                    <MessagesIcon size={28} active={pathname.includes("messages")} />{" "}
+                    <p className="dark:text-white max-xl:hidden">Mensajes</p>
+                  </Link><Link
+                    href="/lists"
+                    className={"flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
+                      (pathname === "/lists" ? "font-bold" : "")}
+                  >
+                    <ListIcon size={28} active={pathname === "/lists"} />{" "}
+                    <p className="dark:text-white max-xl:hidden">Listas</p>
+                  </Link><Link
+                    href="/bookmarks"
+                    className={"flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
+                      (pathname === "/bookmarks" ? "font-bold" : "")}
+                  >
+                    <BookmarkIcon size={28} active={pathname === "/bookmarks"} />{" "}
+                    <p className="dark:text-white max-xl:hidden">Guardados</p>
+                  </Link><Link
+                    href={"/" + session?.user?.username}
+                    className={"flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
+                      (query.profile === session?.user?.username ? "font-bold" : "")}
+                  >
+                    <ProfileIcon size={28} active={query.profile === session?.user?.username} />{" "}
+                    <p className="dark:text-white max-xl:hidden">Perfil</p>
+                  </Link>
+                </>)
+          }
           {session ? (
             <Popover className="relative mt-auto w-full max-md:hidden">
               <Transition
