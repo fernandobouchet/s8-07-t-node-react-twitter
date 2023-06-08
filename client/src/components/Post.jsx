@@ -7,11 +7,10 @@ import { BsEmojiSmile } from "react-icons/bs";
 import { BiCalendar, BiMap } from "react-icons/bi";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
-// import { createTweet } from "../../lib/tweets";
 import { useCreateTweetMutation } from "@/redux/services/tweetsApi";
 import { useSession } from "next-auth/react";
 import { obtenerHashtags } from "../../utils/functions";
-// import { useRouter } from "next/router";
+import ModalWarning from "./ModalWarning";
 
 const Post = () => {
   const { data: session, status } = useSession();
@@ -19,6 +18,8 @@ const Post = () => {
   const [ubicacion, setUbicacion] = useState("");
   const [files, setFiles] = useState([]);
   const [createTweet] = useCreateTweetMutation();
+  const [warning, setWarning] = useState({})
+  const [modal, setModal] = useState(false)
 
   const handleTweetChange = (event) => {
     setTweetText(event.target.value);
@@ -34,12 +35,35 @@ const Post = () => {
     if (tweetText.length !== 0 || files.length !== 0) {
       body.append("content", tweetText);
       body.append("hashtags", obtenerHashtags(tweetText));
-      createTweet({ body, token: session.token });
-      setTweetText("");
-      setFiles([]);
-      setUbicacion("");
+      await createTweet({ body, token: session.token }).then(async res => {
+        if (!res.data.message) {
+          setTweetText("");
+          setFiles([]);
+          setUbicacion("");
+        } else {
+          await setWarning(res.data)
+          setModal(true)
+        }
+      });
     }
   };
+
+  const confirmSubmit = async () => {
+    if (tweetText.length !== 0 || files.length !== 0) {
+      const body = new FormData();
+    if (files.length !== 0) {
+      body.append("images", files[0].file);
+    }
+    body.append("content", tweetText);
+    body.append("hashtags", obtenerHashtags(tweetText));
+    body.append("confirmation", true);
+    await createTweet({ body, token: session.token });
+    setTweetText("");
+    setFiles([]);
+    setUbicacion("");
+    setModal(false)
+  }
+  }
   return (
     <div className="h-auto w-full border-b border-black/5 dark:border-white/20 dark:bg-black dark:text-[#e7e9ea]">
       <div className="p-4 max-sm:px-1">
@@ -161,6 +185,9 @@ const Post = () => {
               >
                 Twittear
               </button>
+              {
+                modal ? <ModalWarning close={() => setModal(false)} confirmSubmit={confirmSubmit} forbiddenWords={warning.forbiddenWords} /> : null
+              }
             </div>
           </div>
         </div>

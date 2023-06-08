@@ -16,9 +16,9 @@ function Home() {
   const { isLoading, data } = useGetAllTweetsQuery(undefined, {
     refetchOnReconnect: true,
   });
-  const { data: top } = useGetTopHashtagsQuery(undefined, {
-    refetchOnReconnect: true,
-  });
+  // const { data: top } = useGetTopHashtagsQuery(undefined, {
+  //   refetchOnReconnect: true,
+  // });
   const [isSelected, setIsSelected] = useState("para-ti");
   const { status } = useSession();
   const router = useRouter();
@@ -28,7 +28,7 @@ function Home() {
     router.push("/");
     return <></>;
   }
-  console.log("top#", top)
+  // console.log("top#", top)
   return (
     <>
       <Head>

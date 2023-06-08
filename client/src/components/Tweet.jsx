@@ -27,7 +27,7 @@ const Tweet = (props) => {
         active: true
       })
     }
-  }
+}
 
   const shareTweet = () => {
     if (navigator.share && !isComment) {
@@ -131,7 +131,7 @@ const Tweet = (props) => {
                     </div>
                 </div>
             </div>
-            <Options {...props} user={session?.user} />
+            <Options {...props} user={session?.user} token={session?.token} />
         </div>
   )
 }
