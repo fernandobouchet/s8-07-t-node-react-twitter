@@ -4,12 +4,15 @@ import Head from "next/head"
 import { useRouter } from "next/router"
 import { useGetUserByIdQuery } from "@/redux/services/usersApi"
 import QuienSeguir from "@/components/layoutComponents/QuienSeguir"
+import { useGetTweetsByUserIdQuery } from "@/redux/services/tweetsApi"
+import Tweet from "@/components/Tweet"
 
 export default function Profile () {
   const { data: session, loading, status } = useSession()
   let profile = {}
   const { query } = useRouter()
   const { data } = useGetUserByIdQuery({ userId: query?.profile, token: session?.token })
+  const { data: mineTweets } = useGetTweetsByUserIdQuery({ userId: session?.user?._id, token: session?.token })
 
   if (loading) {
     <p className="dark:text-white">Cargando</p>
@@ -34,6 +37,14 @@ export default function Profile () {
     <ProfileSection session={session} profile={profile} />
 
     <section className="w-[95%] mx-auto my-4 dark:text-white">
+      {
+        mineTweets?.length
+          ? mineTweets.map(tweet => (
+          <Tweet key={tweet._id} {...tweet} />
+          ))
+          : null
+      }
+
       <QuienSeguir expand={true} />
     </section>
 

@@ -118,7 +118,7 @@ const ProfileSection = ({ session, profile }) => {
           <p className="font-bold text-lg">{profile?.user?.name ? profile?.user?.name : "elonmusk"}</p>
           {
             pathname.includes("with_replies")
-              ? <p className="text-sm text-gray-400">{profile?.user?.replies?.length ? profile?.user?.replies.length : 0} Respuestas</p>
+              ? <p className="text-sm text-gray-400">{profile?.user?.comments?.length ? profile?.user?.comments.length : 0} Respuestas</p>
               : pathname.includes("media")
                 ? <p className="text-sm text-gray-400">{profile?.user?.media?.length ? profile?.user?.media.length : 0} Fotos y videos</p>
                 : pathname.includes("likes")

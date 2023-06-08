@@ -10,6 +10,7 @@ import Image from "next/image";
 // import { createTweet } from "../../lib/tweets";
 import { useCreateTweetMutation } from "@/redux/services/tweetsApi";
 import { useSession } from "next-auth/react";
+import Pie from "./Circle";
 // import { useRouter } from "next/router";
 
 const Post = () => {
@@ -152,10 +153,13 @@ const Post = () => {
                 </div>
                 <Ubicacion setUbicacion={setUbicacion} />
               </div>
+
+              <p className="text-indigo-500 px-4 my-auto"><Pie percentage={tweetText.length} colour={"#1a8cd8"} size={48} /></p>
+
               <button
                 className="duration-400 rounded-full bg-[#1d9bf0] px-4 font-semibold text-white transition-opacity hover:bg-[#1a8cd8] disabled:cursor-not-allowed disabled:bg-[#1a8cd8] disabled:opacity-70"
                 type="submit"
-                disabled={!tweetText.length && !files.length}
+                disabled={(!tweetText.length && !files.length) || tweetText.length > 280}
                 onClick={handleTweetSubmit}
               >
                 Twittear
