@@ -22,7 +22,12 @@ const Post = () => {
   const [modal, setModal] = useState(false)
 
   const handleTweetChange = (event) => {
-    setTweetText(event.target.value);
+    const content = event.target.value
+    if (content.length <= 98) {
+      setTweetText(content);
+    } else {
+      setTweetText(content.slice(0, 98));
+    }
   };
 
   const handleTweetSubmit = async (event) => {
@@ -96,13 +101,13 @@ const Post = () => {
           <div className="ml-3 w-full flex-row ">
             <textarea
               id="tweet"
-              className="my-2 max-sm:my-0 w-full resize-none bg-transparent text-xl max-sm:text-base focus:outline-none dark:text-white"
+              className=" max-sm:my-0 w-full h-[80px] resize-none p-2 bg-transparent text-xl max-sm:text-base focus:outline-none dark:text-white"
               placeholder="¿Qué está pasando?"
               value={tweetText}
               onChange={handleTweetChange}
             />
 
-            <div className="grid max-h-fit w-auto grid-cols-2 gap-2 py-2 max-sm:py-0">
+            <div className={`grid max-h-fit ${files.length ? "" : "hidden"} w-auto grid-cols-2 gap-2 py-2 max-sm:py-0`}>
               {files.map((file) => (
                 <div className="relative" key={file.id}>
                   <IoCloseOutline
@@ -134,7 +139,7 @@ const Post = () => {
               ))}
             </div>
 
-            <div className="my-2 w-full justify-end border-b border-black/5 py-2 dark:border-white/20">
+            <div className={`my-2 w-full justify-end border-b border-black/5 py-2 dark:border-white/20`}>
               {ubicacion.length ? (
                 <span
                   onClick={() => setUbicacion("")}
