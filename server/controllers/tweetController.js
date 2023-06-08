@@ -37,14 +37,14 @@ const createTweet = async (req, res) => {
       });
     }
 
-
+    console.log("Que es ",hashtags.split(","))
+  
     let tweet = new Tweet({
       author: id,
       content,
-      hashtags,
+      hashtags:hashtags.split(","),
       images: imagePaths,
     });
-
     await tweet.save();
     tweet = await tweet.populate('author', 'name image username email confirmed');
 
