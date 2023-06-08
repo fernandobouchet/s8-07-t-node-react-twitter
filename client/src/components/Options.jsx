@@ -37,7 +37,7 @@ const Options = ({ user, author, _id, token }) => {
                             <Popover.Panel className="dark:shadowtw absolute right-0 flex h-fit w-max flex-col overflow-hidden rounded-xl border bg-white font-medium dark:border-white/20 dark:bg-black dark:text-white">
                                 {
                                     user?._id !== author?._id
-                                      ? <button className="flex w-full items-center gap-2 px-4 py-2.5 text-left font-bold transition duration-200 hover:bg-black/5 dark:hover:bg-white/10">
+                                      ? <button onClick={close} className="flex w-full items-center gap-2 px-4 py-2.5 text-left font-bold transition duration-200 hover:bg-black/5 dark:hover:bg-white/10">
                                             <ReportIcon size={20} /> Denunciar
                                         </button>
                                       : <button onClick={() => onDelete(close)} className="flex w-full items-center gap-2 px-4 py-2.5 text-left font-bold text-red-600 transition duration-200 hover:bg-black/5 dark:hover:bg-white/10">
