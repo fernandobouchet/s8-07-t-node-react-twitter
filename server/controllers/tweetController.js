@@ -118,7 +118,7 @@ const getLikedTweetsByUserId = async (req, res) => {
     const likes = await Tweet.find({likes : userId}).populate(
       'author',
       'name image username email confirmed'
-    ).populate('likes', 'name image username email');
+    ).populate('likes', 'name image username email').sort({ createdAt: -1 });
     res.status(200).send(likes);
   } catch (error) {
     console.log(error);
@@ -130,7 +130,7 @@ const getLikedTweetsByUserId = async (req, res) => {
 const getTweetsByUserId = async (req, res) => {
   const userId = req.params.userId;
   try {
-    const tweets = await Tweet.find({ author: userId }).populate('author');
+    const tweets = await Tweet.find({ author: userId }).populate('author').sort({ createdAt: -1 });
     res.json(tweets);
   } catch (error) {
     console.log(error);
@@ -346,7 +346,7 @@ const getTopHashtags = async (req, res) => {
       { $sort: { count: -1 } },
       { $limit: 10 },
       { $project: { _id: 0, hashtag: "$_id", count: 1 } }
-    ]);
+    ]).sort({createdAt : -1});
 
     res.json(topHashtags);
   } catch (error) {

@@ -79,15 +79,7 @@ export const tweetsApi = createApi(
         providesTags: ["TweetById"],
       }),
       getCommentById: builder.query({
-        query: (props) => ({
-          url: `comments/user/${props.userId}`,
-          method: 'GET',
-          credentials: 'include',
-          headers: {
-            'content-type': 'application/json',
-            Authorization: `Bearer ${props.token}`,
-          },
-        }),
+        query: (id) => `comments/${id}`,
         providesTags: ["TweetById"],
       }),
       // confirmToken: builder.query({

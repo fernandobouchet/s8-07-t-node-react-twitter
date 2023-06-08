@@ -1,4 +1,5 @@
 import { useGetTopHashtagsQuery } from '@/redux/services/tweetsApi';
+import Head from 'next/head';
 import React from 'react'
 import { SlOptions } from 'react-icons/sl'
 
@@ -7,8 +8,12 @@ const Explore = () => {
     refetchOnReconnect: true,
   });
 
-
   return (
+    <>
+    <Head>
+      <title>Explorar / Twitter</title>
+    </Head>
+
     <div className="w-full h-full overflow-y-scroll">
       <div className="sticky top-0 w-full bg-white py-1 dark:bg-black">
         <div className="group flex m-2 items-center gap-3 overflow-hidden rounded-3xl border border-black/20 bg-slate-100/20 px-3 transition duration-200 focus-within:border-[#1d9bf0] dark:border-white/20 dark:bg-slate-500/20 dark:focus-within:border-[#1d9bf0]">
@@ -57,6 +62,7 @@ const Explore = () => {
           : [1, 2, 3, 4, 5, 6, 7].map((tweet) => <SkeletonTweet key={tweet} />)
       } */}
     </div>
+    </>
   )
 }
 
