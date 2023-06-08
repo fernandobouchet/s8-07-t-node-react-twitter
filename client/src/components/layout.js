@@ -754,8 +754,8 @@ export default function Layout({ children }) {
                         <p className="font-bold dark:text-white truncate">
                           {e.name}
                         </p>
-                        <small className="text-gray-400 truncate">@{e.username}</small>
-                        <small className="text-gray-400 truncate">{formatDate(e.time, true)}</small>
+                        <small className="text-gray-500 dark:text-gray-400 truncate">@{e.username}</small>
+                        <small className="text-gray-500 dark:text-gray-400 truncate">{formatDate(e.time, true)}</small>
                       </div>
                       <Popover className="-mt-1 ml-auto">
                         <Transition
@@ -790,7 +790,7 @@ export default function Layout({ children }) {
                         </Popover.Button>
                       </Popover>
                     </div>
-                    <p className="text-gray-400 truncate">{e.lastmessage}</p>
+                    <p className="text-gray-500 dark:text-gray-400 truncate">{e.lastmessage}</p>
                   </div>
 
                 </Link>
