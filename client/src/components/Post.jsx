@@ -247,8 +247,10 @@ const Ubicacion = ({ setUbicacion }) => {
             `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`
           )
             .then((res) => res.json())
-            .then((prueba) =>
-              setUbicacion(`${prueba.address.city}, ${prueba.address.country}`)
+            .then((prueba) => {
+                console.log(prueba)
+                setUbicacion(`${prueba.address.city || prueba.address.state}, ${prueba.address.country}`)
+              }
             );
         },
         (error) => {
