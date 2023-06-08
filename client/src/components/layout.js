@@ -192,7 +192,7 @@ function Header() {
           </button>
         </div>
       </div>
-      <div className="noscrollbar flex h-full min-w-max flex-col items-center gap-5 overflow-y-auto border-r-black/5 px-2 dark:border-r-white/20 max-md:w-full md:fixed md:border-r xl:w-[300px] xl:px-4">
+      <div className="noscrollbar flex h-full min-w-max flex-col items-center gap-5 overflow-y-auto border-r-black/5 px-1 lg:px-2 dark:border-r-white/20 max-md:w-full md:fixed md:border-r xl:w-[300px] xl:px-4">
         <div className="fixed z-[9] top-0 flex w-full items-center justify-between border-b border-b-black/10 bg-white px-4 py-3 dark:border-b-white/20 dark:bg-black md:hidden">
           {
             status === "unauthenticated"
@@ -231,7 +231,7 @@ function Header() {
 
         <div className="hidden w-full flex-col gap-1.5 py-1 max-xl:items-center md:flex">
           <Link
-            className="w-fit rounded-full p-3 transition duration-300 hover:bg-black/10 hover:dark:bg-white/10"
+            className="w-fit rounded-full py-2 lg:p-3 transition duration-300 hover:bg-black/10 hover:dark:bg-white/10"
             href="/home"
           >
             <TwitterIcon size={28} />
@@ -243,7 +243,7 @@ function Header() {
               <Link
                 href="/home"
                 className={
-                  "flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
+                  "flex w-fit items-center gap-4 rounded-3xl py-2 lg:p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 xl:pr-4 " +
                   (pathname === "/" ? "font-bold" : "")
                 }
               >
@@ -256,7 +256,7 @@ function Header() {
           <Link
             href="/explore"
             className={
-              "flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
+              "flex w-fit items-center gap-4 rounded-3xl py-2 lg:p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 xl:pr-4 " +
               (pathname === "/explore" ? "font-bold" : "")
             }
           >
@@ -275,7 +275,7 @@ function Header() {
                 <>
                 <Link
                   href="/notifications"
-                  className={"flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
+                  className={"flex w-fit items-center gap-4 rounded-3xl py-2 lg:p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 xl:pr-4 " +
                     (pathname === "/notifications" ? "font-bold" : "")}
                 >
                   <NotificationIcon
@@ -284,28 +284,28 @@ function Header() {
                   <p className="dark:text-white max-xl:hidden">Notificaciones</p>
                 </Link><Link
                   href="/messages"
-                  className={"flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
+                  className={"flex w-fit items-center gap-4 rounded-3xl py-2 lg:p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 xl:pr-4 " +
                     (pathname.includes("messages") ? "font-bold" : "")}
                 >
                     <MessagesIcon size={28} active={pathname.includes("messages")} />{" "}
                     <p className="dark:text-white max-xl:hidden">Mensajes</p>
                   </Link><Link
                     href="/lists"
-                    className={"flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
+                    className={"flex w-fit items-center gap-4 rounded-3xl py-2 lg:p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 xl:pr-4 " +
                       (pathname === "/lists" ? "font-bold" : "")}
                   >
                     <ListIcon size={28} active={pathname === "/lists"} />{" "}
                     <p className="dark:text-white max-xl:hidden">Listas</p>
                   </Link><Link
                     href="/bookmarks"
-                    className={"flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
+                    className={"flex w-fit items-center gap-4 rounded-3xl py-2 lg:p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 xl:pr-4 " +
                       (pathname === "/bookmarks" ? "font-bold" : "")}
                   >
                     <BookmarkIcon size={28} active={pathname === "/bookmarks"} />{" "}
                     <p className="dark:text-white max-xl:hidden">Guardados</p>
                   </Link><Link
                     href={"/" + session?.user?.username}
-                    className={"flex w-fit items-center gap-4 rounded-3xl p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 lg:pr-4 " +
+                    className={"flex w-fit items-center gap-4 rounded-3xl py-2 lg:p-3 text-xl transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 xl:pr-4 " +
                       (query.profile === session?.user?.username ? "font-bold" : "")}
                   >
                     <ProfileIcon size={28} active={query.profile === session?.user?.username} />{" "}
@@ -372,7 +372,7 @@ function Header() {
 
               <Popover.Button
                 ref={setOpenOptionPopper}
-                className="flex w-fit items-center gap-4 rounded-3xl p-3 text-xl outline-none transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 max-xl:m-auto lg:pr-4"
+                className="flex w-fit items-center gap-4 rounded-3xl py-2 lg:p-3 text-xl outline-none transition duration-300 hover:bg-black/10 hover:dark:bg-white/10 max-xl:m-auto xl:pr-4"
               >
                 <MoreIcon size={28} />
                 <p className="dark:text-white max-xl:hidden">Más opciones</p>
@@ -383,7 +383,7 @@ function Header() {
           {session && (
             <button
               onClick={() => document.querySelector("#tweet")?.focus()}
-              className="mt-5 w-fit rounded-full bg-[#1d9bf0] p-3.5 transition duration-300 hover:bg-[#1a8cd8] xl:w-[85%] xl:p-3"
+              className="mt-5 w-fit rounded-full bg-[#1d9bf0] p-2 lg:p-3.5 transition duration-300 hover:bg-[#1a8cd8] xl:w-[85%] xl:p-3"
             >
               <div className="xl:hidden">
                 <CreateTweetIcon size={24} />
