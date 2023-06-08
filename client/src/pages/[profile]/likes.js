@@ -11,7 +11,7 @@ const ProfileLikes = () => {
   let profile = {}
   const { query } = useRouter()
   const { data } = useGetUserByIdQuery({ userId: query?.profile, token: session?.token })
-  const { data: likes } = useGetAllLikedTweetsQuery({ userId: session?.user?._id, token: session?.token })
+  const { data: likes } = useGetAllLikedTweetsQuery({ userId: query?.profile === session?.user?.username ? session?.user?._id : data?._id, token: session?.token })
 
   if (loading) {
     <p className="dark:text-white">Cargando</p>
