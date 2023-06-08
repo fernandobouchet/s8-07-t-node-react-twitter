@@ -9,17 +9,17 @@ import { useRouter } from "next/router";
 const Options = ({ user, author, _id, token }) => {
   const popperRef = useRef(null);
   const { data: session } = useSession();
-  const { pathname, push } = useRouter();
+  const { pathname, push, query } = useRouter();
 
   const [deleteTweet] = useDeleteTweetMutation()
 
   const onDelete = (close) => {
-    console.log(pathname,)
     if (pathname.includes("/home")) {
+      deleteTweet({ id: _id, token: session.token }).then((res) => close()).catch((error) => console.log(error))
+    }
+    if (pathname.includes("/tweet") === query?.id === _id) {
       deleteTweet({ id: _id, token: session.token }).then((res) => push("/home")).catch((error) => console.log(error))
-    } // else {
-    //   deleteTweet({ id: _id, token: session.token }).then((res) => console.log(res)).catch((error) => console.log(error))
-    // }
+    }
   }
   return (
         <div className='w-auto flex items-center align-middle -ml-5 cursor-pointer hover:text-[#1d9bf0] group' onClick={(e) => e.stopPropagation()} >
