@@ -43,6 +43,14 @@ export const tweetsApi = createApi(
         query: ({ userId }) => `user/${userId}`,
         providesTags: ["TweetById"],
       }),
+      getTopHashtags: builder.query({
+        query: () => `tweets/topHashtags`,
+        providesTags: ["Tweets"],
+      }),
+      getTopTweets: builder.query({
+        query: () => `tweets/topTweets`,
+        providesTags: ["Tweets"],
+      }),
       getTweetById: builder.query({
         query: (id) => `tweets/${id}`,
         providesTags: ["TweetById"],
@@ -155,4 +163,4 @@ export const tweetsApi = createApi(
   }
 )
 
-export const { useGetAllTweetsQuery, useGetAllTweetsFollowedQuery, useGetTopHashtagsQuery, useGetTweetsByUserIdQuery, useCreateTweetMutation, useLikeTweetMutation, useLikeCommentMutation, useDislikeCommentMutation, useDeleteTweetMutation, useCreateCommentTweetMutation, useReTweetMutation, useUndoReTweetMutation, useGetTweetByIdQuery, useGetCommentByIdQuery } = tweetsApi
+export const { useGetAllTweetsQuery, useGetAllTweetsFollowedQuery, useGetTopHashtagsQuery, useGetTopTweetsQuery, useGetTweetsByUserIdQuery, useCreateTweetMutation, useLikeTweetMutation, useLikeCommentMutation, useDislikeCommentMutation, useDeleteTweetMutation, useCreateCommentTweetMutation, useReTweetMutation, useUndoReTweetMutation, useGetTweetByIdQuery, useGetCommentByIdQuery } = tweetsApi

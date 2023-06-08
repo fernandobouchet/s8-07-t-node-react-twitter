@@ -41,7 +41,7 @@ const Post = () => {
       body.append("content", tweetText);
       body.append("hashtags", obtenerHashtags(tweetText));
       await createTweet({ body, token: session.token }).then(async res => {
-        if (!res.data.message) {
+        if (!res.data?.message) {
           setTweetText("");
           setFiles([]);
           setUbicacion("");
