@@ -1,8 +1,12 @@
 
+import Comment from '../models/Comment.js';
 import Retweet from '../models/Retweet.js';
 import Tweet from '../models/Tweet.js';
 import User from '../models/User.js';
 import ForbiddenWords from '../models/forbiddenWords.js';
+import { cloudinaryUpload } from '../helpers/cloudinaryUpload.js';
+import {unlinkSync} from 'fs';
+import sharp from 'sharp';
 
 //crear tweet
 const createTweet = async (req, res) => {
@@ -31,15 +35,27 @@ const createTweet = async (req, res) => {
     let imagePaths = [];
 
     if (images) {
-      imagePaths = images.map((image) => {
-        const imagePath = `${process.env.API_URL}/public/images/${image.filename}`;
-        return imagePath;
-      });
+        imagePaths = await Promise.all(
+          images.map(async (image) => {
+            const { path, filename } = image;
+            try {
+              const optimizedImagePath = `public/images/${filename}.webp`;
+              await sharp(path)
+                .webp({ quality: 75 })
+                .toFile(optimizedImagePath);
+              const imagePath = await cloudinaryUpload(optimizedImagePath);
+              unlinkSync(optimizedImagePath)
+              unlinkSync(path);
+              return imagePath;
+            } catch (error) {
+              unlinkSync(path);
+              throw error;
+            }
+          })
+        );
     }
-
-    console.log("Que es ",hashtags.split(","))
   
-    let tweet = new Tweet({
+    const tweet = new Tweet({
       author: id,
       content,
       hashtags:hashtags.split(","),
@@ -59,6 +75,8 @@ const deleteTweet = async (req, res) => {
   try {
     const tweetId = req.params.id;
     const tweet = await Tweet.findByIdAndDelete(tweetId);
+    const retweets = await Retweet.deleteMany({ originalTweet: tweetId });
+    const coments = await Comment.deleteMany({ tweetId: tweetId })
 
     if (!tweet) {
       return res.status(404).json({ message: 'Tweet does not exist' });
