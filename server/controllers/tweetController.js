@@ -1,4 +1,5 @@
 
+import Comment from '../models/Comment.js';
 import Retweet from '../models/Retweet.js';
 import Tweet from '../models/Tweet.js';
 import User from '../models/User.js';
@@ -59,6 +60,8 @@ const deleteTweet = async (req, res) => {
   try {
     const tweetId = req.params.id;
     const tweet = await Tweet.findByIdAndDelete(tweetId);
+    const retweets = await Retweet.deleteMany({ originalTweet: tweetId });
+    const coments = await Comment.deleteMany({ tweetId: tweetId })
 
     if (!tweet) {
       return res.status(404).json({ message: 'Tweet does not exist' });
