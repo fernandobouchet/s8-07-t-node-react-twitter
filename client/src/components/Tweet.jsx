@@ -27,7 +27,7 @@ const Tweet = (props) => {
         active: true
       })
     }
-}
+  }
 
   const shareTweet = () => {
     if (navigator.share && !isComment) {

@@ -7,7 +7,7 @@ import Link from "next/link";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useGetAllTweetsQuery, useGetTopHashtagsQuery } from "@/redux/services/tweetsApi";
+import { useGetAllTweetsQuery } from "@/redux/services/tweetsApi";
 
 import SkeletonTweet from "@/components/SkeletonTweet";
 import Retweet from "@/components/Retweet";

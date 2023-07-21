@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { API_URL } from "../../../utils/api";
-import { useSession } from "next-auth/react";
 
 export const fetchMessages = createAsyncThunk(
   "messages/fetchMessages",

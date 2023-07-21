@@ -1,5 +1,4 @@
 import Image from "next/image";
-import React, { useState } from "react";
 
 export default function UserHover({ user, onClickFollowUser, data }) {
   const { image, name, _id } = user;
@@ -39,7 +38,7 @@ export default function UserHover({ user, onClickFollowUser, data }) {
       <div className="p-3">
         <p className="text-sm dark:text-white">
           {data?.bio} Lorem Ipsum is simply dummy text of the printing and
-          typesetting industry. Lorem Ipsum has been the industry's standard
+          typesetting industry. Lorem Ipsum has been the industry`&apos;`s standard
           dummy text ever since the 1500s, when an unknown printer took a galley
         </p>
       </div>
