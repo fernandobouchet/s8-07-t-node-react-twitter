@@ -19,6 +19,12 @@ El front-end de la aplicación está construido utilizando Next.js como framewor
 
 En el lado del servidor, se utiliza Node.js junto con Express para la creación de la API RESTful que permite la comunicación entre el cliente y la base de datos. La base de datos MongoDB se utiliza para almacenar la información de los usuarios, perfiles, tweets y otras entidades relacionadas.
 
+
+
+## Screenshots
+
+![App Screenshot](https://raw.githubusercontent.com/fernandobouchet/s8-07-t-node-react-twitter/main/project_preview.webp)
+
 ## Authors
 
 **UX/UI**
